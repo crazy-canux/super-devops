@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3edba765-2047-4ce7-9bdb-9fea621c3828" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/README.md" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/super-devops/email/__init__.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/super-devops/office/__init__.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/super-devops/ssh/paramiko_wrapper.py" afterPath="$PROJECT_DIR$/super-devops/ssh/paramiko_wrapper.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -39,10 +41,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="__init__.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/super-devops/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
+            <state relative-caret-position="85">
               <caret line="14" column="25" lean-forward="false" selection-start-line="14" selection-start-column="25" selection-end-line="14" selection-end-column="25" />
               <folding>
                 <element signature="e#46#279#1" expanded="true" />
@@ -51,7 +53,25 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="cache.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="paramiko_wrapper.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/super-devops/ssh/paramiko_wrapper.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="425">
+              <caret line="42" column="24" lean-forward="false" selection-start-line="42" selection-start-column="24" selection-end-line="42" selection-end-column="24" />
+              <folding>
+                <element signature="e#0#15#0" expanded="true" />
+                <element signature="e#169#452#1" expanded="true" />
+                <element signature="e#637#857#0" expanded="true" />
+                <element signature="e#1325#1395#0" expanded="true" />
+                <element signature="e#1575#3002#0" expanded="true" />
+                <element signature="e#3210#4233#0" expanded="true" />
+                <element signature="e#4443#4938#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="cache.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/super-devops/robotframework/cache.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
@@ -110,14 +130,15 @@
         <option value="$PROJECT_DIR$/setup.py" />
         <option value="$PROJECT_DIR$/bin/autorf.py" />
         <option value="$PROJECT_DIR$/super-devops/__init__.py" />
+        <option value="$PROJECT_DIR$/super-devops/ssh/paramiko_wrapper.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="235" />
-    <option name="y" value="174" />
-    <option name="width" value="1396" />
-    <option name="height" value="928" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="404" />
+    <option name="y" value="250" />
+    <option name="width" value="1398" />
+    <option name="height" value="936" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -184,66 +205,6 @@
             <path>
               <item name="super-devops" type="b2602c69:ProjectViewProjectNode" />
               <item name="super-devops" type="462c0819:PsiDirectoryNode" />
-              <item name="super-devops" type="462c0819:PsiDirectoryNode" />
-              <item name="amqp" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="super-devops" type="b2602c69:ProjectViewProjectNode" />
-              <item name="super-devops" type="462c0819:PsiDirectoryNode" />
-              <item name="super-devops" type="462c0819:PsiDirectoryNode" />
-              <item name="ansible" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="super-devops" type="b2602c69:ProjectViewProjectNode" />
-              <item name="super-devops" type="462c0819:PsiDirectoryNode" />
-              <item name="super-devops" type="462c0819:PsiDirectoryNode" />
-              <item name="database" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="super-devops" type="b2602c69:ProjectViewProjectNode" />
-              <item name="super-devops" type="462c0819:PsiDirectoryNode" />
-              <item name="super-devops" type="462c0819:PsiDirectoryNode" />
-              <item name="fabric" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="super-devops" type="b2602c69:ProjectViewProjectNode" />
-              <item name="super-devops" type="462c0819:PsiDirectoryNode" />
-              <item name="super-devops" type="462c0819:PsiDirectoryNode" />
-              <item name="http" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="super-devops" type="b2602c69:ProjectViewProjectNode" />
-              <item name="super-devops" type="462c0819:PsiDirectoryNode" />
-              <item name="super-devops" type="462c0819:PsiDirectoryNode" />
-              <item name="robotframework" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="super-devops" type="b2602c69:ProjectViewProjectNode" />
-              <item name="super-devops" type="462c0819:PsiDirectoryNode" />
-              <item name="super-devops" type="462c0819:PsiDirectoryNode" />
-              <item name="selenium" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="super-devops" type="b2602c69:ProjectViewProjectNode" />
-              <item name="super-devops" type="462c0819:PsiDirectoryNode" />
-              <item name="super-devops" type="462c0819:PsiDirectoryNode" />
-              <item name="ssh" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="super-devops" type="b2602c69:ProjectViewProjectNode" />
-              <item name="super-devops" type="462c0819:PsiDirectoryNode" />
-              <item name="super-devops" type="462c0819:PsiDirectoryNode" />
-              <item name="unittest" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="super-devops" type="b2602c69:ProjectViewProjectNode" />
-              <item name="super-devops" type="462c0819:PsiDirectoryNode" />
-              <item name="super-devops" type="462c0819:PsiDirectoryNode" />
-              <item name="yaml" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="super-devops" type="b2602c69:ProjectViewProjectNode" />
-              <item name="super-devops" type="462c0819:PsiDirectoryNode" />
               <item name="tools" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -254,7 +215,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
-    <property name="last_opened_file_path" value="$USER_HOME$/capture" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Src/python" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -302,9 +263,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="235" y="174" width="1396" height="928" extended-state="0" />
+    <frame x="404" y="250" width="1857" height="1212" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2566568" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19381557" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -332,6 +294,85 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/super-devops/robotframework/listener.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="38" column="0" lean-forward="false" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
+          <folding>
+            <element signature="e#1035#1039#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/super-devops/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="14" column="25" lean-forward="false" selection-start-line="14" selection-start-column="25" selection-end-line="14" selection-end-column="25" />
+          <folding>
+            <element signature="e#46#279#1" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="0">
+            <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/super-devops/ssh/paramiko_wrapper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="42" column="24" lean-forward="false" selection-start-line="42" selection-start-column="24" selection-end-line="42" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+            <element signature="e#169#452#1" expanded="true" />
+            <element signature="e#637#857#0" expanded="true" />
+            <element signature="e#1325#1395#0" expanded="true" />
+            <element signature="e#1575#3002#0" expanded="true" />
+            <element signature="e#3210#4233#0" expanded="true" />
+            <element signature="e#4443#4938#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/super-devops/ssh/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/setup.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bin/autorf.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/super-devops/robotframework/cache.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/super-devops/robotframework/listener.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="340">
@@ -482,25 +523,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/super-devops/robotframework/cache.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/README" />
-    <entry file="file://$PROJECT_DIR$/super-devops/robotframework/listener.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="38" column="0" lean-forward="false" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
-          <folding>
-            <element signature="e#1035#1039#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
@@ -514,11 +537,45 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/super-devops/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
+        <state relative-caret-position="85">
           <caret line="14" column="25" lean-forward="false" selection-start-line="14" selection-start-column="25" selection-end-line="14" selection-end-column="25" />
           <folding>
             <element signature="e#46#279#1" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/super-devops/ssh/paramiko_wrapper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="42" column="24" lean-forward="false" selection-start-line="42" selection-start-column="24" selection-end-line="42" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+            <element signature="e#169#452#1" expanded="true" />
+            <element signature="e#637#857#0" expanded="true" />
+            <element signature="e#1325#1395#0" expanded="true" />
+            <element signature="e#1575#3002#0" expanded="true" />
+            <element signature="e#3210#4233#0" expanded="true" />
+            <element signature="e#4443#4938#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/super-devops/robotframework/listener.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="38" column="0" lean-forward="false" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
+          <folding>
+            <element signature="e#1035#1039#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/super-devops/robotframework/cache.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>

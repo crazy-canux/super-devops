@@ -94,8 +94,9 @@ class BaseParamiko(SSHClient):
             self,
             command,
             timeout=60,
-            bufsize=-1,
             get_pty=False,
+            sudo_pw=None,
+            bufsize=-1,
             environment=None
     ):
         """Customize exec_command for capture.
@@ -109,6 +110,8 @@ class BaseParamiko(SSHClient):
             stdin, stdout, stderr = super(BaseParamiko, self).exec_command(
                 command, bufsize, timeout, get_pty, environment
             )
+            if get_pty:
+                stdin.write(sudo_pw + '\n')
         except SSHException as e:
             logger.error("exec_command failed: {}".format(e.message))
             raise e
@@ -116,10 +119,10 @@ class BaseParamiko(SSHClient):
             logger.error("Unknown error: {}".format(e.message))
             raise e
         else:
-            logger.debug("stderr: {}".format(stderr))
-            logger.debug("stdout: {}".format(stdout))
             output_msg = stdout.readlines()
             error_msg = stderr.readlines()
+            logger.debug("stderr: {}".format(output_msg))
+            logger.debug("stdout: {}".format(error_msg))
         finally:
             stdout.close()
             stderr.close()
@@ -130,8 +133,9 @@ class BaseParamiko(SSHClient):
             self,
             commands,
             timeout=60,
-            bufsize=-1,
             get_pty=False,
+            sudo_pw=None,
+            bufsize=-1,
             environment=None
     ):
         """A new method to run more than one commands.
@@ -144,7 +148,7 @@ class BaseParamiko(SSHClient):
         outputs = []
         for command in commands:
             output = self.exec_command(
-                command, timeout, bufsize, get_pty, environment
+                command, timeout, bufsize, get_pty, sudo_pw, environment
             )
             outputs.append(output)
         return outputs
