@@ -6,7 +6,7 @@ from robot.api import logger
 
 class BaseRequests(Session):
 
-    """Customize requests for capture.
+    """Customize requests for super-devops.
 
     with BaseRequests(username, password, domain) as req:
         res = req.get(url, **kwargs)

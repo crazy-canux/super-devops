@@ -3,7 +3,7 @@ from robot.utils import ConnectionCache
 
 class Cache(ConnectionCache):
 
-    """Customize connectioncache for capture."""
+    """Customize connectioncache for super-devops."""
 
     _CONNECTIONS = {}
     _CLOSED = set()

@@ -61,7 +61,7 @@ class BaseUnitTest(unittest.TestCase):
         try:
             success = False
 
-            # Customize for capture about validate input arguments.
+            # Customize for super-devops about validate input arguments.
             try:
                 self._validate_input()
             except SkipTest as e:
@@ -118,7 +118,7 @@ class BaseUnitTest(unittest.TestCase):
             if success:
                 result.addSuccess(self)
 
-        # Customize for capture.
+        # Customize for super-devops.
         except self.failureException as e:
             result.addFailure(self, sys.exc_info())
             tb = traceback.format_tb(sys.exc_info()[-1])
@@ -138,7 +138,7 @@ class BaseUnitTest(unittest.TestCase):
             return self._validate_output()
 
         finally:
-            # Customize for capture.
+            # Customize for super-devops.
             status = 'FAILED' if (result.failures or result.errors) else \
                 'PASSED'
             logger.info(

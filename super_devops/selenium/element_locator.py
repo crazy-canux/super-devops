@@ -6,7 +6,7 @@ from super_devops.robotframework.cache import Cache
 
 class BaseElement(object):
 
-    """Customize element locator for capture."""
+    """Customize element locator for super-devops."""
 
     strategies = {
         'ID': 'find_element_by_id',

@@ -6,7 +6,7 @@ from super_devops.robotframework.cache import Cache
 
 class Wait(object):
 
-    """Customize wait action based on WebDriverWait for capture."""
+    """Customize wait action based on WebDriverWait for super-devops."""
 
     def __init__(self, driver=None, timeout=30.0, poll_frequency=1.0):
         self._driver = driver or Cache().current

@@ -3,7 +3,7 @@ from robot.api import logger
 
 class Listener(object):
 
-    """Customize listener for capture.
+    """Customize listener for super-devops.
 
     The default method will be called before customized method,
     Which use the same name.

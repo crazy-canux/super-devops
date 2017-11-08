@@ -6,7 +6,7 @@ from robot.api import logger
 
 class BaseParamiko(SSHClient):
 
-    """Customize paramiko for capture.
+    """Customize paramiko for super-devops.
 
     with BaseParamiko(hostname, port, username, password, timeout) as ssh:
         output = ssh.exec_command(command)
@@ -58,7 +58,7 @@ class BaseParamiko(SSHClient):
             timeout,
             **kwargs
     ):
-        """Customize connect for capture."""
+        """Customize connect for super-devops."""
         try:
             pkey = kwargs.get('pkey')
             key_filename = kwargs.get('key_filename')
@@ -99,7 +99,7 @@ class BaseParamiko(SSHClient):
             bufsize=-1,
             environment=None
     ):
-        """Customize exec_command for capture.
+        """Customize exec_command for super-devops.
 
         :param command: a shell command.
         :type command: string.
