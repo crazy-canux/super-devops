@@ -1,7 +1,7 @@
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import TimeoutException
 
-from capture.utils.cache import Cache
+from super_devops.robotframework.cache import Cache
 
 
 class Wait(object):

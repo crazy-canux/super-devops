@@ -1,8 +1,7 @@
 from selenium import webdriver
-from robot.api import logger
 
 from .wait import Wait
-from capture.utils.cache import Cache
+from super_devops.robotframework.cache import Cache
 
 
 class BaseSelenium(object):

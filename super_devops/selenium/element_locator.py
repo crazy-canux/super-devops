@@ -1,8 +1,7 @@
 from selenium.webdriver.remote.webelement import WebElement
-from robot.api import logger
 
-from capture.utils.cache import Cache
-from capture.utils.ui.wait import Wait
+from .wait import Wait
+from super_devops.robotframework.cache import Cache
 
 
 class BaseElement(object):
