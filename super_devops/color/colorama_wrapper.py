@@ -20,19 +20,19 @@ class BaseColor(object):
 
     CYAN = partial(
         lambda info, color=Fore.RESET:
-        color + str(info) + Fore.CYAN,
+        color + str(info) + Fore.RESET,
         color=Fore.CYAN
     )
 
     GREEN = partial(
-        lambda info, color=Fore.GREEN:
-        color + str(info) + Fore.GREEN,
+        lambda info, color=Fore.RESET:
+        color + str(info) + Fore.RESET,
         color=Fore.GREEN
     )
 
     MAGENTA = partial(
-        lambda info, color=Fore.MAGENTA:
-        color + str(info) + Fore.MAGENTA,
+        lambda info, color=Fore.RESET:
+        color + str(info) + Fore.RESET,
         color=Fore.MAGENTA
     )
 
@@ -49,7 +49,7 @@ class BaseColor(object):
     )
 
     WHITE = partial(
-        lambda info, color=Fore.WHITE:
+        lambda info, color=Fore.RESET:
         color + str(info) + Fore.RESET,
         color=Fore.WHITE
     )

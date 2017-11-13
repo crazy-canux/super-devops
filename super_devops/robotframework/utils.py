@@ -1,20 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-"""
-SUMMARY utils.py
-
-Copyright (C) 2017 Canux CHENG.
-All rights reserved.
-
-LICENSE GNU General Public License v3.0.
-
-:author: Canux CHENG canuxcheng@gmail.com
-:version: 0.0.1
-:since: Wed 01 Nov 2017 09:13:48 AM EDT
-
-DESCRIPTION:
-"""
 import os
+import sys
 from collections import OrderedDict
 
 from robot.parsing.model import TestData
@@ -106,7 +91,7 @@ class Suite(object):
         """Get test case by index in order dict."""
         return self.workflowlist[int(index) - 1]
 
-    def get_workflow_by_name(self, names):
+    def get_workflow_by_name(self, names=None):
         """Get test case by names."""
         _workflowlist = []
         for name in names:
@@ -115,25 +100,61 @@ class Suite(object):
                     _workflowlist.append(case_name)
         return _workflowlist
 
-    def get_workflows_by_tags(self, tags):
+    def get_workflows_by_tags(self, tags=None):
         """Used for robot --include."""
         _workflowlist = []
         for case_name in self.workflowlist:
-            if set([tag.upper() for tag in tags]) & set(
-                    [tag.upper() for tag in self.workflowdict.get(case_name).tags]
+            if set(
+                    [tag.upper() for tag in tags]
+            ) & set(
+                [
+                    tag.value[0].upper()
+                    for tag in self.workflowdict.get(case_name).tags
+                ]
             ):
                 _workflowlist.append(case_name)
         return _workflowlist
 
-    def remove_workflow_by_tags(self, workflowlist, tags):
+    def remove_workflow_by_tags(self, workflowlist, tags=None):
         """Used for robot --exclude."""
         _workflowlist = []
         for case_name in workflowlist:
             if not set([tag.upper() for tag in tags]) & set(
-                [tag.upper() for tag in self.workflowdict.get(case_name).tags]
+                    [
+                        tag.value[0].upper()
+                        for tag in self.workflowdict.get(case_name).tags
+                    ]
             ):
                 _workflowlist.append(case_name)
         return _workflowlist
+
+class Output(object):
+    def __init__(self, path):
+        self.terminal = sys.stdout
+        self.path = path
+        self.__file = None
+
+    def __enter__(self):
+        self.__file = open(self.path, 'w')
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if self.__file:
+            self.__file.close()
+            self.__file = None
+
+    def close(self):
+        self.__exit__(None, None, None)
+
+    def write(self, message):
+        if not self.__file:
+            self.__enter__()
+        self.__file.write(message)
+        self.terminal.write(message)
+
+    def flush(self):
+        self.__file.flush()
+        self.terminal.flush()
 
 
 

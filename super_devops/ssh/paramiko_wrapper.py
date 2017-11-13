@@ -112,6 +112,7 @@ class BaseParamiko(SSHClient):
             )
             if get_pty:
                 stdin.write(sudo_pw + '\n')
+                logger.debug('Enter sudo password: {}: succeed.'.format(sudo_pw))
         except SSHException as e:
             logger.error("exec_command failed: {}".format(e.message))
             raise e
@@ -120,8 +121,8 @@ class BaseParamiko(SSHClient):
             raise e
         else:
             output_msg = stdout.readlines()
-            error_msg = stderr.readlines()
             logger.debug("stderr: {}".format(output_msg))
+            error_msg = stderr.readlines()
             logger.debug("stdout: {}".format(error_msg))
         finally:
             stdout.close()

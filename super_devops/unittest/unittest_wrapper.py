@@ -127,7 +127,7 @@ class BaseUnitTest(unittest.TestCase):
                     self.keyword, ''.join(tb[1:])
                 )
             )
-            if self._ignore_failure(debug_only=True):
+            if self.__ignore_failure(debug_only=True):
                 return self._validate_output()
             else:
                 raise ExecutionFailed(e.message, continue_on_failure=True)
@@ -169,7 +169,7 @@ class BaseUnitTest(unittest.TestCase):
                 if stopTestRun is not None:
                     stopTestRun()
 
-    def _ignore_failure(self, debug_only=False):
+    def __ignore_failure(self, debug_only=False):
         if debug_only:
             for frame in inspect.stack()[::-1]:
                 if frame[1].endswith('pydevd.py'):

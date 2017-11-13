@@ -1,7 +1,6 @@
 from requests.sessions import Session
 from requests.auth import HTTPBasicAuth
 from requests.packages import urllib3
-from robot.api import logger
 
 
 class BaseRequests(Session):
