@@ -1,13 +1,18 @@
 import argparse
-from argparse import HelpFormatter, Action
-import os
 import datetime
+import os
+from argparse import HelpFormatter, Action
 
 import robot
 from robot.api import logger
 
+from super_devops.misc.colorama_wrapper import BaseColor
+from super_devops.utils import expandpath
 from .utils import Suite, Output
-from super_devops.color.colorama_wrapper import BaseColor
+
+
+# TODO: write filename in log/debug file.
+# TODO: verify arguments.
 
 
 class BaseRF(object):
@@ -23,19 +28,19 @@ class BaseRF(object):
     ):
         """Basic robot framework command line tools.
 
-        :param robot_files: robot files, can be one or more.
+        :param robot_files: robot files, can be one or a folder.
         :type robot_files: string.
-        :param yaml_files: yaml configuration files, can be one or more.
-        :type yaml_files: string.
+        :param outputdir: robot -d/--outputdir.
+        :type outputdir: string.
         """
         self.prog = prog
         self.description = description
         self.epilog = epilog
         self.version = version
 
-        self.suit = Suite(sources=robot_files)
+        self.suit = Suite(sources=expandpath(robot_files))
 
-        self.outputdir = outputdir
+        self.outputdir = expandpath(outputdir)
 
     def __define_options(self):
         self.parser = argparse.ArgumentParser(
@@ -58,6 +63,12 @@ class BaseRF(object):
             '-V', '--version',
             action='version',
             version='%(prog)s {}'.format(self.version)
+        )
+        self.basic_parser.add_argument(
+            '-P', '--pythonpath',
+            required=False,
+            help='Specify PYTHONPATH for develop package.',
+            dest='pythonpath'
         )
 
     def __define_sub_options(self):
@@ -180,7 +191,7 @@ class BaseRF(object):
         if self.args.all:
             header = ['ID', 'TAGS', 'TITLE']
             formatter = ['{0:<5}', '{1:<30}', '{2}']
-            partial_func = [BaseColor.MAGENTA, BaseColor.BLACK, BaseColor.GREEN]
+            partial_func = [BaseColor.MAGENTA, BaseColor.CYAN, BaseColor.GREEN]
 
             format_wf = ''.join(formatter)
             print format_wf .format(*header)
@@ -229,6 +240,7 @@ class BaseRF(object):
                     print(help.format_help())
 
     def __robot_run(self, workflows):
+        __options = {}
         __timestamp = datetime.datetime.now().strftime('%Y%m%d-%H%M%S')
         __outputdir = os.path.join(
             self.outputdir, 'outputdir_' + __timestamp
@@ -241,25 +253,28 @@ class BaseRF(object):
 
         logger.info("outputdir: {}".format(__outputdir), also_console=True)
 
-        with Output(__summary_path) as output:
-            __options = {}
-            if not self.args.debug:
-                # If not debug mode, don't print TRACE/DEBUG/INFO/WARN to log.
-                __options.setdefault('loglevel', 'ERROR')
-                # And print debug message to debug file.
-                __options.setdefault('debugfile', 'debug.log')
-            else:
-                # If debug mode, print everything to log file.
-                __options.setdefault('loglevel', 'DEBUG:INFO')
+        if self.args.pythonpath:
+            __options.setdefault('pythonpath', self.args.pythonpath)
 
+        if not self.args.debug:
+            # If not debug mode, don't print TRACE/DEBUG/INFO/WARN to log.
+            __options.setdefault('loglevel', 'ERROR')
+            # And print debug message to debug file.
+            __options.setdefault('debugfile', 'debug.log')
+        else:
+            # If debug mode, print everything to log file.
+            __options.setdefault('loglevel', 'DEBUG:INFO')
+
+        with Output(__summary_path) as output:
             robot.run(
                 *self.suit.test_files,
                 outputdir=__outputdir,
                 timestampoutputs=True,
                 test=workflows,
                 consolecolors='on',
-                stdout=output,
                 consolewidth=79,
+                consolemarkers='on',
+                stdout=output,
                 **__options
             )
 

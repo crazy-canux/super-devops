@@ -3,6 +3,7 @@ from paramiko.client import SSHClient
 from paramiko.ssh_exception import SSHException
 from robot.api import logger
 
+# TODO: remove robot.api.logger, develop logging for super-devops.
 
 class BaseParamiko(SSHClient):
 
@@ -60,6 +61,7 @@ class BaseParamiko(SSHClient):
     ):
         """Customize connect for super-devops."""
         try:
+            # TODO: set the default value.
             pkey = kwargs.get('pkey')
             key_filename = kwargs.get('key_filename')
             allow_agent = kwargs.get('allow_agent')

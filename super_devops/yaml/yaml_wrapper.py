@@ -1,6 +1,8 @@
 from .datamodel import DataModel
 from .datacontext import DataContext
 
+from super_devops.utils import expandpath
+
 
 class BaseYaml(DataContext):
     def __init__(
@@ -13,7 +15,7 @@ class BaseYaml(DataContext):
         self.shared_tag = 'shared'
 
         super(BaseYaml, self).__init__(
-            global_conf_file, self.global_tag
+            expandpath(global_conf_file), self.global_tag
         )
 
         self[self.local_tag] = {}
@@ -23,7 +25,7 @@ class BaseYaml(DataContext):
 
         for workflow_conf_file in workflow_conf_files:
             self.update_node_from_file(
-                workflow_conf_file, self.local_tag
+                expandpath(workflow_conf_file), self.local_tag
             )
 
     @property
