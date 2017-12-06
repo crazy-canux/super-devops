@@ -7,6 +7,7 @@
 Super DevOps
 ============
 
+Tons of DevOps tools.
 
 ==========
 User Guide
@@ -18,9 +19,10 @@ User Guide
 
    robotframework
    selenium
-   database
    ansible
-   office
+   jenkins
+   database
+   yaml
    misc
 
 
