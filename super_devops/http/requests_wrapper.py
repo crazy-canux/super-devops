@@ -1,6 +1,12 @@
+import logging
+
 from requests.sessions import Session
 from requests.auth import HTTPBasicAuth
 from requests.packages import urllib3
+
+
+logger = logging.getLogger(__name__)
+logging.getLogger('requests').setLevel(logging.WARNING)
 
 
 class BaseRequests(Session):

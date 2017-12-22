@@ -1,4 +1,5 @@
 from robot.utils import ConnectionCache
+from robot.api import logger
 
 
 class Cache(ConnectionCache):

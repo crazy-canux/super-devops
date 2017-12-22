@@ -1,5 +1,11 @@
+import logging
+
 from sqlalchemy import create_engine
 from sqlalchemy import exc
+
+
+logger = logging.getLogger(__name__)
+logging.getLogger('sqlalchemy').setLevel(logging.WARNING)
 
 
 class BaseDB(object):
@@ -203,6 +209,15 @@ class BaseDB(object):
         else:
             return result
 
+    def execute_transaction(self, sql):
+        try:
+            with self.connection.begin():
+                self.connection.execute(sql)
+        except Exception:
+            return False
+        else:
+            return True
+
     def delete_query(self, sql, ignore_error=False, autocommit=True):
         try:
             result_proxy = self.__execute(sql, autocommit)
@@ -217,6 +232,7 @@ class BaseDB(object):
             raise e
 
     def select_query(self, sql, autocommit=False):
+        """return [(column1, ....), (column1, ...), ...]"""
         result_proxy = self.__execute(sql, autocommit)
         if result_proxy is None:
             return None

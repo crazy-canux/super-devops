@@ -1,34 +1,37 @@
 .. _yaml:
 
-YAML
-====
-
-Yet Another Markdown Language
-
 pyyaml
-------
+======
 
 YAML parser and emitter for Python
 
 `<http://pyyaml.org/wiki/PyYAML>`_
 
-install::
+install
+-------
+
+install from pypi::
 
     $ pip install pyyaml
 
-use::
+usage
+-----
+
+import::
 
     import yaml
 
-classes::
+class YAMLObject::
 
-    # yaml.YAMLObject
+    YAMLObject
 
     # methods:
     from_yaml(cls, loader, node)
     to_yaml(cls, dumper, data)
 
-    # yaml.YAMLError
+class YAMLError::
+
+    YAMLError
 
 functions::
 

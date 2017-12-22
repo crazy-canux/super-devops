@@ -1,7 +1,13 @@
+import logging
+
 from selenium import webdriver
 
 from .wait import Wait
 from super_devops.robotframework.cache import Cache
+
+
+logger = logging.getLogger(__name__)
+logging.getLogger('selenium').setLevel(logging.WARNING)
 
 
 class BaseSelenium(object):

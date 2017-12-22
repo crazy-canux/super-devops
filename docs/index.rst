@@ -21,8 +21,16 @@ User Guide
    selenium
    ansible
    jenkins
-   database
+   docker
    yaml
+   office
+   database
+   ssh
+   snmp
+   ldap
+   http
+   ftp
+   email
    misc
 
 

@@ -1,9 +1,13 @@
+import logging
+
 import paramiko
 from paramiko.client import SSHClient
 from paramiko.ssh_exception import SSHException
-from robot.api import logger
 
-# TODO: remove robot.api.logger, develop logging for super-devops.
+
+logger = logging.getLogger(__name__)
+logging.getLogger('paramiko').setLevel(logging.WARNING)
+
 
 class BaseParamiko(SSHClient):
 

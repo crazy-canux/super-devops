@@ -1,6 +1,12 @@
+import logging
+
 import yaml
 
 from .serializable import serializable
+
+
+logger = logging.getLogger(__name__)
+logging.getLogger('yaml').setLevel(logging.WARNING)
 
 
 @serializable

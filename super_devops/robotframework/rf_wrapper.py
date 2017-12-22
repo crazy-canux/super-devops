@@ -7,7 +7,7 @@ import robot
 from robot.api import logger
 
 from super_devops.misc.colorama_wrapper import BaseColor
-from super_devops.utils import expandpath
+from super_devops.utils import Utils
 from .utils import Suite, Output
 
 
@@ -38,9 +38,9 @@ class BaseRF(object):
         self.epilog = epilog
         self.version = version
 
-        self.suit = Suite(sources=expandpath(robot_files))
+        self.suit = Suite(sources=Utils.expandpath(robot_files))
 
-        self.outputdir = expandpath(outputdir)
+        self.outputdir = Utils.expandpath(outputdir)
 
     def __define_options(self):
         self.parser = argparse.ArgumentParser(

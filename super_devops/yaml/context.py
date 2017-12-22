@@ -1,3 +1,9 @@
+import logging
+
+
+logger = logging.getLogger(__name__)
+
+
 class Context(object):
     def __init__(self, ctx=None):
         super(Context, self).__init__()

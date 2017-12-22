@@ -15,9 +15,13 @@ install from pypi::
 usage
 -----
 
-classes:
+import::
 
-    # Engine
+    from sqlalchemy import create_engine
+    from sqlalchemy import exc
+
+class Engine::
+
     Engine(pool, dialect, url, logging_name=None, echo=None, proxy=None, execution_options=None)
     # methods:
     begin(self, close_with_result=False) # return Connection object
@@ -27,10 +31,11 @@ classes:
     execution_options(self, **opt)
     execute(self, statement, *multiparams, **params)
 
-    # Connection
+class Connection::
+
     Connection(engine, connection=None, close_with_result=False, _branch_from=None, _execution_options=None, _dispatch=None, _has_events=None)
     # methods:
-    begin(self)
+    begin(self) # Return Transaction object.
     close(self)
     scalar(self, object, *multiparams, **params)
     execute(self, object, *multiparams, **params) # return ResultProxy object.
@@ -43,6 +48,14 @@ classes:
     stream_results:
     schema_translate_map:
     result_proxy = connection.execution_options(stream_results=True).execute(stmt)
+
+class Transaction::
+
+    Transaction(connection, parent)
+    # methods:
+    close()
+    rollback()
+    commit()
 
     # ResultProxy
     ResultProxy(context)

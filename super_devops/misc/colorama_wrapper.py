@@ -1,6 +1,11 @@
+import logging
 from functools import partial
 
 from colorama import Fore, init
+
+
+logger = logging.getLogger(__name__)
+logging.getLogger('colorama').setLevel(logging.WARNING)
 
 
 class BaseColor(object):

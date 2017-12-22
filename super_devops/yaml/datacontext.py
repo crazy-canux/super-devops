@@ -1,10 +1,15 @@
 import os
+import logging
 
 import yaml
 
 from .context import Context
 from .serializable import serializable
 from .datamodel import DataModel
+
+
+logger = logging.getLogger(__name__)
+logging.getLogger('yaml').setLevel(logging.WARNING)
 
 
 @serializable

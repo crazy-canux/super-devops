@@ -1,7 +1,12 @@
 import copy
 import os
+import logging
 
 import yaml
+
+
+logger = logging.getLogger(__name__)
+logging.getLogger('yaml').setLevel(logging.WARNING)
 
 
 def serializable(cls):

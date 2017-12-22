@@ -1,7 +1,13 @@
+import logging
+
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import TimeoutException
 
 from super_devops.robotframework.cache import Cache
+
+
+logger = logging.getLogger(__name__)
+logging.getLogger('selenium').setLevel(logging.WARNING)
 
 
 class Wait(object):

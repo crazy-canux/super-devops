@@ -1,7 +1,12 @@
+import logging
+
 from .datamodel import DataModel
 from .datacontext import DataContext
+from super_devops.utils import Utils
 
-from super_devops.utils import expandpath
+
+logger = logging.getLogger(__name__)
+logging.getLogger('paramiko').setLevel(logging.WARNING)
 
 
 class BaseYaml(DataContext):
@@ -15,7 +20,7 @@ class BaseYaml(DataContext):
         self.shared_tag = 'shared'
 
         super(BaseYaml, self).__init__(
-            expandpath(global_conf_file), self.global_tag
+            Utils.expandpath(global_conf_file), self.global_tag
         )
 
         self[self.local_tag] = {}
@@ -25,7 +30,7 @@ class BaseYaml(DataContext):
 
         for workflow_conf_file in workflow_conf_files:
             self.update_node_from_file(
-                expandpath(workflow_conf_file), self.local_tag
+                Utils.expandpath(workflow_conf_file), self.local_tag
             )
 
     @property
