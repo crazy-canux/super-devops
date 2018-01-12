@@ -131,7 +131,7 @@ requests
 
 `<https://github.com/kennethreitz/requests>`_
 
-从http/https获取内容,内置urllib3。
+从http/https获取内容.
 
 install
 -------

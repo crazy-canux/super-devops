@@ -1,5 +1,4 @@
 import os
-import logging
 
 
 class Utils(object):
@@ -17,18 +16,15 @@ class Utils(object):
         return real_path
 
     @staticmethod
-    def init_logger(log_file):
-        format = "%(asctime)s [%(name)s] %(levelname)s: %(message)s"
-        logging.basicConfig(
-            level=logging.DEBUG,
-            format=format,
-            filename=log_file,
-            filemode='a'
-        )
-        console = logging.StreamHandler()
-        console.setLevel(logging.INFO)
-        formatter = logging.Formatter(format)
-        console.setFormatter(formatter)
-        logger = logging.getLogger()
-        logger.addHandler(console)
-
+    def file_2_sql(file):
+        """Remove go from sql file for sqlalchemy and pymssql."""
+        with open(file, 'rb') as f:
+            sql_list = f.readlines()
+            sql_list = [
+                line
+                for line in sql_list
+                if
+                line.strip() not in ['go', 'GO', 'Go', 'gO'] and line.strip()
+            ]
+            sql = "".join(sql_list)
+        return sql

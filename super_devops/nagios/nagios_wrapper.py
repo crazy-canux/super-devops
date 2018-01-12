@@ -4,48 +4,21 @@ import argparse
 
 logger = logging.getLogger(__name__)
 
-# TODO: refactor.
 
+class BaseNagios(object):
+    def __init__(
+            self,
+            prog='nagios',
+            description='Nagios Plugins',
+            epilog='Nagios Plugins Command Line Options',
+            version='0.0.1'
+    ):
+        logger.debug("Init BaseNagios.")
 
-class Monitor(object):
-
-    """Basic class for monitor.
-    Nagios and tools based on nagios have the same status.
-    All tools have the same output except check_mk.
-        Services Status:
-        0   OK
-        1   Warning
-        2   Critical
-        3   Unknown
-        Nagios Output(just support 4kb data):
-        shortoutput - $SERVICEOUTPUT$
-        -> The first line of text output from the last service check.
-        perfdata - $SERVICEPERFDATA$
-        -> Contain any performance data returned by the last service check.
-        With format: | 'label'=value[UOM];[warn];[crit];[min];[max].
-        longoutput - $LONGSERVICEOUTPUT$
-        -> The full text output aside from the first line from the last service check.
-        example:
-        OK - shortoutput. |
-        Longoutput line1
-        Longoutput line2 |
-        'perfdata'=value[UOM];[warn];[crit];[min];[max]
-        Threshold:
-        warning  warn_min:warn_max
-        critical crit_min:crit_max
-        warn_min < warn_max <= crit_min < crit_max
-        10 == 0:10     => <0 or >10 alert
-        10: == 10:æ   => <10 alert
-        ~:10 == -æ:10 => >10 alert
-        10:20          => <10 or >20 alert
-        @10:20         => >=10 or <= 20 alert
-    """
-
-    def __init__(self):
-        # Init the log.
-        logging.basicConfig(format='[%(levelname)s] (%(module)s) %(message)s')
-        self.logger = logging.getLogger("monitor")
-        self.logger.setLevel(logging.INFO)
+        self.prog = prog
+        self.description = description
+        self.epilog = epilog
+        self.version = version
 
         # Init output data.
         self.nagios_output = ""
@@ -58,52 +31,61 @@ class Monitor(object):
         self.define_sub_options()
         self.__parse_options()
 
-        # Init the logger
-        if self.args.debug:
-            self.logger.setLevel(logging.DEBUG)
-        self.logger.debug("===== BEGIN DEBUG =====")
-        self.logger.debug("Init Monitor")
-
-        # End the debug.
-        if self.__class__.__name__ == "Monitor":
-            self.logger.debug("===== END DEBUG =====")
-
     def __define_options(self):
-        self.parser = argparse.ArgumentParser(description="Plugin for Monitor.")
-        self.parser.add_argument('-D', '--debug',
-                                 action='store_true',
-                                 required=False,
-                                 help='Show debug informations.',
-                                 dest='debug')
+        self.parser = argparse.ArgumentParser(
+            prog=self.prog,
+            description=self.description,
+            epilog=self.epilog,
+            add_help=True
+        )
+        self.basic_parser = self.parser.add_argument_group(
+            "Basic Options."
+        )
+        self.basic_parser.add_argument(
+            '-D', '--debug',
+            action='store_true',
+            required=False,
+            help='Debug mode.',
+            dest='debug'
+        )
+        self.basic_parser.add_argument(
+            '-V', '--version',
+            action='version',
+            version='%(prog)s {}'.format(self.version)
+        )
 
     def define_sub_options(self):
-        """Define options for monitoring plugins.
-        :param host: Monitoring Server IP address or Hostname.
-        :type host: string.
-        :param user: Monitoring Server User name.
-        :type user: string.
-        :param password: Monitoring Server User password.
-        :type password: string.
-        Rewrite your method and define your suparsers.
-        Use subparsers.add_parser to create sub options for one function.
-        """
-        self.plugin_parser = self.parser.add_argument_group("Plugin Options",
-                                                            "Options for all plugins.")
-        self.plugin_parser.add_argument("-H", "--host",
-                                        default='127.0.0.1',
-                                        required=True,
-                                        help="Host IP address or DNS",
-                                        dest="host")
-        self.plugin_parser.add_argument("-u", "--user",
-                                        default=None,
-                                        required=False,
-                                        help="User name",
-                                        dest="user")
-        self.plugin_parser.add_argument("-p", "--password",
-                                        default=None,
-                                        required=False,
-                                        help="User password",
-                                        dest="password")
+        self.plugin_parser = self.parser.add_argument_group(
+            "Basic Plugin Options"
+        )
+        self.plugin_parser.add_argument(
+            "-H", "--host",
+            default='127.0.0.1',
+            required=True,
+            help="Host IP address or DNS",
+            dest="host"
+        )
+        self.plugin_parser.add_argument(
+            "-u", "--username",
+            default=None,
+            required=False,
+            help="Username",
+            dest="username"
+        )
+        self.plugin_parser.add_argument(
+            "-p", "--password",
+            default=None,
+            required=False,
+            help="Password",
+            dest="password"
+        )
+        self.plugin_parser.add_argument(
+            '-d', '--domain',
+            default=None,
+            required=False,
+            help='Domain',
+            dest='domain'
+        )
 
     def __parse_options(self):
         try:

@@ -2,6 +2,7 @@ import logging
 
 from sqlalchemy import create_engine
 from sqlalchemy import exc
+from sqlalchemy import text
 
 
 logger = logging.getLogger(__name__)
@@ -194,6 +195,7 @@ class BaseDB(object):
 
     def __execute(self, sql, autocommit=False):
         try:
+            logger.debug("sql: {}".format(sql))
             result = self.connection.execution_options(
                 autocommit=autocommit
             ).execute(sql)
@@ -209,11 +211,18 @@ class BaseDB(object):
         else:
             return result
 
-    def execute_transaction(self, sql):
+    def execute_transaction(self, sql, autocommit=True):
+        """Sql must be a string, and each line shoud end with \n.
+        and go is not allowed in the sql.
+        """
         try:
+            logger.debug("sql: {}".format(sql))
             with self.connection.begin():
-                self.connection.execute(sql)
-        except Exception:
+                self.connection.execution_options(
+                    autocommit=autocommit
+                ).execute(sql)
+        except Exception as e:
+            logger.error("execute transaction error: {}".format(e.message))
             return False
         else:
             return True

@@ -109,7 +109,7 @@ class BaseParamiko(SSHClient):
 
         :param command: a shell command.
         :type command: string.
-        :returns output: return stdout + stderr.
+        :returns output: return stdout, stderr.
         :type output: list.
         """
         try:
@@ -126,15 +126,16 @@ class BaseParamiko(SSHClient):
             logger.error("Unknown error: {}".format(e.message))
             raise e
         else:
-            output_msg = stdout.readlines()
+            output_msg_list = stdout.readlines()
             logger.debug("stderr: {}".format(output_msg))
-            error_msg = stderr.readlines()
+            error_msg_list = stderr.readlines()
             logger.debug("stdout: {}".format(error_msg))
+            return_code = stdout.channel.recv_exit_status()
+            logger.debug("return code: {}".format(rc))
         finally:
             stdout.close()
             stderr.close()
-        output = output_msg + error_msg
-        return output
+        return output_msg_list, error_msg_list, return_code
 
     def exec_commands(
             self,
@@ -150,12 +151,14 @@ class BaseParamiko(SSHClient):
         :param commands: lots of shell commands.
         :type commands: tuple/list.
         :returns outputs: all output for all commands.
-        :type outputs: lists in list, like [[], [], ...]
+        :type output: list in list, like [[], [], ...]
         """
-        outputs = []
+        output_list = []
+        error_list = []
         for command in commands:
-            output = self.exec_command(
+            output, error = self.exec_command(
                 command, timeout, bufsize, get_pty, sudo_pw, environment
             )
-            outputs.append(output)
-        return outputs
+            output_list.append(output)
+            error_list.append(error)
+        return output_list, error_list

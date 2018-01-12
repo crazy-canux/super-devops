@@ -74,7 +74,7 @@ class Channel::
     makefile(self, *params)
     makefile_stderr(self, *params)
     recv(self, nbytes)
-    recv_exit_status(self)
+    recv_exit_status(self) # get command return code.
     recv_ready(self)
     recv_stderr(self, nbytes)
     recv_stderr_ready(self)

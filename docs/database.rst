@@ -57,7 +57,8 @@ class Transaction::
     rollback()
     commit()
 
-    # ResultProxy
+class ResultProxy::
+
     ResultProxy(context)
     # methods:
     keys()
