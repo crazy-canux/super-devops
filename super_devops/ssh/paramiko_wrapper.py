@@ -127,9 +127,9 @@ class BaseParamiko(SSHClient):
             raise e
         else:
             output_msg_list = stdout.readlines()
-            logger.debug("stderr: {}".format(output_msg))
+            logger.debug("output: {}".format(output_msg))
             error_msg_list = stderr.readlines()
-            logger.debug("stdout: {}".format(error_msg))
+            logger.debug("error: {}".format(error_msg))
             return_code = stdout.channel.recv_exit_status()
             logger.debug("return code: {}".format(rc))
         finally:
@@ -155,10 +155,12 @@ class BaseParamiko(SSHClient):
         """
         output_list = []
         error_list = []
+        rc_list = []
         for command in commands:
-            output, error = self.exec_command(
+            output, error, rc = self.exec_command(
                 command, timeout, bufsize, get_pty, sudo_pw, environment
             )
             output_list.append(output)
             error_list.append(error)
-        return output_list, error_list
+            rc_list.append(rc)
+        return output_list, error_list, rc_list

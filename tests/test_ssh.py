@@ -9,14 +9,11 @@ from super_devops.ssh.paramiko_wrapper import BaseParamiko
 class ParamikoTest(unittest.TestCase):
     def test_exec_command(self):
         with BaseParamiko('127.0.0.1', 'canux', 'password') as ssh:
-            output = ssh.exec_command('pwd')
-        print output
+            output, error, rc = ssh.exec_command('pwd')
 
     def test_exec_commands(self):
         with BaseParamiko('127.0.0.1', 'canux', 'password') as ssh:
-            outputs = ssh.exec_commands(('pwd', 'ls'))
-        for index, output in enumerate(outputs):
-            print index, output
+            outputs, errors, rcs = ssh.exec_commands(('pwd', 'ls'))
 
 if __name__ == '__main__':
     unittest.main()

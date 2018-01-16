@@ -19,18 +19,23 @@ User Guide
 
    robotframework
    selenium
+   nagios
    ansible
    jenkins
    docker
+   database
    yaml
    office
-   database
    ssh
    snmp
    ldap
    http
    ftp
    email
+   amqp
+   rpc
+   winrm
+   wmi
    misc
 
 

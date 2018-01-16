@@ -59,7 +59,7 @@ class BaseNagios(object):
             "Basic Plugin Options"
         )
         self.plugin_parser.add_argument(
-            "-H", "--host",
+            "-H", "--hostname",
             default='127.0.0.1',
             required=True,
             help="Host IP address or DNS",
@@ -91,7 +91,7 @@ class BaseNagios(object):
         try:
             self.args = self.parser.parse_args()
         except Exception as e:
-            self.unknown("Parser arguments error: {}".format(e))
+            self.unknown("Parser arguments error: {}".format(e.message))
 
     def output(self, substitute=None, long_output_limit=None):
         """Just for nagios output and tools based on nagios except check_mk.
@@ -127,17 +127,12 @@ class BaseNagios(object):
         :return (min, max): min and max value.
         :rtype (min, max): tuple.
         """
-        self.logger.debug("threshold: {}".format(threshold))
+        logger.debug("threshold: {}".format(threshold))
+        res = threshold.split("@")[1].split(":")
         if "@" in threshold:
-            if ":" in threshold:
-                return threshold.split("@")[1].split(":")[0], threshold.split("@")[1].split(":")[1]
-            else:
-                return 0, threshold.split("@")[1]
+            return (res[0], res[1]) if len(res) == 2 else (0, res[0])
         else:
-            if ":" in threshold:
-                return threshold.split(":")[0], threshold.split(":")[1]
-            else:
-                return 0, threshold
+            return (res[0], res[1]) if len(res) == 2 else (0, res[0])
 
     def __compare_threshold(self, result, mode):
         """Use the result compare with threshold.
@@ -159,26 +154,37 @@ class BaseNagios(object):
             status = self.critical
         else:
             self.unknown("Unknown threshold mode.")
+
+        __min, __max = int(__min), int(__max)
         if __min > __max:
             self.unknown("Min must < Max in threshold.")
 
-        if "~" == __min:
-            if "@" in threshold:
+        if "@" in threshold:
+            # >= min and <= max alert
+            # @~:max      == @-oo:max
+            # @min:       == @min:+oo
+            # @max        == @0:max
+            # @min:max    == @min:max
+            if "~" in __min:
                 if result <= __max:
                     show = status
-            else:
-                if result > __max:
-                    show = status
-        elif not __max:
-            if "@" in threshold:
+            elif not __max:
                 if result >= __min:
                     show = status
             else:
-                if result < __min:
+                if result >= __min and result <= __max:
                     show = status
         else:
-            if "@" in self.args.warning:
-                if __min <= result <= __max:
+            # < min or > max alert
+            # ~:max      == -oo:max
+            # min:       == min:+oo
+            # max        == 0:max
+            # min:max    == min:max
+            if "~" in __min:
+                if result > __max:
+                    show = status
+            elif not __max:
+                if result < __min:
                     show = status
             else:
                 if result < __min or result > __max:
@@ -187,50 +193,60 @@ class BaseNagios(object):
 
     def threshold(self, result):
         """Just for nagios, and tools based on nagios, except check_mk.
+
         :param result: the result of the service.
         :type result: int.
         :return status: the status of this service.
         :rtype status: method.
+
+        warning  warn_min:warn_max
+        critical crit_min:crit_max
+        warn_min < warn_max <= crit_min < crit_max
+        10 == 0:10     => <0 or >10 alert
+        10: == 10:+oo    => <10 alert
+        ~:10 == -oo:10  => >10 alert
+        10:20          => <10 or >20 alert
+        @10:20         => >=10 or <= 20 alert
         """
         status = self.__compare_threshold(result, 'warn')
         status = self.__compare_threshold(result, 'crit')
         return status
 
     def ok(self, msg):
-        raise MonitorOk(msg)
+        raise NagiosOk(msg)
 
     def warning(self, msg):
-        raise MonitorWarning(msg)
+        raise NagiosWarning(msg)
 
     def critical(self, msg):
-        raise MonitorCritical(msg)
+        raise NagiosCritical(msg)
 
     def unknown(self, msg):
-        raise MonitorUnknown(msg)
+        raise NagiosUnknown(msg)
 
 
-class MonitorOk(Exception):
+class NagiosOk(Exception):
 
     def __init__(self, msg):
         print("OK - %s" % msg)
         raise SystemExit(0)
 
 
-class MonitorWarning(Exception):
+class NagiosWarning(Exception):
 
     def __init__(self, msg):
         print("WARNING - %s" % msg)
         raise SystemExit(1)
 
 
-class MonitorCritical(Exception):
+class NagiosCritical(Exception):
 
     def __init__(self, msg):
         print("CRITICAL - %s" % msg)
         raise SystemExit(2)
 
 
-class MonitorUnknown(Exception):
+class NagiosUnknown(Exception):
 
     def __init__(self, msg):
         print("UNKNOWN - %s" % msg)
