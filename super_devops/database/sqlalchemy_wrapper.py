@@ -45,14 +45,14 @@ class BaseDB(object):
         executor=None
         """
         self.dialect = dialect if dialect else (
-            self.__get_dialect_from_port(port) or \
+            self.__get_dialect_from_port(int(port)) or \
             self.__get_dialect_from_driver(driver)
         )
         self.driver = driver if driver else (
             self.__get_driver_from_dialect(dialect) or \
-            self.__get_driver_from_port(port)
+            self.__get_driver_from_port(int(port))
         )
-        self.port = port if port else (
+        self.port = int(port) if port else int(
             self.__get_port_from_dialect(dialect) or \
             self.__get_port_from_driver(driver)
         )
