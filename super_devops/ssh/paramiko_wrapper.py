@@ -127,11 +127,11 @@ class BaseParamiko(SSHClient):
             raise e
         else:
             output_msg_list = stdout.readlines()
-            logger.debug("output: {}".format(output_msg))
+            logger.debug("output: {}".format(output_msg_list))
             error_msg_list = stderr.readlines()
-            logger.debug("error: {}".format(error_msg))
+            logger.debug("error: {}".format(error_msg_list))
             return_code = stdout.channel.recv_exit_status()
-            logger.debug("return code: {}".format(rc))
+            logger.debug("return code: {}".format(return_code))
         finally:
             stdout.close()
             stderr.close()

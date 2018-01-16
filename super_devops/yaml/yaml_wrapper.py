@@ -6,7 +6,6 @@ from super_devops.utils import Utils
 
 
 logger = logging.getLogger(__name__)
-logging.getLogger('paramiko').setLevel(logging.WARNING)
 
 
 class BaseYaml(DataContext):
