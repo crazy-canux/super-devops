@@ -74,6 +74,16 @@ class ResultProxy::
     # data
     lastrowid
 
+class RowProxy::
+
+    RowProxy(BaseRowProxy)
+    # methods:
+    has_key(key)
+    items()
+    keys()
+    iterkeys()
+    itervalues()
+
 functions::
 
     create_engine(*args, **kwargs) # return Engine object.

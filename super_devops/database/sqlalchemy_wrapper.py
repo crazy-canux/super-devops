@@ -218,9 +218,7 @@ class BaseDB(object):
         try:
             logger.debug("sql: {}".format(sql))
             with self.connection.begin():
-                self.connection.execution_options(
-                    autocommit=autocommit
-                ).execute(sql)
+                self.connection.execute(sql)
         except Exception as e:
             logger.error("execute transaction error: {}".format(e.message))
             return False
