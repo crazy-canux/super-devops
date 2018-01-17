@@ -15,35 +15,7 @@ class BaseDB(object):
             self, dialect=None, host=None, username=None, password=None,
             database=None, driver=None, port=None, **kwargs
     ):
-        """Init db engine.
-
-        connect_args
-        creator
-        execution_options
-        isolation_level
-        listeners
-        logging_name
-        pool_logging_name
-
-        case_sensitive=True
-        convert_unicode=False
-        echo=False
-        echo_pool=False
-        encoding=utf-8
-        implicit_returning=True
-        label_length=None
-        max_overflow=10
-        module=None
-        paramstyle=None
-        pool=None
-        poolclass=None
-        pool_size=5
-        pool_timeout=30
-        pool_recycle=-1
-        pool_reset_on_return='rollback'
-        strategy='plain'
-        executor=None
-        """
+        """Init db engine."""
         self.dialect = dialect if dialect else (
             self.__get_dialect_from_port(int(port)) or \
             self.__get_dialect_from_driver(driver)
@@ -61,24 +33,26 @@ class BaseDB(object):
         self.password = password
         self.database = database
 
-        self.case_sensitive = kwargs.get('case_sensitive', True)
-        self.convert_unicode = kwargs.get('convert_unicode', False)
-        self.echo = kwargs.get('echo', False)
-        self.echo_pool = kwargs.get('echo_pool', False)
-        self.encoding = kwargs.get('encoding', 'utf-8')
-        self.implicit_returning = kwargs.get('implicit_returning', True)
-        self.label_length = kwargs.get('label_length', None)
-        self.max_overflow = kwargs.get('max_overflow', 10)
-        self.module = kwargs.get('module', None)
-        self.paramstyle = kwargs.get('paramstype', None)
-        self.pool = kwargs.get('pool', None)
-        self.poolclass = kwargs.get('poolclass', None)
-        self.pool_size = kwargs.get('pool_size', 5)
-        self.pool_timeout = kwargs.get('pool_timeout', 30)
-        self.pool_recycle = kwargs.get('pool_recycle', -1)
-        self.pool_reset_on_return = kwargs.get('pool_reset_on_return',
-                                               'rollback')
-        self.strategy = kwargs.get('strategy', 'plain')
+        # self.case_sensitive = kwargs.get('case_sensitive', True)
+        # self.convert_unicode = kwargs.get('convert_unicode', False)
+        # self.echo = kwargs.get('echo', False)
+        # self.echo_pool = kwargs.get('echo_pool', False)
+        # self.encoding = kwargs.get('encoding', 'utf-8')
+        # self.implicit_returning = kwargs.get('implicit_returning', True)
+        # self.label_length = kwargs.get('label_length', None)
+        # self.max_overflow = kwargs.get('max_overflow', 10)
+        # self.module = kwargs.get('module', None)
+        # self.paramstyle = kwargs.get('paramstype', None)
+        # self.pool = kwargs.get('pool', None)
+        # self.poolclass = kwargs.get('poolclass', None)
+        # self.pool_size = kwargs.get('pool_size', 5)
+        # self.pool_timeout = kwargs.get('pool_timeout', 30)
+        # self.pool_recycle = kwargs.get('pool_recycle', -1)
+        # self.pool_reset_on_return = kwargs.get('pool_reset_on_return',
+        #                                        'rollback')
+        # self.strategy = kwargs.get('strategy', 'plain')
+
+        self.kwargs = kwargs
 
         self.engine = None
         self.connection = None
@@ -96,23 +70,7 @@ class BaseDB(object):
         )
         self.engine = create_engine(
             url,
-            case_sensitive=self.case_sensitive,
-            convert_unicode=self.convert_unicode,
-            echo=self.echo,
-            echo_pool=self.echo_pool,
-            encoding=self.encoding,
-            implicit_returning=self.implicit_returning,
-            label_length=self.label_length,
-            max_overflow=self.max_overflow,
-            module=self.module,
-            paramstyle=self.paramstyle,
-            pool=self.pool,
-            poolclass=self.poolclass,
-            pool_size=self.pool_size,
-            pool_timeout=self.pool_timeout,
-            pool_recycle=self.pool_recycle,
-            pool_reset_on_return=self.pool_reset_on_return,
-            strategy=self.strategy
+            **self.kwargs
         )
         self.connection = self.engine.connect()
         return self
@@ -211,7 +169,7 @@ class BaseDB(object):
         else:
             return result
 
-    def execute_transaction(self, sql, autocommit=True):
+    def execute_transaction(self, sql):
         """Sql must be a string, and each line shoud end with \n.
         and go is not allowed in the sql.
         """
