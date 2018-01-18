@@ -9,19 +9,18 @@ from super_devops.winrm.pywinrm_wrapper import BaseWinRM
 class WinRMTest(unittest.TestCase):
     def test_run_cmd(self):
         with BaseWinRM(
-            host='10.103.16.75', domain='sv',
-            username='WCheng', password='Wz1085694641', transport='ntlm'
+            host='127.0.0.1', domain='sv',
+            username='Canux', password='******', transport='ntlm'
         ) as winrm:
-            # result = winrm.run_cmd("'ipconfig', ['/all']")
-            result = winrm.run_cmd("dir")
+            result = winrm.run_cmd("ipconfig, /all")
         print result
 
     def test_run_ps(self):
         with BaseWinRM(
-                host='10.103.16.75', domain='sv',
-                username='WCheng', password='Wz1085694641', transport='ntlm'
+                host='127.0.0.1', domain='sv',
+                username='Canux', password='******', transport='ntlm'
         ) as winrm:
-            result = winrm.run_ps("pwd")
+            result = winrm.run_ps("ipconfig /all")
         print result
 
 if __name__ == '__main__':

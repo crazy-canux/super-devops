@@ -8,8 +8,8 @@ install
 
 Windows安装pywin32和wmi两个包,可以访问wmi::
 
-    $ pip install pywin32
-    $ pip install wmi
+    `<https://sourceforge.net/projects/pywin32/?source=navbar>`_
+    `<http://timgolden.me.uk/python/wmi/index.html>`_
 
 linux需要先安装wmic命令,通过subprocess/sh远程执行wmic命令::
 

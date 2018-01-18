@@ -1,26 +1,49 @@
 import logging
 import subprocess
+import shlex
+import csv
 
 logger = logging.getLogger(__name__)
 
+class BaseWMI(object):
 
-def query(self, wql):
-    """Connect by wmi and run wql."""
-    try:
-        self.__wql = ['wmic', '-U',
-                      self.args.domain + '\\' + self.args.user + '%' + self.args.password,
-                      '//' + self.args.host,
-                      '--namespace', self.args.namespace,
-                      '--delimiter', self.args.delimiter,
-                      wql]
-        self.logger.debug("wql: {}".format(self.__wql))
-        self.__output = subprocess.check_output(self.__wql)
-        self.logger.debug("output: {}".format(self.__output))
-        self.logger.debug("wmi connect succeed.")
-        self.__wmi_output = self.__output.splitlines()[1:]
-        self.logger.debug("wmi_output: {}".format(self.__wmi_output))
-        self.__csv_header = csv.DictReader(self.__wmi_output, delimiter='|')
-        self.logger.debug("csv_header: {}".format(self.__csv_header))
-        return list(self.__csv_header)
+    def __init__(self, host, domain, username, password, **kwargs):
+
+        self.host = host
+        self.domain = domain
+        self.username = username
+        self.password = password
+        self.kwargs = kwargs if kwargs else {}
+        self.namespace = kwargs.get("namespace", "root\cimv2")
+        self.delimiter = kwargs.get("delimiter", "|")
+
+    def __enter__(self):
+        logger.debug("BaseWMI.__enter__(): succeed.")
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        logger.debug("BaseWMI.__exit__(): succeed.")
+
+    def query(self, wql):
+        cmd = 'wmic -U {domain}\\{username}%{password} //{host} ' \
+              '--namespace {namesapce} --delimiter {delimiter} {wql}'.format(
+            domain=self.domain,
+            username=self.username,
+            password=self.password,
+            host=self.host,
+            namesapce=self.namesapce,
+            delimiter=self.delimiter,
+            wql=wql
+        )
+        logger.debug("wql: {}".format(wql))
+        __output = subprocess.check_output(shlex.split(cmd))
+        logger.debug("output: {}".format(__output))
+        __wmi_output = __output.splitlines()[1:]
+        __result = csv.DictReader(__wmi_output, delimiter='|')
+        self.logger.debug("result: {}".format(__result))
     except subprocess.CalledProcessError as e:
-        self.unknown("Connect by wmi and run wql error: %s" % e)
+        raise e
+    except Exception as e:
+        raise e
+    else:
+        return list(__result)

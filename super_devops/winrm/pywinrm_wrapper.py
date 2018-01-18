@@ -4,7 +4,7 @@ import winrm
 
 
 logger = logging.getLogger(__name__)
-logging.getLogger('paramiko').setLevel(logging.WARNING)
+logging.getLogger('winrm').setLevel(logging.WARNING)
 
 
 class BaseWinRM(object):
@@ -55,11 +55,13 @@ class BaseWinRM(object):
     def run_cmd(self, query):
         try:
             if query.split(",")[1:]:
-                cmd = str(query.split(",")[0]), query.split(",")[1:]
+                cmd = str(query.split(",")[0])
+                args = query.split(",")[1:]
+                __result = self.session.run_cmd(cmd, args)
             else:
                 cmd = str(query)
+                __result = self.session.run_cmd(cmd)
             logger.debug("cmd: {}".format(cmd))
-            __result = self.session.run_cmd(cmd)
             __return_code = __result.status_code
             logger.debug("Return code: {}".format(__return_code))
             __error = __result.std_err

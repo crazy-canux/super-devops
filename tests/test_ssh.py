@@ -10,6 +10,7 @@ class ParamikoTest(unittest.TestCase):
     def test_exec_command(self):
         with BaseParamiko('127.0.0.1', 'canux', 'canux') as ssh:
             output, error, rc = ssh.exec_command('pwd')
+        print output, error, rc
 
 if __name__ == '__main__':
     unittest.main()
