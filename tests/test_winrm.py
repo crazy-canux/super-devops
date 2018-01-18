@@ -9,8 +9,9 @@ from super_devops.winrm.pywinrm_wrapper import BaseWinRM
 class WinRMTest(unittest.TestCase):
     def test_run_cmd(self):
         with BaseWinRM(
-            host='127.0.0.1', domain='sv',
-            username='Canux', password='******', transport='ntlm'
+            host='192.168.1.4', domain='sv',
+            #username='WCheng', password='password', transport='ntlm'
+            username='WCheng', password='password'
         ) as winrm:
             result = winrm.run_cmd("ipconfig, /all")
         print result

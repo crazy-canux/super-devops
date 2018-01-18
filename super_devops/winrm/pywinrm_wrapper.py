@@ -10,16 +10,15 @@ logging.getLogger('winrm').setLevel(logging.WARNING)
 class BaseWinRM(object):
 
     def __init__(
-            self, host, domain, username, password, transport, **kwargs
+            self, host, domain, username, password, **kwargs
     ):
         self.host = host
         self.domain = domain
         self.username = username
         self.password = password
-        self.transport = transport
-
         self.kwargs = kwargs
 
+        # self.transport = kwargs.get('transport', 'plaintext')
         # self.realm = kwargs.get('realm', None)
         # self.service = kwargs.get("keytab", None)
         # self.keytab = kwargs.get("keytab", None)
@@ -43,7 +42,6 @@ class BaseWinRM(object):
         self.session = winrm.Session(
             target=self.host,
             auth=(self.domain + '\\' + self.username, self.password),
-            transport=self.transport,
             **self.kwargs
         )
         logger.debug("BaseWinRM.__enter__(): succeed.")

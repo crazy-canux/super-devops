@@ -1,18 +1,6 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-"""
-SUMMARY myenum.py
-Copyright (C) 2017 Canux CHENG.
-All rights reserved.
-LICENSE GNU General Public License v3.0.
-:author: Canux CHENG canuxcheng@gmail.com
-:version: V1.0.0.0
-:since: Tue 16 May 2017 02:58:33 AM EDT
-DESCRIPTION:
-"""
-
 import unittest
 from enum import Enum, EnumMeta
+
 
 class Persona(Enum):
 # class Persona(int, Enum):
