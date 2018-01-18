@@ -56,12 +56,6 @@ setup(
     packages=find_packages(),
     zip_safe=False,
     include_package_data=True,
-    data_files=[
-        (os.path.expanduser('~/bin'), [
-            'tools/chromedriver',
-            'tools/geckodriver']
-         )
-    ],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Other Environment",
