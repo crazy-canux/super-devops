@@ -26,8 +26,7 @@ class BaseSelenium(object):
         'edge': '_make_edge',
         'ie': '_make_ie',
         'opera': '_make_opera',
-        'safari': '_make_safari',
-        'phantomjs': '_make_phantomjs'
+        'safari': '_make_safari'
     }
 
     def __init__(self, browser_id, browser_type, wait_time_in_secs=30):
@@ -69,10 +68,6 @@ class BaseSelenium(object):
     def _make_chrome(self):
         """Make sure the chrome driver in $PATH."""
         return webdriver.Chrome()
-
-    def _make_phontomjs(self):
-        """Use phontomjs on backend server"""
-        return webdriver.PhontomJS()
 
     def launch(self, url='about:blank'):
         """Recover get method for driver and do a smart wait."""

@@ -26,8 +26,6 @@ selenium.webdriver::
     driver = webdriver.Ie()
     driver = webdriver.Opera()
     driver = webdriver.Safari()
-    driver = webdriver.PhantomJS()
-    driver = webdriver.Android()
 
 selenium.webdriver.firefox.webdriver.WebDriver::
 
