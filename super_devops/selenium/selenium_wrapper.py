@@ -70,6 +70,10 @@ class BaseSelenium(object):
         """Make sure the chrome driver in $PATH."""
         return webdriver.Chrome()
 
+    def _make_phontomjs(self):
+        """Use phontomjs on backend server"""
+        return webdriver.PhontomJS()
+
     def launch(self, url='about:blank'):
         """Recover get method for driver and do a smart wait."""
         self.current.get(url)
