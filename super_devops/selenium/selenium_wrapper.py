@@ -29,7 +29,13 @@ class BaseSelenium(object):
         'safari': '_make_safari'
     }
 
-    def __init__(self, browser_id, browser_type, wait_time_in_secs=30):
+    def __init__(
+            self,
+            browser_id, browser_type, headless_mode=False,
+            wait_time_in_secs=30
+    ):
+        self.headless_mode = headless_mode
+
         self._driver = None
         self._cache = Cache(browser_id)
 
@@ -63,11 +69,25 @@ class BaseSelenium(object):
 
     def _make_firefox(self):
         """Make sure the firefox driver in $PATH."""
-        return webdriver.Firefox()
+        if self.headless_mode:
+            from selenium.webdriver.firefox.options import Options
+            options = Options()
+            options.add_argument("--headless")
+            driver = webdriver.Firefox(firefox_options=options)
+        else:
+            driver = webdriver.Firefox()
+        return driver
 
     def _make_chrome(self):
         """Make sure the chrome driver in $PATH."""
-        return webdriver.Chrome()
+        if self.headless_mode:
+            from selenium.webdriver.chrome.options import Options
+            options = Options()
+            options.add_argument("--headless")
+            driver = webdriver.Chrome(chrome_options=options)
+        else:
+            driver = webdriver.Chrome()
+        return driver
 
     def launch(self, url='about:blank'):
         """Recover get method for driver and do a smart wait."""

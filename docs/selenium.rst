@@ -189,6 +189,22 @@ selenium.common::
     from selenium.common.exceptions import TimeoutException # 等待超时
     from selenium.common.exceptions import NoSuchElementException
 
+firefox headless::
+
+    from selenium.webdriver.firefox.options import Options
+
+    options = Options()
+    options.add_argument('--headless')
+    driver = Firefox(firefox_options=options)
+
+chrome headless::
+
+    from selenium.webdriver.chrome.options import Options
+
+    options = Options()
+    options.add_argument('--headless')
+    driver = Chrome(chrome_options=options)
+
 examples::
 
     try:

@@ -254,6 +254,7 @@ class BaseRF(object):
         logger.info("outputdir: {}".format(__outputdir), also_console=True)
 
         if self.args.pythonpath:
+            print "my pythonpath: ", self.args.pythonpath
             __options.setdefault('pythonpath', self.args.pythonpath)
 
         if not self.args.debug:
