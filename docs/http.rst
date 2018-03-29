@@ -161,33 +161,41 @@ function request::
     # multipart/form-data # 用于上传文本和二进制文件，用post方法
 
     # **kwargs参数参考requests.Request类
+    # dict/bytes
+    params={} # 用于get的url中
+    # dict/bytes/file
+    data={} # 用于post/put/patch的body中
     # dict
-    params=None # 用于get的url中
-    data=None # 用于post/put/patch的body中, 也可以是str/tuple/list类型，元素是键值对即可,还可以是json类型.
-    headers=None
-    cookies=None
-    files=None
+    headers={}
+    cookies={}
+    files={}
     proxies=None
-    # str/json
-    json=None # 用于post的body中, 也可以是dict类型．
+
+    # json
+    json='{}' # 用于post的body中
+
     # tuple
     auth=('user', 'password') # 参考requests.auth包.
-    timeout=(connect timeout, read timeout) # None表示永久等待．
+    # tuple or string
     cert=(cert.pem, key.pem)
+    # tuple or float
+    timeout=(connect timeout, read timeout) # None表示永久等待．
+
     # bool
     allow_redirects=True # 是否重定向
-    verify=True # 是否验证SSL
     stream=True
+    # bool or string
+    verify=True # 是否验证SSL
 
 class Response::
 
     r.close()
     r.iter_content(chunk_size=1, decode_unicode=False)
     r.iter_lines(chunk_size=512, decode_unicode=None, delimiter=None)
-    r.json(**kwargs) # 返回dict类型
+    r.json(**kwargs) # 返回dict / [dict1, dict2, ...]
     r.raise_for_status()
     # Data:
-    r.content # 返回str(json)类型, 通过json.loads转化为dict.
+    r.content # 返回str类型, 通过json.loads转化为dict.
     r.text # 返回unicode类型
     r.headers # 返回headers
     r.apparent_encoding
