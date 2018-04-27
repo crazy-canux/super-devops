@@ -87,11 +87,13 @@ class BaseParamiko(SSHClient):
         """
         try:
             logger.debug("Command: {}".format(command))
+            # session = self.get_transport().open_session()
             stdin, stdout, stderr = super(BaseParamiko, self).exec_command(
                 command, bufsize, timeout, get_pty, environment
             )
             if get_pty:
                 stdin.write(sudo_pw + '\n')
+                stdin.flush()
                 logger.debug('Enter sudo password succeed.')
         except SSHException as e:
             logger.error("exec_command failed: {}".format(e.message))
@@ -106,7 +108,7 @@ class BaseParamiko(SSHClient):
             logger.debug("error: {}".format(error_msg_list))
             return_code = stdout.channel.recv_exit_status()
             logger.debug("return code: {}".format(return_code))
-        finally:
             stdout.close()
             stderr.close()
+        finally:
             return output_msg_list, error_msg_list, return_code

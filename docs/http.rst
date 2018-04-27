@@ -319,11 +319,16 @@ HTMLParser
 
 python2 PSL for html/xml.
 
+usage
+-----
+
 htmlentitydefs
 ==============
 
 python2 PSL for html.
 
+usage
+-----
 
 html
 ====
@@ -332,10 +337,16 @@ python3 PSL for html/xml
 
 python3中更名为html.parser
 
+usage
+-----
+
 xml
 ===
 
 PSL for xml.
+
+usage
+-----
 
 lxml
 ====
