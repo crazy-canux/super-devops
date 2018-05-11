@@ -17,6 +17,7 @@ DESCRIPTION:
 import os
 
 from setuptools import setup, find_packages
+from setuptools.command.install import install
 
 import super_devops
 
@@ -37,6 +38,14 @@ def read(readme):
         import pypandoc
         return pypandoc.convert(readme, 'rst')
 
+
+class InstInstall(install):
+    def run(self):
+        print "PreInst for TAF."
+        install.run(self)
+        print "PostInst for TAF."
+
+
 INSTALL_REQUIRES = []
 
 setup(
@@ -56,6 +65,11 @@ setup(
     packages=find_packages(),
     zip_safe=False,
     include_package_data=True,
+    scripts=[],
+    data_files=[],
+    cmdclass={
+        "install": InstInstall
+    },
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Other Environment",

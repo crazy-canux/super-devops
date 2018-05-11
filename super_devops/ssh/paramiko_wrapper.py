@@ -82,12 +82,11 @@ class BaseParamiko(SSHClient):
 
         :param command: a shell command.
         :type command: string.
-        :returns output: return stdout, stderr.
-        :type output: list.
+        :returns output: return stdout, stderr, rc
+        :type output: ([], [], int)
         """
         try:
             logger.debug("Command: {}".format(command))
-            # session = self.get_transport().open_session()
             stdin, stdout, stderr = super(BaseParamiko, self).exec_command(
                 command, bufsize, timeout, get_pty, environment
             )
@@ -103,12 +102,12 @@ class BaseParamiko(SSHClient):
             raise e
         else:
             output_msg_list = stdout.readlines()
+            stdout.close()
             logger.debug("output: {}".format(output_msg_list))
             error_msg_list = stderr.readlines()
+            stderr.close()
             logger.debug("error: {}".format(error_msg_list))
             return_code = stdout.channel.recv_exit_status()
             logger.debug("return code: {}".format(return_code))
-            stdout.close()
-            stderr.close()
         finally:
             return output_msg_list, error_msg_list, return_code
