@@ -17,15 +17,15 @@ class BaseDB(object):
     ):
         """Init db engine."""
         self.dialect = dialect if dialect else (
-            self.__get_dialect_from_port(int(port)) or \
-            self.__get_dialect_from_driver(driver)
+                self.__get_dialect_from_port(int(port)) or
+                self.__get_dialect_from_driver(driver)
         )
         self.driver = driver if driver else (
-            self.__get_driver_from_dialect(dialect) or \
-            self.__get_driver_from_port(int(port))
+                self.__get_driver_from_dialect(dialect) or
+                self.__get_driver_from_port(int(port))
         )
         self.port = int(port) if port else int(
-            self.__get_port_from_dialect(dialect) or \
+            self.__get_port_from_dialect(dialect) or
             self.__get_port_from_driver(driver)
         )
         self.host = host
@@ -59,15 +59,14 @@ class BaseDB(object):
 
     def __enter__(self):
         url = '{dialect}+{driver}://{username}:{password}@{host}:{port}/' \
-              '{database}?charset=utf8'.format(
-            dialect=self.dialect,
-            driver=self.driver,
-            username=self.username,
-            password=self.password,
-            host=self.host,
-            port=self.port,
-            database=self.database
-        )
+              '{database}?charset=utf8'.format(dialect=self.dialect,
+                                               driver=self.driver,
+                                               username=self.username,
+                                               password=self.password,
+                                               host=self.host,
+                                               port=self.port,
+                                               database=self.database
+                                               )
         self.engine = create_engine(
             url,
             **self.kwargs
@@ -79,7 +78,8 @@ class BaseDB(object):
         if self.connection:
             self.connection.close()
 
-    def __get_dialect_from_driver(self, driver):
+    @staticmethod
+    def __get_dialect_from_driver(driver):
         dialect = None
         if driver in ['pymssql']:
             dialect = 'mssql'
@@ -91,7 +91,8 @@ class BaseDB(object):
             dialect = 'oracle'
         return dialect
 
-    def __get_dialect_from_port(self, port):
+    @staticmethod
+    def __get_dialect_from_port(port):
         dialect = None
         if port == 1433:
             dialect = 'mssql'
@@ -103,7 +104,8 @@ class BaseDB(object):
             dialect = 'oracle'
         return dialect
 
-    def __get_port_from_dialect(self, dialect):
+    @staticmethod
+    def __get_port_from_dialect(dialect):
         port = None
         if dialect == 'mssql':
             port = 1433
@@ -115,7 +117,8 @@ class BaseDB(object):
             port = 1521
         return port
 
-    def __get_port_from_driver(self, driver):
+    @staticmethod
+    def __get_port_from_driver(driver):
         port = None
         if driver in ['pymssql']:
             port = 1433
@@ -127,7 +130,8 @@ class BaseDB(object):
             port = 1521
         return port
 
-    def __get_driver_from_dialect(self, dialect):
+    @staticmethod
+    def __get_driver_from_dialect(dialect):
         driver = None
         if dialect == 'mssql':
             driver = 'pymssql'
@@ -139,7 +143,8 @@ class BaseDB(object):
             driver = 'cx_oracle'
         return driver
 
-    def __get_driver_from_port(self, port):
+    @staticmethod
+    def __get_driver_from_port(port):
         driver = None
         if port == 1433:
             driver = 'pymssql'
@@ -197,11 +202,11 @@ class BaseDB(object):
             raise e
 
     def select_query(self, sql, autocommit=False):
-        """return [(column1, ....), (column1, ...), ...]"""
+        """return [(column1, ....), (column1, ...), ...], [key1, key2, ...]."""
         result_proxy = self.__execute(sql, autocommit)
         if result_proxy is None:
             return None
         else:
+            keys = result_proxy.keys()
             results = result_proxy.fetchall()
-        return results
-
+            return results, keys

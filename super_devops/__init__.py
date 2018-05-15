@@ -15,5 +15,5 @@ LICENSE GNU General Public License v3.0.
 DESCRIPTION:
 """
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 __author__ = "Canux CHENG"

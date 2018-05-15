@@ -61,13 +61,13 @@ class ResultProxy::
 
     ResultProxy(context)
     # methods:
-    keys()
+    keys()    # [key0, key1, ...]
     scalar(self)
     process_rows(self, rows)
     first(self)
     fetchone(self)
     fetchmany(self, size=None)
-    fetchall(self)
+    fetchall(self) # [RowProxy0, RowProxy1, ...]
     close(self)
     rowcount
     inserted_primary_key
