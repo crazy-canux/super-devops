@@ -28,6 +28,7 @@ class Workflow(object):
                     keywords.append('{step}'.format(step=step.name))
         return keywords
 
+
 class Suite(object):
     def __init__(self, sources=None):
         self.test_files = []
@@ -109,8 +110,8 @@ class Suite(object):
                     [tag.upper() for tag in tags]
             ) & set(
                 [
-                    tag.value[0].upper()
-                    for tag in self.workflowdict.get(case_name).tags
+                    tag.upper()
+                    for tag in self.workflowdict.get(case_name).tags[0].value
                 ]
             ):
                 _workflowlist.append(case_name)
@@ -123,11 +124,12 @@ class Suite(object):
             if not set([tag.upper() for tag in tags]) & set(
                     [
                         tag.value[0].upper()
-                        for tag in self.workflowdict.get(case_name).tags
+                        for tag in self.workflowdict.get(case_name).tags[0].value
                     ]
             ):
                 _workflowlist.append(case_name)
         return _workflowlist
+
 
 class Output(object):
     def __init__(self, path):
