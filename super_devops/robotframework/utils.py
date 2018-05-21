@@ -121,11 +121,13 @@ class Suite(object):
         """Used for robot --exclude."""
         _workflowlist = []
         for case_name in workflowlist:
-            if not set([tag.upper() for tag in tags]) & set(
-                    [
-                        tag.value[0].upper()
-                        for tag in self.workflowdict.get(case_name).tags[0].value
-                    ]
+            if not set(
+                    [tag.upper() for tag in tags]
+            ) & set(
+                [
+                    tag.upper()
+                    for tag in self.workflowdict.get(case_name).tags[0].value
+                ]
             ):
                 _workflowlist.append(case_name)
         return _workflowlist

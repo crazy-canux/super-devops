@@ -38,7 +38,9 @@ class BaseRF(object):
         self.epilog = epilog
         self.version = version
 
-        self.suit = Suite(sources=Utils.expandpath(robot_files))
+        self.args = None
+        self.suite = None
+        self.robot_files = robot_files
 
         self.outputdir = Utils.expandpath(outputdir)
 
@@ -69,6 +71,13 @@ class BaseRF(object):
             required=False,
             help='Specify PYTHONPATH for develop package.',
             dest='pythonpath'
+        )
+        self.basic_parser.add_argument(
+            '-S', '--suite',
+            required=False,
+            default=self.robot_files,
+            help="Specify test suite files or folders, default: %(default)s.",
+            dest='suite'
         )
 
     def __define_sub_options(self):
@@ -284,6 +293,8 @@ class BaseRF(object):
             self.__define_options()
             self.__define_sub_options()
             self.args = self.parser.parse_args()
+            self.suite = Suite(sources=Utils.expandpath(self.args.suite))
+
             if self.args.option == 'run':
                 self.__parse_run()
             elif self.args.option == 'show':
