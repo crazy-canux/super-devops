@@ -96,7 +96,7 @@ class BaseRF(object):
         self.run_parser.add_argument(
             '-a', '--all',
             action='store_const',
-            const=self.suit.workflowlist,
+            const=self.suite.workflowlist,
             help='Run all workflows.'
         )
         self.run_parser.add_argument(
@@ -136,7 +136,7 @@ class BaseRF(object):
         self.show_parser.add_argument(
             '-a', '--all',
             action='store_const',
-            const=self.suit.workflowlist,
+            const=self.suite.workflowlist,
             help='List all workflows.'
         )
         self.show_parser.add_argument(
@@ -158,26 +158,27 @@ class BaseRF(object):
 
             if self.args.specify:
                 index_list = [
-                    self.suit.get_workflow_name_by_index(index)
+                    self.suite.get_workflow_name_by_index(index)
                     for index in self.args.specify
                 ]
             if self.args.test:
-                test_list = self.suit.get_workflow_by_name(self.args.test)
+                test_list = self.suite.get_workflow_by_name(self.args.test)
             if self.args.include:
-                include_list = self.suit.get_workflows_by_tags(self.args.include)
+                include_list = self.suite.get_workflows_by_tags(
+                    self.args.include)
             workflows_list = index_list + test_list + include_list
             # if specify nothing, use default
             workflows_list = workflows_list if workflows_list else \
-                self.suit.workflowlist
+                self.suite.workflowlist
             # remove exclude
             if self.args.exclude:
-                workflows_list = self.suit.remove_workflow_by_tags(
+                workflows_list = self.suite.remove_workflow_by_tags(
                     workflows_list, self.args.exclude
                 )
             # remove 'disabled' tag workflow
             _disabled_tag = 'DISABLED'
-            if self.suit.get_workflows_by_tags([_disabled_tag]):
-                workflows_list = self.suit.remove_workflow_by_tags(
+            if self.suite.get_workflows_by_tags([_disabled_tag]):
+                workflows_list = self.suite.remove_workflow_by_tags(
                     workflows_list, [_disabled_tag]
                 )
                 print(
@@ -220,16 +221,16 @@ class BaseRF(object):
                     [str(tag) for tag in workflow.tags],
                     workflow.name
                 ) for index, workflow in enumerate(
-                    self.suit.workflowdict.values(), 1
+                    self.suite.workflowdict.values(), 1
                 )
             )
 
         if self.args.detail:
             print('')
             for index in self.args.detail:
-                name = self.suit.get_workflow_name_by_index(index)
-                if name in self.suit.workflowdict:
-                    workflow = self.suit.workflowdict[name]
+                name = self.suite.get_workflow_name_by_index(index)
+                if name in self.suite.workflowdict:
+                    workflow = self.suite.workflowdict[name]
                     help = HelpFormatter('')
                     help.start_section(
                         BaseColor.GREEN(
@@ -277,7 +278,7 @@ class BaseRF(object):
 
         with Output(__summary_path) as output:
             robot.run(
-                *self.suit.test_files,
+                *self.suite.test_files,
                 outputdir=__outputdir,
                 timestampoutputs=True,
                 test=workflows,
