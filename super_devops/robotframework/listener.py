@@ -9,30 +9,30 @@ class Listener(object):
     Which use the same name.
     """
 
-    ROBOT_LISTENER_API_VERSION = 2
+    ROBOT_LISTENER_API_VERSION = 3
 
     def __init__(self):
         pass
 
-    def start_suite(self, name, attributes):
+    def start_suite(self, data, result):
         msg = "Start test suite {}({}) at {} in robot framework.".format(
-            name, attributes.get("id"), attributes.get("starttime")
+            data, result.id, result.starttime)
         )
         logger.info(msg, also_console=True)
         logger.info('-' * len(msg), also_console=True)
 
-    def end_suite(self, name, attributes):
+    def end_suite(self, data, result):
         msg = "End test suite {}({}) at {} in robot framework.".format(
-            name, attributes.get('id'), attributes.get('starttime')
+            data, result.id, result.starttime)
         )
         logger.info(msg, also_console=True)
         logger.info('-' * len(msg), also_console=True)
 
-    def start_test(self, name, attributes):
+    def start_test(self, data, result):
         logger.info('', also_console=True)
 
-    def end_test(self, name, attributes):
-        pass
+    def end_test(self, test, result):
+        logger.info('', also_console=True)
 
     def close(self):
         pass
