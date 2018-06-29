@@ -16,14 +16,14 @@ class Listener(object):
 
     def start_suite(self, data, result):
         msg = "Start test suite {}({}) at {} in robot framework.".format(
-            data, result.id, result.starttime)
+            data, result.id, result.starttime
         )
         logger.info(msg, also_console=True)
         logger.info('-' * len(msg), also_console=True)
 
     def end_suite(self, data, result):
         msg = "End test suite {}({}) at {} in robot framework.".format(
-            data, result.id, result.starttime)
+            data, result.id, result.starttime
         )
         logger.info(msg, also_console=True)
         logger.info('-' * len(msg), also_console=True)
