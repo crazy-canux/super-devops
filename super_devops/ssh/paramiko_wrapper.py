@@ -101,12 +101,17 @@ class BaseParamiko(SSHClient):
             logger.error("Unknown error: {}".format(e.message))
             raise e
         else:
-            output_msg_list = stdout.readlines()
-            stdout.close()
-            logger.debug("output: {}".format(output_msg_list))
-            error_msg_list = stderr.readlines()
-            stderr.close()
-            logger.debug("error: {}".format(error_msg_list))
-            return_code = stdout.channel.recv_exit_status()
-            logger.debug("return code: {}".format(return_code))
-            return output_msg_list, error_msg_list, return_code
+            try:
+                return_code = stdout.channel.recv_exit_status()
+                logger.debug("return code: {}".format(return_code))
+                output_msg_list = stdout.readlines()
+                stdout.close()
+                logger.debug("output: {}".format(output_msg_list))
+                error_msg_list = stderr.readlines()
+                stderr.close()
+                logger.debug("error: {}".format(error_msg_list))
+            except Exception as e:
+                logger.error("Get command result failed.")
+                raise e
+            else:
+                return output_msg_list, error_msg_list, return_code
