@@ -4,7 +4,17 @@ import unittest
 
 class YamlTest(unittest.TestCase):
     def test_load(self):
-        data = yaml.load(open('/home/canux/Src/taf/etc/global.yaml', 'r'))
+        data = yaml.load(open(r'C:\Users\wcheng\Desktop\Src\super-devops\etc\global.yaml', 'r'))
+        print type(data)
+        print data
+
+    def test_safe_load(self):
+        data = yaml.safe_load(open(r'C:\Users\wcheng\Desktop\Src\super-devops\etc\global.yaml', 'r'))
+        print type(data)
+        print data
+
+    def test_load_all(self):
+        data = yaml.load_all(open(r'C:\Users\wcheng\Desktop\Src\super-devops\etc\global.yaml', 'r'))
         print type(data)
         print data
 

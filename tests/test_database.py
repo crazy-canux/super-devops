@@ -36,5 +36,6 @@ class ParamikoTest(unittest.TestCase):
         else:
             print("Failed.")
 
+
 if __name__ == '__main__':
     unittest.main()
