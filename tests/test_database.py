@@ -6,7 +6,7 @@ sys.path.insert(0, os.path.abspath('..'))
 from super_devops.database.sqlalchemy_wrapper import BaseDB
 
 
-class ParamikoTest(unittest.TestCase):
+class ParamikoTestCase(unittest.TestCase):
     def test_select_query(self):
         with BaseDB(
                 host='10.103.239.70', username='sandbox',

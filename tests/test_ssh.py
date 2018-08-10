@@ -6,7 +6,7 @@ sys.path.insert(0, os.path.abspath('..'))
 from super_devops.ssh.paramiko_wrapper import BaseParamiko
 
 
-class ParamikoTest(unittest.TestCase):
+class ParamikoTestCase(unittest.TestCase):
     def test_exec_command(self):
         with BaseParamiko('127.0.0.1', 'canux', 'canux') as ssh:
             output, error, rc = ssh.exec_command('ps -ef | grep -v grep | '
