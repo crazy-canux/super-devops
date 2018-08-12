@@ -24,5 +24,6 @@ class WinRMTestCase(unittest.TestCase):
             result = winrm.run_ps("ipconfig /all")
         print result
 
+
 if __name__ == '__main__':
     unittest.main()
