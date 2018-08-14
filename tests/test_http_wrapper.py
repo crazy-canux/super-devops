@@ -11,7 +11,7 @@ class RequestsTestCase(unittest.TestCase):
     @unittest.skip('passed')
     def test_get(self):
         """Test reversinglabs server."""
-        url = 'http://10.103.239.43:8888/files'
+        url = 'http://127.0.0.1:8888/files'
         with BaseRequests() as req:
             res = req.get(
                 url,
@@ -28,7 +28,7 @@ class RequestsTestCase(unittest.TestCase):
     @unittest.skip('passed')
     def test_post(self):
         """Test reversinglabs server."""
-        url = 'http://10.103.239.46:8888/files'
+        url = 'http://127.0.0.1:8888/files'
         with BaseRequests() as req:
             res = req.post(
                 url,
@@ -50,13 +50,13 @@ class RequestsTestCase(unittest.TestCase):
     @unittest.skip("passed")
     def test_post_file(self):
         """Test PE verify server."""
-        url = 'http://10.103.239.70:8080/api/verify'
+        url = 'http://127.0.0.1:8080/api/verify'
         with BaseRequests() as req:
             res = req.post(
                 url,
                 **{
                     'files': {
-                        'file': open('/opt/sandboxav/etc/sboxconfig.ini','rb'),
+                        'file': open('/etc/test/config.ini', 'rb'),
                     }
                 }
             )
@@ -67,14 +67,14 @@ class RequestsTestCase(unittest.TestCase):
     @unittest.skip('passed')
     def test_post_files(self):
         """Test capture dashboard api."""
-        url = "http://10.103.239.46/api?sn=123456789ABC&key" \
+        url = "http://127.0.0.1/api?sn=123456789ABC&key" \
               "=2813babc6ed843c1a496349f2a53d8db"
         with BaseRequests() as req:
             res = req.post(
                 url,
                 data={
                     "MethodInput": json.dumps({"sessiontype": "webui"}),
-                    "MethodName": "SubmitTask2"
+                    "MethodName": "SubmitTask"
                 },
                 **{
                     'files': {
@@ -89,7 +89,7 @@ class RequestsTestCase(unittest.TestCase):
         print res.headers
 
     def test_updatethreadconfig(self):
-        url = "http://10.103.239.62/JsonData.aspx"
+        url = "http://127.0.0.1/JsonData.aspx"
         with BaseRequests() as req:
             res = req.post(
                 url,

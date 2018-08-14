@@ -9,8 +9,8 @@ from super_devops.database.sqlalchemy_wrapper import BaseDB
 class ParamikoTestCase(unittest.TestCase):
     def test_select_query(self):
         with BaseDB(
-                host='10.103.239.70', username='sandbox',
-                password='P@ssword', database='sandbox', port=1433
+                host='127.0.0.1', username='username',
+                password='password', database='test', port=1433
         ) as db:
             result = db.select_query("select * from units")
         print result
@@ -27,8 +27,8 @@ class ParamikoTestCase(unittest.TestCase):
         sql = ";".join(sql_list)
         print("sql: {}".format(sql))
         with BaseDB(
-                host='10.103.239.70', username='sandbox',
-                password='P@ssword', database='sandbox', port=1433
+                host='127.0.0.1', username='username',
+                password='password', database='test', port=1433
         ) as db:
             result = db.execute_transaction(sql)
         if result:

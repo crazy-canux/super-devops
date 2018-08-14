@@ -10,8 +10,8 @@ class EmailTestCase(unittest.TestCase):
     def test_sendtext(self):
         with BaseEmail() as email:
             email.sendmail(
-                frm="taf@sonicwall.com",
-                to=["wcheng@sonicwall.com"],
+                frm="taf@gmail.com",
+                to=["canuxcheng@gmail.com"],
                 subject='taf test',
                 text='i am text'
             )
@@ -19,9 +19,9 @@ class EmailTestCase(unittest.TestCase):
     def test_sendattach(self):
         with BaseEmail() as email:
             email.sendmail(
-                frm="taf@sonicwall.com",
-                to=["wcheng@sonicwall.com"],
-                cc=["wcheng@sonicwall.com"],
+                frm="taf@gmail.com",
+                to=["canuxcheng@gmail.com"],
+                cc=["canuxcheng@gmail.com"],
                 subject='taf test',
                 text='i am text',
                 files=['/home/canux/examples.desktop']

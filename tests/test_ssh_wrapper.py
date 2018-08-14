@@ -10,7 +10,7 @@ class ParamikoTestCase(unittest.TestCase):
     def test_exec_command(self):
         with BaseParamiko('127.0.0.1', 'canux', 'canux') as ssh:
             output, error, rc = ssh.exec_command('ps -ef | grep -v grep | '
-                                                 'grep sandboxav | wc -l')
+                                                 'grep sandbox | wc -l')
         print output, error, rc
 
 
