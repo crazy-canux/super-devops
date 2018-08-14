@@ -2,7 +2,7 @@ import yaml
 import unittest
 
 
-class YamlTest(unittest.TestCase):
+class YamlTestCase(unittest.TestCase):
     def test_load(self):
         data = yaml.load(open(r'C:\Users\wcheng\Desktop\Src\super-devops\etc\global.yaml', 'r'))
         print type(data)

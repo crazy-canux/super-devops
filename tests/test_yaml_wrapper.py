@@ -1,7 +1,6 @@
 import unittest
 
 from super_devops.yaml.yaml_wrapper import BaseYaml
-import yaml
 
 
 class BaseYamlTest(unittest.TestCase):

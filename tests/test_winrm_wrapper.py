@@ -6,7 +6,7 @@ sys.path.insert(0, os.path.abspath('..'))
 from super_devops.winrm.pywinrm_wrapper import BaseWinRM
 
 
-class WinRMTest(unittest.TestCase):
+class WinRMTestCase(unittest.TestCase):
     def test_run_cmd(self):
         with BaseWinRM(
             host='192.168.1.4', domain='sv',
@@ -23,6 +23,7 @@ class WinRMTest(unittest.TestCase):
         ) as winrm:
             result = winrm.run_ps("ipconfig /all")
         print result
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -7,7 +7,7 @@ sys.path.insert(0, os.path.abspath('..'))
 from super_devops.http.requests_wrapper import BaseRequests
 
 
-class RequestsTest(unittest.TestCase):
+class RequestsTestCase(unittest.TestCase):
     @unittest.skip('passed')
     def test_get(self):
         """Test reversinglabs server."""

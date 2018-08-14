@@ -10,6 +10,7 @@ class Persona(Enum):
     SECURITY_ADMIN = 2
     CONSUMER = 3
 
+
 # class Role(Enum):
 class Role(str, Enum):
     UNKNOWN = 'unknown'
@@ -18,7 +19,8 @@ class Role(str, Enum):
     SECURITY_ADMIN = 'secadmin'
     CONSUMER = 'consumer'
 
-class TestEnum(unittest.TestCase):
+
+class EnumTestCase(unittest.TestCase):
     def test_persona(self):
         print Persona.CONSUMER
         print Persona.CONSUMER.name
@@ -35,6 +37,7 @@ class TestEnum(unittest.TestCase):
         print 'consumer == Role.CONSUMER: ', 'consumer' == Role.CONSUMER
         print 'consumer in [Role.CONSUMER]', 'consumer' in [Role.CONSUMER]
         print 'Role.CONSUMER.lower()', Role.CONSUMER.lower()
+
 
 if __name__ == "__main__":
     unittest.main()

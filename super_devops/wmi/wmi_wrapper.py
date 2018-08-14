@@ -4,6 +4,7 @@ import csv
 
 logger = logging.getLogger(__name__)
 
+
 class BaseWMI(object):
 
     def __init__(self, host, domain, username, password, **kwargs):
