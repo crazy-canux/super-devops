@@ -79,6 +79,12 @@ class MIMEMultipart::
     # used for send email with attachment.
     MIMEMultipart(email.mime.base.MIMEBase)
 
+    msg['Subject'] = string
+    msg['From'] = string
+    msg['To'] = '.'.join(to)
+    msg['Cc'] = '.'.join(cc)
+    msg['Date'] =  email.utils.formatdate()
+
 class MIMENonMultipart::
 
     # used for send email without attachment.

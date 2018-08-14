@@ -14,7 +14,7 @@ logging.getLogger('email').setLevel(logging.WARNING)
 
 class BaseEmail(object):
     def __init__(
-            self, host='localhost', port='25', username="", password=""
+            self, host='localhost', port=25, username=None, password=None
     ):
         self.host = host
         self.port = port
@@ -24,12 +24,15 @@ class BaseEmail(object):
         self.smtp = None
 
     def __enter__(self):
-        self.smtp = smtplib.SMTP(self.host, self.port)
-        self.smtp.connect()
+        self.smtp = smtplib.SMTP()
+        # self.smtp.set_debuglevel(True)
+        self.smtp.connect(self.host, self.port)
         self.smtp.ehlo()
-        self.smtp.starttls()
-        self.smtp.ehlo()
-        self.smtp.login(self.username, self.password)
+        if self.smtp.has_extn('STARTTLS'):
+            self.smtp.starttls()
+            self.smtp.ehlo()
+        if self.username and self.password:
+            self.smtp.login(self.username, self.password)
         logger.debug("BaseEmail.__enter__(): succeed")
         return self
 
@@ -38,14 +41,12 @@ class BaseEmail(object):
             self.smtp.quit()
 
     def sendmail(
-            self, frm, to, subject=None, text=None,
+            self, frm, to, subject='', text='',
             files=None, cc=None, date=None
     ):
         try:
             if frm is None:
                 raise ValueError("from address is necessary")
-            elif not isinstance(frm, list):
-                raise TypeError("from address must be a list")
 
             if to is None:
                 raise ValueError("to address is necessary")
@@ -63,22 +64,22 @@ class BaseEmail(object):
             msg = MIMEMultipart()
             msg['Subject'] = subject
             msg['From'] = frm
-            msg['To'] = to
+            msg['To'] = '.'.join(to)
             if cc:
-                msg['Cc'] = cc
+                msg['Cc'] = '.'.join(cc)
+                to = to + cc
             msg['Date'] = date if date else formatdate()
-
-            to = to + cc
 
             text = MIMEText(text)
             msg.attach(text)
 
-            for filename in files:
-                with open(filename, 'rb') as f:
-                    one = MIMEApplication(f.read())
-                one['Content-Disposition'] = 'attachment; filename={}'.format(
-                    os.path.basename(filename))
-                msg.attach(files)
+            if files:
+                for filename in files:
+                    with open(filename, 'rb') as f:
+                        one = MIMEApplication(f.read())
+                    one['Content-Disposition'] = 'attachment; filename={}'.format(
+                        os.path.basename(filename))
+                    msg.attach(one)
         except Exception as e:
             raise RuntimeError(
                 "Perpare to sendmail failed: {}".format(e.message)
@@ -88,6 +89,8 @@ class BaseEmail(object):
                 self.smtp.sendmail(frm, to, msg.as_string())
             except Exception as e:
                 raise RuntimeError("sendmail failed: {}".format(e.message))
+            else:
+                return True
 
 
 
