@@ -39,11 +39,11 @@ new features in 1.2.0::
 Todo
 ====
 
-1.3    office
-1.4    rabbitmq
-1.5    ftp
-1.6    rpc
-1.7    snmp
+*1.3    office
+*1.4    rabbitmq
+*1.5    ftp
+*1.6    rpc
+*1.7    snmp
 
 ============
 Contribution
