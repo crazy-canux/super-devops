@@ -177,21 +177,28 @@ class BaseDB(object):
     def execute_transaction(self, sql):
         """Sql must be a string, and each line shoud end with \n.
         and go is not allowed in the sql.
+
+        return effective rows.
         """
         try:
             logger.debug("sql: {}".format(sql))
             with self.connection.begin():
-                self.connection.execute(sql)
+                result_proxy = self.connection.execute(sql)
+            if result_proxy is None:
+                return 0
+            else:
+                return result_proxy.rowcount
         except Exception as e:
             logger.error("execute transaction error: {}".format(e.message))
-            return False
-        else:
-            return True
+            raise e
 
-    def delete_query(self, sql, ignore_error=False, autocommit=True):
+    def dml_query(self, sql, ignore_error=False, autocommit=True):
+        """Used for update, insert, delete."""
         try:
             result_proxy = self.__execute(sql, autocommit)
-            if result_proxy:
+            if result_proxy is None:
+                return 0
+            else:
                 return result_proxy.rowcount
         except exc.IntegrityError as e:
             if ignore_error:
@@ -199,14 +206,19 @@ class BaseDB(object):
             else:
                 raise e
         except Exception as e:
+            logger.error("dml query error: {}".format(e.message))
             raise e
 
     def select_query(self, sql, autocommit=False):
         """return [(column1, ....), (column1, ...), ...], [key1, key2, ...]."""
-        result_proxy = self.__execute(sql, autocommit)
-        if result_proxy is None:
-            return None
-        else:
-            keys = result_proxy.keys()
-            results = result_proxy.fetchall()
-            return results, keys
+        try:
+            result_proxy = self.__execute(sql, autocommit)
+            if result_proxy is None:
+                return [], []
+            else:
+                keys = result_proxy.keys()
+                results = result_proxy.fetchall()
+                return results, keys
+        except Exception as e:
+            logger.error("select query failed: {}".format(e.message))
+            raise e
