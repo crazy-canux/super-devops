@@ -91,6 +91,8 @@ class BaseParamiko(SSHClient):
                 command, bufsize, timeout, get_pty, environment
             )
             if get_pty:
+                if not sudo_pw:
+                    sudo_pw = self.password
                 stdin.write(sudo_pw + '\n')
                 stdin.flush()
                 logger.debug('Enter sudo password succeed.')
@@ -115,3 +117,49 @@ class BaseParamiko(SSHClient):
                 raise e
             else:
                 return output_msg_list, error_msg_list, return_code
+
+    def start_service(self, service, daemon):
+        try:
+            shell = """
+                nohup service %s start > /dev/null 2>&1 &
+                sleep 1
+                for i in {1..300}
+                do
+                    pidof %s && exit 0
+                    sleep 1
+                done
+                exit 127
+                """ % (service, daemon)
+            cmd = 'sudo bash -c "%s"' % shell
+            output, error, rc = self.exec_command(
+                cmd, get_pty=True, timeout=300
+            )
+        except Exception as e:
+            raise RuntimeError(
+                "Start {} failed: {}".format(service, e.message)
+            )
+        else:
+            return output, error, rc
+
+    def stop_service(self, service, daemon):
+        try:
+            shell = """
+                nohup service %s stop > /dev/null 2 >&1 &
+                sleep 1
+                for i in {1...300}
+                do 
+                    pidof %s || exit 0
+                    sleep 1
+                done
+                exit 127
+                """ % (service, daemon)
+            cmd = 'sudo bash -c "%s"' % shell
+            output, error, rc = self.exec_command(
+                cmd, get_pty=True, timeout=300
+            )
+        except Exception as e:
+            raise RuntimeError(
+                "Stop {} failed: {}".format(service, e.message)
+            )
+        else:
+            return output, error, rc
