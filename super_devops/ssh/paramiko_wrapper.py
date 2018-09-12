@@ -175,7 +175,7 @@ class BaseParamiko(SSHClient):
                     sleep 1
                 done
                 exit 127
-                """ % service
+                """ % (service, service)
             cmd = 'sudo bash -c "%s"' % shell
             output, error, rc = self.exec_command(
                 cmd, get_pty=True, timeout=300
@@ -198,7 +198,7 @@ class BaseParamiko(SSHClient):
                     sleep 1
                 done
                 exit 127
-                """ % service
+                """ % (service, service)
             cmd = 'sudo bash -c "%s"' % shell
             output, error, rc = self.exec_command(
                 cmd, get_pty=True, timeout=300
