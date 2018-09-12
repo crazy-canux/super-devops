@@ -118,7 +118,7 @@ class BaseParamiko(SSHClient):
             else:
                 return output_msg_list, error_msg_list, return_code
 
-    def start_service(self, service, daemon):
+    def start_deamon(self, service, daemon):
         try:
             shell = """
                 nohup service %s start > /dev/null 2>&1 &
@@ -141,7 +141,7 @@ class BaseParamiko(SSHClient):
         else:
             return output, error, rc
 
-    def stop_service(self, service, daemon):
+    def stop_deamon(self, service, daemon):
         try:
             shell = """
                 nohup service %s stop > /dev/null 2 >&1 &
@@ -153,6 +153,52 @@ class BaseParamiko(SSHClient):
                 done
                 exit 127
                 """ % (service, daemon)
+            cmd = 'sudo bash -c "%s"' % shell
+            output, error, rc = self.exec_command(
+                cmd, get_pty=True, timeout=300
+            )
+        except Exception as e:
+            raise RuntimeError(
+                "Stop {} failed: {}".format(service, e.message)
+            )
+        else:
+            return output, error, rc
+
+    def start_service(self, service):
+        try:
+            shell = """
+                nohup service %s start > /dev/null 2>&1 &
+                sleep 1
+                for i in {1..300}
+                do
+                    ps -ef | grep -v grep | grep %s && exit 0
+                    sleep 1
+                done
+                exit 127
+                """ % service
+            cmd = 'sudo bash -c "%s"' % shell
+            output, error, rc = self.exec_command(
+                cmd, get_pty=True, timeout=300
+            )
+        except Exception as e:
+            raise RuntimeError(
+                "Start {} failed: {}".format(service, e.message)
+            )
+        else:
+            return output, error, rc
+
+    def stop_service(self, service):
+        try:
+            shell = """
+                nohup service %s stop > /dev/null 2 >&1 &
+                sleep 1
+                for i in {1...300}
+                do 
+                    ps -ef | grep -v grep | grep %s || exit 0
+                    sleep 1
+                done
+                exit 127
+                """ % service
             cmd = 'sudo bash -c "%s"' % shell
             output, error, rc = self.exec_command(
                 cmd, get_pty=True, timeout=300
