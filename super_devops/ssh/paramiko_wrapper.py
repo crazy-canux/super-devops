@@ -192,7 +192,7 @@ class BaseParamiko(SSHClient):
             shell = """
                 nohup service %s stop > /dev/null 2 >&1 &
                 sleep 1
-                for i in {1...300}
+                for i in {1..300}
                 do 
                     ps -ef | grep -v grep | grep %s || exit 0
                     sleep 1
