@@ -5,6 +5,7 @@ from argparse import HelpFormatter, Action
 
 import robot
 from robot.api import logger
+from robot.api import ExecutionResult
 
 from super_devops.misc.colorama_wrapper import BaseColor
 from super_devops.utils import Utils
@@ -182,13 +183,21 @@ class BaseRF(object):
                 )
 
             if workflows_list:
-                self.__robot_run(workflows_list)
+                return self.__robot_run(workflows_list)
             else:
                 print(
-                    BaseColor.RED(
+                    BaseColor.YELLOW(
                         "No workflow has been specified to run."
                     )
                 )
+                return -1
+        else:
+            print(
+                BaseColor.RED(
+                    "Usage ERROR"
+                )
+            )
+            return -1
 
     def __parse_show(self):
         if self.args.all:
@@ -217,7 +226,6 @@ class BaseRF(object):
                     self.suite.workflowdict.values(), 1
                 )
             )
-
         if self.args.detail:
             print('')
             for index in self.args.detail:
@@ -241,6 +249,7 @@ class BaseRF(object):
                     help.end_section()
                     help.end_section()
                     print(help.format_help())
+        return 0
 
     def __robot_run(self, workflows):
         __options = {}
@@ -282,6 +291,16 @@ class BaseRF(object):
                 **__options
             )
 
+        output_file = os.path.join(
+            __outputdir, "output-" + __timestamp + ".xml"
+        )
+        result = ExecutionResult(output_file)
+        result.configure(stat_config={
+            "suite_stat_level": 2,
+            "tag_stat_combine": "tagANDanother"}
+        )
+        return result.return_code
+
     def parse_options(self):
         try:
             self.__define_options()
@@ -289,8 +308,8 @@ class BaseRF(object):
             self.args = self.parser.parse_args()
 
             if self.args.option == 'run':
-                self.__parse_run()
+                return self.__parse_run()
             elif self.args.option == 'show':
-                self.__parse_show()
+                return self.__parse_show()
         except Exception:
             raise
