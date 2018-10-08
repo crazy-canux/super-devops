@@ -17,7 +17,7 @@ import::
 
     import robot
 
-functions::
+run::
 
     # 调用该接口在程序里实现robot命令
     run(*tests, **options)
@@ -26,9 +26,17 @@ functions::
 
     run_cli(arguments, exit=True)
 
+rebot::
+
     rebot(*outputs, **options)
 
     rebot_cli(arguments, exit=True)
+
+errors::
+
+    from robot.errors import ExecutionFailed
+
+api.logger::
 
     from robot.api import logger
     # robot的内置日志系统, 除了info可以同时选择输出到console,其它都是输出到logfile.
@@ -40,6 +48,8 @@ functions::
     logger.debug(message, html=False) # 默认不打印 10
     logger.trace(message, html=False) # 默认不打印 0
 
+api.deco::
+
     from robot.api.deco import keyword
     # 通过装饰器指定关键字名字和标签
     keyword(name=None, tags=())
@@ -47,9 +57,27 @@ functions::
     def shortname():
         ...
 
+api.TestData::
+
+    from robot.api import TestData
     from robot.parsing.modle import TestData
     TestData(parent=None, source=None, include_suites=None,warn_on_skipped=False, extensions=None)
     # return model.TestCaseFile or model.TestDataDirectory
     testsuite = TestData(source="your.robot")
 
-    from robot.errors import ExecutionFailed
+
+api.TestSuite::
+
+    from robot.api import TestSuite
+
+api.SuiteVisitor::
+
+    from robot.api import SuiteVisitor
+
+api.ExecutionResult::
+
+    from robot.api import ExecutionResult
+
+api.ResultWriter::
+
+    from robot.api import ResultWriter
