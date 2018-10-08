@@ -35,6 +35,9 @@ rebot::
 errors::
 
     from robot.errors import ExecutionFailed
+    # raise this exception in keyword and set continue_on_failure to True
+    # can keep going in the same case.
+    raise ExecutionFailed(message=message, continue_on_failure=True)
 
 api.logger::
 
