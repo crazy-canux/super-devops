@@ -7,6 +7,7 @@ from super_devops.email.smtplib_wrapper import BaseEmail
 
 
 class EmailTestCase(unittest.TestCase):
+    @unittest.skip("ignore")
     def test_sendtext(self):
         with BaseEmail() as email:
             email.sendmail(
@@ -16,6 +17,7 @@ class EmailTestCase(unittest.TestCase):
                 text='i am text'
             )
 
+    @unittest.skip("ignore")
     def test_sendattach(self):
         with BaseEmail() as email:
             email.sendmail(
@@ -25,6 +27,15 @@ class EmailTestCase(unittest.TestCase):
                 subject='taf test',
                 text='i am text',
                 files=['/home/canux/examples.desktop']
+            )
+
+    def test_smtpserver(self):
+        with BaseEmail(host='mail.company.com', port=25) as email:
+            email.sendmail(
+                frm="taf@sonicwall.com",
+                to=['canux@company.com'],
+                subject='test subject',
+                text='text body'
             )
 
 

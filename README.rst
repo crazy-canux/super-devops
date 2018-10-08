@@ -35,6 +35,14 @@ new features in 1.2.0::
 
     logging
 
+new feature in 1.2.6::
+
+    grafana
+
+new feature in 1.2.7::
+
+    tick stack
+
 ====
 Todo
 ====
