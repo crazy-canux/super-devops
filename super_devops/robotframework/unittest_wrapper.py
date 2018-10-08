@@ -169,7 +169,8 @@ class BaseUnitTest(unittest.TestCase):
                 if stopTestRun is not None:
                     stopTestRun()
 
-    def __ignore_failure(self, debug_only=False):
+    @staticmethod
+    def __ignore_failure(debug_only=False):
         if debug_only:
             for frame in inspect.stack()[::-1]:
                 if frame[1].endswith('pydevd.py'):

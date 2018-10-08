@@ -34,5 +34,17 @@ class Listener(object):
     def end_test(self, test, result):
         logger.info('', also_console=True)
 
+    def start_keyword(self, data, result):
+        pass
+
+    def end_keyword(self, data, result):
+        pass
+
+    def log_message(self, message):
+        pass
+
+    def message(self, message):
+        pass
+
     def close(self):
         pass

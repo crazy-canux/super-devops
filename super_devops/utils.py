@@ -1,5 +1,7 @@
 import os
 
+from robot.errors import ExecutionFailed
+
 
 class Utils(object):
 
@@ -28,3 +30,11 @@ class Utils(object):
             ]
             sql = "".join(sql_list)
         return sql
+
+    @staticmethod
+    def keyword_exception(auc_failed, message, continue_on_failure):
+        if auc_failed:
+            raise ExecutionFailed(
+                message=message, continue_on_failure=continue_on_failure
+            )
+
