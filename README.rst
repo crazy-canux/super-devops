@@ -35,11 +35,11 @@ new features in 1.2.0::
 
     logging
 
-new feature in 1.2.6::
+new feature in 1.3.0::
 
     grafana
 
-new feature in 1.2.7::
+new feature in 1.3.1::
 
     tick stack
 
@@ -47,11 +47,11 @@ new feature in 1.2.7::
 Todo
 ====
 
-*1.3    office
 *1.4    rabbitmq
 *1.5    ftp
 *1.6    rpc
 *1.7    snmp
+*1.8    office
 
 ============
 Contribution
