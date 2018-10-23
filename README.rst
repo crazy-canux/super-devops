@@ -37,11 +37,11 @@ new features in 1.2.0::
 
 new feature in 1.3.0::
 
-    grafana
+    tick stack
 
 new feature in 1.3.1::
 
-    tick stack
+    grafana
 
 ====
 Todo
