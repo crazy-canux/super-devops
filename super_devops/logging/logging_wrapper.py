@@ -84,7 +84,7 @@ class BaseLogging(object):
             logger.addHandler(console)
 
             web = logging.FileHandler(warn_file, warn_mode)
-            web.setLevel(logging.INFO)
+            web.setLevel(logging.WARN)
             web.setFormatter(formatter)
             logger_web = logging.getLogger()
             logger_web.addHandler(web)
