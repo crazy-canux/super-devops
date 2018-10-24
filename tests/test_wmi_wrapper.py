@@ -1,8 +1,5 @@
 import unittest
 
-import os
-import sys
-sys.path.insert(0, os.path.abspath('..'))
 from super_devops.wmi.wmi_wrapper import BaseWMI
 # wmic -U domain/username%password //127.0.0.1  "select * from Win32_ComputerSystem"
 
