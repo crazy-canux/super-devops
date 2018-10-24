@@ -4,14 +4,14 @@ from super_devops.database.sqlalchemy_wrapper import BaseDB
 
 
 class ParamikoTestCase(unittest.TestCase):
-    @unittest.skip('ignore')
     def test_select_query(self):
         with BaseDB(
                 host='127.0.0.1', username='username',
-                password='password', database='test', port=1433
+                password='password', database='database', port=1433
         ) as db:
-            result = db.select_query("select * from units")
-        print result
+            results, keys = db.select_query("select @@version")
+        self.assertNotIsInstance(results, list, msg='results failed')
+        self.assertNotIsInstance(keys, list, msg='keys failed')
 
     @unittest.skip('ignore')
     def test_sql_file(self):
@@ -29,11 +29,8 @@ class ParamikoTestCase(unittest.TestCase):
                 password='password', database='test', port=1433
         ) as db:
             result = db.execute_transaction(sql)
-        if result:
-            print("Succeed.")
-        else:
-            print("Failed.")
 
+    @unittest.skip('ignore')
     def test_dml_query(self):
         with BaseDB(
                 host='127.0.0.1', username='username',
@@ -43,8 +40,6 @@ class ParamikoTestCase(unittest.TestCase):
                                   "'4ed869e5c11e23218d808f91b341f4e5fc28f729c2477f71cee956cf50dd3b16'")
             result1 = db.dml_query("update samples set status = 'bad' where "
                                    "sha256 = '4ed869e5c11e23218d808f91b341f4e5fc28f729c2477f71cee956cf50dd3b16'")
-        print "delete affect:", result
-        print "update affect: ", result1
 
 
 if __name__ == '__main__':

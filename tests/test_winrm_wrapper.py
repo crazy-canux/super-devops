@@ -10,7 +10,7 @@ class WinRMTestCase(unittest.TestCase):
             username='username', password='password'
         ) as winrm:
             result = winrm.run_cmd("ipconfig, /all")
-        print result
+        self.assertIsNotNone(result, msg='run cmd failed')
 
     def test_run_ps(self):
         with BaseWinRM(
@@ -18,7 +18,7 @@ class WinRMTestCase(unittest.TestCase):
                 username='username', password='password', transport='ntlm'
         ) as winrm:
             result = winrm.run_ps("ipconfig /all")
-        print result
+        self.assertIsNotNone(result, msg='run ps failed.')
 
 
 if __name__ == '__main__':

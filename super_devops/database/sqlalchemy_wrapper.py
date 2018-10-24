@@ -210,7 +210,10 @@ class BaseDB(object):
             raise e
 
     def select_query(self, sql, autocommit=False):
-        """return [(column1, ....), (column1, ...), ...], [key1, key2, ...]."""
+        """return two list.
+        results: [(column1, ....), (column1, ...), ...], means all rows.
+        keys: [key1, key2, ...], means column name.
+        """
         try:
             result_proxy = self.__execute(sql, autocommit)
             if result_proxy is None:
