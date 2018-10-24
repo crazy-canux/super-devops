@@ -29,7 +29,7 @@ class EmailTestCase(unittest.TestCase):
     def test_smtpserver(self):
         with BaseEmail(host='mail.company.com', port=25) as email:
             email.sendmail(
-                frm="taf@sonicwall.com",
+                frm="super-devops@company.com",
                 to=['canux@company.com'],
                 subject='test subject',
                 text='text body'

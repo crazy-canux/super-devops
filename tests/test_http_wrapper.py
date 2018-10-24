@@ -7,7 +7,6 @@ from super_devops.http.requests_wrapper import BaseRequests
 class RequestsTestCase(unittest.TestCase):
     @unittest.skip('passed')
     def test_get(self):
-        """Test reversinglabs server."""
         url = 'http://127.0.0.1:8888/files'
         with BaseRequests() as req:
             res = req.get(
@@ -24,7 +23,6 @@ class RequestsTestCase(unittest.TestCase):
 
     @unittest.skip('passed')
     def test_post(self):
-        """Test reversinglabs server."""
         url = 'http://127.0.0.1:8888/files'
         with BaseRequests() as req:
             res = req.post(
@@ -46,7 +44,6 @@ class RequestsTestCase(unittest.TestCase):
 
     @unittest.skip("passed")
     def test_post_file(self):
-        """Test PE verify server."""
         url = 'http://127.0.0.1:8080/api/verify'
         with BaseRequests() as req:
             res = req.post(
@@ -63,7 +60,6 @@ class RequestsTestCase(unittest.TestCase):
 
     @unittest.skip('passed')
     def test_post_files(self):
-        """Test capture dashboard api."""
         url = "http://127.0.0.1/api?sn=123456789ABC&key" \
               "=2813babc6ed843c1a496349f2a53d8db"
         with BaseRequests() as req:
