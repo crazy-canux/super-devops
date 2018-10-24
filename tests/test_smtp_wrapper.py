@@ -1,8 +1,5 @@
 import unittest
-import sys
-import os
 
-sys.path.insert(0, os.path.abspath(".."))
 from super_devops.email.smtplib_wrapper import BaseEmail
 
 

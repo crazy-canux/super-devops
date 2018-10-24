@@ -1,12 +1,9 @@
 import unittest
+import logging
+
+from super_devops.tick_stack.influxdb_wrapper import BaseInfluxdb
 
 logger = logging.getLogger(__name__)
-
-
-import os
-import sys
-sys.path.insert(0, os.path.abspath('..'))
-from super_devops.tick_stack.influxdb_wrapper import BaseInfluxdb
 
 
 class InfluxdbTestCase(unittest.TestCase):

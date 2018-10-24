@@ -1,7 +1,3 @@
-import sys
-import os
-
-sys.path.insert(0, os.path.abspath(".."))
 from super_devops.logging.logging_wrapper import BaseLogging
 
 
