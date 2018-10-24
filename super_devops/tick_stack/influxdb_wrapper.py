@@ -52,12 +52,12 @@ class BaseInfluxdb(object):
                     )
                     return True
                 else:
-                    logger.debug(
+                    logger.warning(
                         "Database {} not exist.".format(database)
                     )
                     return False
             else:
-                logger.error("Get database failed")
+                logger.error("Check database exist failed")
                 return False
         except Exception:
             raise

@@ -1,4 +1,5 @@
 import os
+import datetime
 
 from robot.errors import ExecutionFailed
 
@@ -37,4 +38,8 @@ class Utils(object):
             raise ExecutionFailed(
                 message=message, continue_on_failure=continue_on_failure
             )
+
+    @staticmethod
+    def timestamp():
+        return datetime.datetime.now().strftime('%Y%m%d%H%M%S')
 

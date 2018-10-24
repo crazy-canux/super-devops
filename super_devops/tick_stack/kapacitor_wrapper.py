@@ -54,7 +54,8 @@ class BaseKapacitor(object):
 
     def config_smtp(
             self, enable=True, host="localhost", port=25,
-            frm="mail.super-devops.com", to=[]
+            username="", password="",
+            frm="mail.super-devops.com", to=["canuxcheng@gmail.com"]
     ):
         try:
             url = urlparse.urljoin(
@@ -63,8 +64,10 @@ class BaseKapacitor(object):
             payload = {
                 "set": {
                     "enabled": enable,
-                    "host": "{}".format(host),
+                    "host": host,
                     "port": int(port),
+                    "username": username,
+                    "password": password,
                     "from": "{}".format(frm),
                     "to": to
                 }
