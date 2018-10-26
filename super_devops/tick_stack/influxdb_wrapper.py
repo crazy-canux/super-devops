@@ -16,6 +16,9 @@ class BaseInfluxdb(object):
         self.username = username
         self.password = password
         self.domain = domain
+
+        self.header = {'Content-Type': 'application/json'}
+
         self.write_url = urlparse.urljoin(
             self.influxdb_url, "/write"
         )
@@ -36,7 +39,7 @@ class BaseInfluxdb(object):
                 res = req.get(
                     self.query_url, params=payload,
                     **{
-                        'headers': {'Content-Type': 'application/json'},
+                        'headers': self.header,
                         'timeout': 60,
                         'verify': False
                     }
