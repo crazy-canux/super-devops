@@ -11,9 +11,10 @@ class Workflow(object):
         self.name = name,
         self.doc = doc,
         self.tags = tags,
-        self.keywords  = self.__parse_steps(steps)
+        self.keywords = self.__parse_steps(steps)
 
-    def __parse_steps(self, steps):
+    @staticmethod
+    def __parse_steps(steps):
         keywords = []
         for step in steps:
             if hasattr(step, 'name'):
@@ -44,15 +45,15 @@ class Suite(object):
                 for path, _, files in os.walk(sources):
                     self.test_files += [
                         os.path.join(path, file)
-                        for file in files
-                        if file.endswith('.robot') or
-                           file.endswith('.txt') or
-                           file.endswith('.html')
+                        for f in files
+                        if f.endswith('.robot') or
+                           f.endswith('.txt') or
+                           f.endswith('.html')
                     ]
         if self.test_files:
             return [
-                TestData(source=file)
-                for file in self.test_files
+                TestData(source=f)
+                for f in self.test_files
             ]
         else:
             raise ValueError('No workflow files found.')
@@ -61,11 +62,12 @@ class Suite(object):
         _dict = OrderedDict()
 
         for suite in self.test_suites:
+            force_tags = suite.setting_table.force_tags
             for case in suite.testcase_table:
                 _dict[case.name] = Workflow(
                     case.name,
                     case.doc.value,
-                    case.tags,
+                    case.tags+force_tags,
                     case.steps
                 )
         return _dict

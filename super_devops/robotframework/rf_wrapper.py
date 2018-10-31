@@ -20,8 +20,6 @@ class BaseRF(object):
 
     def __init__(
             self,
-            robot_files,
-            outputdir,
             prog='robot',
             description='robot framework command customize.',
             epilog='robot framework command options',
@@ -40,10 +38,8 @@ class BaseRF(object):
         self.version = version
 
         self.args = None
-
-        self.suite = Suite(sources=Utils.expandpath(robot_files))
-
-        self.outputdir = Utils.expandpath(outputdir)
+        self.outputdir = None
+        self.suite = None
 
     def __define_options(self):
         self.parser = argparse.ArgumentParser(
@@ -72,6 +68,20 @@ class BaseRF(object):
             required=False,
             help='Specify PYTHONPATH for develop package.',
             dest='pythonpath'
+        )
+        self.basic_parser.add_argument(
+            '--input',
+            required=False,
+            help='Specify robot file location, default is %(default)s',
+            default="/opt/taf/robot",
+            dest='input'
+        )
+        self.basic_parser.add_argument(
+            '--output',
+            required=False,
+            help='Specify robot output location, default is %(default)s',
+            default="/opt/taf/log",
+            dest='output'
         )
 
     def __define_sub_options(self):
@@ -306,6 +316,9 @@ class BaseRF(object):
             self.__define_options()
             self.__define_sub_options()
             self.args = self.parser.parse_args()
+
+            self.suite = Suite(sources=Utils.expandpath(self.args.input))
+            self.outputdir = Utils.expandpath(self.args.output)
 
             if self.args.option == 'run':
                 return self.__parse_run()

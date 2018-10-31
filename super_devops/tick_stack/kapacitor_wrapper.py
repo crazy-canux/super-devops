@@ -69,7 +69,7 @@ class BaseKapacitor(object):
             self, enable=True, host="localhost", port=25,
             frm="mail.super-devops.com", to=["canuxcheng@gmail.com"],
             username="", password="", no_verify=True, idle_timeout="30s",
-            global_enable=True, state_changes_only=True
+            global_enable=True, state_changes_only=False
     ):
         try:
             url = self.base_url + "/config/smtp/"
