@@ -240,9 +240,9 @@ class BaseRF(object):
                         )
                     )
                     help.add_text(workflow.doc[0])
-                    help.start_section("TAGS:")
-                    help.add_text(workflow.tags)
-                    help.start_section('AUC STEPS:')
+                    help.start_section('TAGS')
+                    help.add_text(str([str(tag) for tag in workflow.tags]))
+                    help.start_section('AUC STEPS')
                     for key in workflow.keywords:
                         help.add_argument(
                             Action('', '', help=BaseColor.BLUE(key))
