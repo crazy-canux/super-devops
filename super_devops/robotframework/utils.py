@@ -44,7 +44,7 @@ class Suite(object):
             if os.path.isdir(sources):
                 for path, _, files in os.walk(sources):
                     self.test_files += [
-                        os.path.join(path, file)
+                        os.path.join(path, f)
                         for f in files
                         if f.endswith('.robot') or
                            f.endswith('.txt') or

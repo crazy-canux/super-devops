@@ -20,6 +20,8 @@ class BaseRF(object):
 
     def __init__(
             self,
+            source=None,
+            output=None,
             prog='robot',
             description='robot framework command customize.',
             epilog='robot framework command options',
@@ -27,19 +29,20 @@ class BaseRF(object):
     ):
         """Basic robot framework command line tools.
 
-        :param robot_files: robot files, can be one or a folder.
-        :type robot_files: string.
-        :param outputdir: robot -d/--outputdir.
-        :type outputdir: string.
+        :param source: robot files, can be one or a folder.
+        :type source: string.
+        :param output: robot -d/--outputdir.
+        :type output: string.
         """
         self.prog = prog
         self.description = description
         self.epilog = epilog
         self.version = version
 
+        self.suite = Suite(sources=Utils.expandpath(source))
+        self.outputdir = Utils.expandpath(output)
+
         self.args = None
-        self.outputdir = None
-        self.suite = None
 
     def __define_options(self):
         self.parser = argparse.ArgumentParser(
@@ -68,20 +71,6 @@ class BaseRF(object):
             required=False,
             help='Specify PYTHONPATH for develop package.',
             dest='pythonpath'
-        )
-        self.basic_parser.add_argument(
-            '--input',
-            required=False,
-            help='Specify robot file location, default is %(default)s',
-            default="/opt/taf/robot",
-            dest='input'
-        )
-        self.basic_parser.add_argument(
-            '--output',
-            required=False,
-            help='Specify robot output location, default is %(default)s',
-            default="/opt/taf/log",
-            dest='output'
         )
 
     def __define_sub_options(self):
@@ -251,11 +240,14 @@ class BaseRF(object):
                         )
                     )
                     help.add_text(workflow.doc[0])
+                    help.start_section("TAGS:")
+                    help.add_text(workflow.tags)
                     help.start_section('AUC STEPS:')
                     for key in workflow.keywords:
                         help.add_argument(
                             Action('', '', help=BaseColor.BLUE(key))
                         )
+                    help.end_section()
                     help.end_section()
                     help.end_section()
                     print(help.format_help())
@@ -316,9 +308,6 @@ class BaseRF(object):
             self.__define_options()
             self.__define_sub_options()
             self.args = self.parser.parse_args()
-
-            self.suite = Suite(sources=Utils.expandpath(self.args.input))
-            self.outputdir = Utils.expandpath(self.args.output)
 
             if self.args.option == 'run':
                 return self.__parse_run()
