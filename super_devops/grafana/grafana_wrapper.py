@@ -29,7 +29,7 @@ class BaseGrafana(object):
             with BaseRequests(
                     username=self.username,
                     password=self.password,
-                    domain=self.domian
+                    domain=self.domain
             ) as req:
                 res = req.get(
                     url,
@@ -47,7 +47,7 @@ class BaseGrafana(object):
                 logger.info(
                     "Data source {} exist.".format(name)
                 )
-                return res.json().get("id")
+                return True
             else:
                 if res.json().get("message") == "Data source not found":
                     logger.error("Data source {} not exist.".format(name))
@@ -184,6 +184,60 @@ class BaseGrafana(object):
                         dashboard.get("title")
                     )
                 )
+                return False
+        except Exception:
+            raise
+
+    def update_current_user_prefs(self, theme="light", timezone="utc"):
+        try:
+            url = urlparse.urljoin(self.grafana_url, "/api/user/preferences")
+            payload = json.dumps({
+                "theme": theme,
+                "homeDashboardId": 0,
+                "timezone": timezone
+            })
+            with BaseRequests(
+                username=self.username,
+                password=self.password,
+                domain=self.domain
+            ) as req:
+                res = req.put(url, data=payload)
+                logger.debug(
+                    "Update current user prefs: {}".format(res.content)
+                )
+            if res.status_code == 200:
+                logger.info("Update current user prefs succeed.")
+                return True
+            else:
+                logger.error("Update current user prefs failed.")
+                return False
+        except Exception:
+            raise
+
+    def create_new_global_user(self, name, email, password, login="test"):
+        """Default is viewer"""
+        try:
+            url = urlparse.urljoin(self.grafana_url, "/api/admin/users")
+            payload = json.dumps({
+                "name": name,
+                "email": email,
+                "login": login if login else name,
+                "password": password
+            })
+            with BaseRequests(
+                username=self.username,
+                password=self.password,
+                domain=self.domain
+            ) as req:
+                res = req.post(url, data=payload)
+                logger.debug(
+                    "Create new global user: {}".format(res.content)
+                )
+            if res.status_code == 200:
+                logger.info("Create new global user succeed.")
+                return json.loads(res.content).get("id")
+            else:
+                logger.error("Create new global user failed.")
                 return False
         except Exception:
             raise
