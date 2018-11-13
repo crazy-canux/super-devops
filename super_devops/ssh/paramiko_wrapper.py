@@ -209,3 +209,20 @@ class BaseParamiko(SSHClient):
             )
         else:
             return output, error, rc
+
+    def install_package(self, name, version):
+        try:
+            cmd = """
+            sudo apt-get install --yes --reinstall 
+            --allow-unauthenticated 
+            -o Dpkg::Options::="--force-confnew" {}={}
+            """.format(name, version)
+            output, error, rc = self.exec_command(cmd, get_pty=True)
+        except Exception as e:
+            raise RuntimeError(
+                "Install package {}_{} failed: {}".format(name,
+                                                          version,
+                                                          e.message)
+            )
+        else:
+            return output, error, rc
