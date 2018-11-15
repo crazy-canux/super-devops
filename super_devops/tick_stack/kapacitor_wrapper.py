@@ -21,22 +21,20 @@ class BaseKapacitor(object):
             self.kapacitor_url, "/kapacitor/v1"
         )
 
-    def set_influxdb(
+    def set_default_influxdb(
             self, influxdb_url="http://localhost:8086",
-            name="localhost", default=True, enabled=True,
-            username="", password="", timeout=0
+            default=True, enabled=True,
+            username="", password=""
     ):
         try:
-            url = self.base_url + "/config/influxdb/{}".format(name)
+            url = self.base_url + "/config/influxdb/localhost"
             logger.debug("url: {}".format(url))
             payload = json.dumps({
                 "set": {
                     "default": default,
                     "enabled": enabled,
-                    "name": name,
                     "username": username,
                     "password": password,
-                    "timeout": timeout,
                     "urls": ["{}".format(influxdb_url)]
                 }
             })
@@ -54,12 +52,12 @@ class BaseKapacitor(object):
                 )
             if res.status_code == 204:
                 logger.info(
-                    "Config influxdb {} for kapacitor succeed.".format(name)
+                    "Config default influxdb(localhost) for kapacitor succeed."
                 )
                 return True
             else:
                 logger.error(
-                    "Config influxdb {} for kapacitor failed.".format(name)
+                    "Config default influxdb(localhost) for kapacitor failed."
                 )
                 return False
         except Exception:

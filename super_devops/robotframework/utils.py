@@ -4,6 +4,7 @@ from collections import OrderedDict
 
 from robot.parsing.model import TestData
 from robot.api import logger
+from robot.errors import ExecutionFailed
 
 
 class Workflow(object):
@@ -162,6 +163,13 @@ class Output(object):
     def flush(self):
         self.__file.flush()
         self.terminal.flush()
+
+
+def keyword_exception(auc_failed, message, continue_on_failure):
+    if auc_failed:
+        raise ExecutionFailed(
+            message=message, continue_on_failure=continue_on_failure
+        )
 
 
 

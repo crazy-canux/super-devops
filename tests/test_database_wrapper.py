@@ -3,15 +3,24 @@ import unittest
 from super_devops.database.sqlalchemy_wrapper import BaseDB
 
 
-class ParamikoTestCase(unittest.TestCase):
+class DatabaseTestCase(unittest.TestCase):
     def test_select_query(self):
         with BaseDB(
-                host='127.0.0.1', username='username',
-                password='password', database='database', port=1433
+                host='127.0.0.1', username='sandbox',
+                password='password', database='sandbox', port=1433
         ) as db:
             results, keys = db.select_query("select @@version")
-        self.assertNotIsInstance(results, list, msg='results failed')
-        self.assertNotIsInstance(keys, list, msg='keys failed')
+        self.assertIsInstance(results, list, msg='results failed')
+        self.assertIsInstance(keys, list, msg='keys failed')
+
+    def test_mysql(self):
+        with BaseDB(
+            host='127.0.0.1', username='sandbox',
+            password='password', database='sandbox', port=3306
+        ) as db:
+            results, keys = db.select_query("select version();")
+        self.assertIsInstance(results, list, msg='results failed')
+        self.assertIsInstance(keys, list, msg='keys failed')
 
     @unittest.skip('ignore')
     def test_sql_file(self):
