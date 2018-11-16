@@ -3,7 +3,7 @@ import json
 import logging
 
 from super_devops.http.requests_wrapper import BaseRequests
-from super_devops.utils import Utils
+from super_devops.utils import BaseUtils
 
 logger = logging.getLogger(__name__)
 
@@ -146,7 +146,7 @@ class BaseGrafana(object):
         try:
             with open(filename, 'r') as f:
                 dashboard = json.load(f)
-            timestamp = Utils.timestamp()
+            timestamp = BaseUtils.timestamp()
             url = urlparse.urljoin(self.grafana_url, "/api/dashboards/db")
             payload = json.dumps({
                 "dashboard": dashboard,

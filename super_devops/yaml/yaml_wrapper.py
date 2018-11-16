@@ -2,7 +2,7 @@ import logging
 
 from .datamodel import DataModel
 from .datacontext import DataContext
-from super_devops.utils import Utils
+from super_devops.utils import BaseUtils
 
 
 logger = logging.getLogger(__name__)
@@ -19,7 +19,7 @@ class BaseYaml(DataContext):
         self.shared_tag = 'shared'
 
         super(BaseYaml, self).__init__(
-            Utils.expandpath(global_conf_file), self.global_tag
+            BaseUtils.expandpath(global_conf_file), self.global_tag
         )
 
         self[self.local_tag] = {}
@@ -29,7 +29,7 @@ class BaseYaml(DataContext):
 
         for workflow_conf_file in workflow_conf_files:
             self.update_node_from_file(
-                Utils.expandpath(workflow_conf_file), self.local_tag
+                BaseUtils.expandpath(workflow_conf_file), self.local_tag
             )
 
     @property

@@ -118,21 +118,21 @@ class BaseParamiko(SSHClient):
             else:
                 return output_msg_list, error_msg_list, return_code
 
-    def start_deamon(self, service, daemon):
+    def start_deamon(self, service, daemon, timeout, step=1):
         try:
             shell = """
                 nohup service %s start > /dev/null 2>&1 &
-                sleep 1
-                for i in {1..300}
+                sleep %s
+                for i in {1..%s}
                 do
                     pidof %s && exit 0
-                    sleep 1
+                    sleep %s
                 done
                 exit 127
-                """ % (service, daemon)
+                """ % (service, step, timeout, daemon, step)
             cmd = 'sudo bash -c "%s"' % shell
             output, error, rc = self.exec_command(
-                cmd, get_pty=True, timeout=300
+                cmd, get_pty=True, timeout=timeout
             )
         except Exception as e:
             raise RuntimeError(
@@ -141,21 +141,21 @@ class BaseParamiko(SSHClient):
         else:
             return output, error, rc
 
-    def stop_deamon(self, service, daemon):
+    def stop_deamon(self, service, daemon, timeout, step=1):
         try:
             shell = """
                 nohup service %s stop > /dev/null 2 >&1 &
-                sleep 1
-                for i in {1..300}
+                sleep %s
+                for i in {1..%s}
                 do 
                     pidof %s || exit 0
-                    sleep 1
+                    sleep %s
                 done
                 exit 127
-                """ % (service, daemon)
+                """ % (service, step, timeout, daemon, step)
             cmd = 'sudo bash -c "%s"' % shell
             output, error, rc = self.exec_command(
-                cmd, get_pty=True, timeout=300
+                cmd, get_pty=True, timeout=timeout
             )
         except Exception as e:
             raise RuntimeError(
@@ -164,21 +164,21 @@ class BaseParamiko(SSHClient):
         else:
             return output, error, rc
 
-    def start_service(self, service):
+    def start_service(self, service, timeout, step=1):
         try:
             shell = """
                 nohup service %s start > /dev/null 2>&1 &
-                sleep 1
-                for i in {1..300}
+                sleep %s
+                for i in {1..%s}
                 do
                     ps -ef | grep -v grep | grep %s && exit 0
-                    sleep 1
+                    sleep %s
                 done
                 exit 127
-                """ % (service, service)
+                """ % (service, step, timeout, service, step)
             cmd = 'sudo bash -c "%s"' % shell
             output, error, rc = self.exec_command(
-                cmd, get_pty=True, timeout=300
+                cmd, get_pty=True, timeout=timeout
             )
         except Exception as e:
             raise RuntimeError(
@@ -187,21 +187,21 @@ class BaseParamiko(SSHClient):
         else:
             return output, error, rc
 
-    def stop_service(self, service):
+    def stop_service(self, service, timeout, step):
         try:
             shell = """
                 nohup service %s stop > /dev/null 2 >&1 &
-                sleep 1
-                for i in {1..300}
+                sleep %s
+                for i in {1..%s}
                 do 
                     ps -ef | grep -v grep | grep %s || exit 0
-                    sleep 1
+                    sleep %s
                 done
                 exit 127
-                """ % (service, service)
+                """ % (service, step, timeout, service, step)
             cmd = 'sudo bash -c "%s"' % shell
             output, error, rc = self.exec_command(
-                cmd, get_pty=True, timeout=300
+                cmd, get_pty=True, timeout=timeout
             )
         except Exception as e:
             raise RuntimeError(

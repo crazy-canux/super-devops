@@ -6,7 +6,7 @@ import os
 import datetime
 
 
-class Utils(object):
+class BaseUtils(object):
 
     @staticmethod
     def expandpath(path):

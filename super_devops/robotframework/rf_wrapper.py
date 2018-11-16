@@ -8,7 +8,7 @@ from robot.api import logger
 from robot.api import ExecutionResult
 
 from super_devops.misc.colorama_wrapper import BaseColor
-from super_devops.utils import Utils
+from super_devops.utils import BaseUtils
 from .utils import Suite, Output
 
 
@@ -39,8 +39,8 @@ class BaseRF(object):
         self.epilog = epilog
         self.version = version
 
-        self.suite = Suite(sources=Utils.expandpath(source))
-        self.outputdir = Utils.expandpath(output)
+        self.suite = Suite(sources=BaseUtils.expandpath(source))
+        self.outputdir = BaseUtils.expandpath(output)
 
         self.args = None
 
