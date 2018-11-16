@@ -118,7 +118,7 @@ class BaseParamiko(SSHClient):
             else:
                 return output_msg_list, error_msg_list, return_code
 
-    def start_deamon(self, service, daemon, timeout, step=1):
+    def start_deamon(self, service, daemon, timeout=300, step=1):
         try:
             shell = """
                 nohup service %s start > /dev/null 2>&1 &
@@ -141,7 +141,7 @@ class BaseParamiko(SSHClient):
         else:
             return output, error, rc
 
-    def stop_deamon(self, service, daemon, timeout, step=1):
+    def stop_deamon(self, service, daemon, timeout=300, step=1):
         try:
             shell = """
                 nohup service %s stop > /dev/null 2 >&1 &
@@ -164,7 +164,7 @@ class BaseParamiko(SSHClient):
         else:
             return output, error, rc
 
-    def start_service(self, service, timeout, step=1):
+    def start_service(self, service, timeout=300, step=1):
         try:
             shell = """
                 nohup service %s start > /dev/null 2>&1 &
@@ -187,7 +187,7 @@ class BaseParamiko(SSHClient):
         else:
             return output, error, rc
 
-    def stop_service(self, service, timeout, step):
+    def stop_service(self, service, timeout=300, step):
         try:
             shell = """
                 nohup service %s stop > /dev/null 2 >&1 &
