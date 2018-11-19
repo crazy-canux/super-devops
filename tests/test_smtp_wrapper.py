@@ -29,8 +29,8 @@ class EmailTestCase(unittest.TestCase):
     def test_smtpserver(self):
         with BaseEmail(host='mail.company.com', port=25) as email:
             email.sendmail(
-                frm="super-devops@company.com",
-                to=['canux@company.com'],
+                frm="super-devops@canux.com",
+                to=['cheng@canux.com'],
                 subject='test subject',
                 text='text body'
             )

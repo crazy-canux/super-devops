@@ -224,6 +224,24 @@ class BaseParamiko(SSHClient):
         else:
             return output, error, rc
 
+    def kill_servivce(self, name):
+        try:
+            cmd = "sudo pkill -f {}".format(name)
+            output, error, rc = self.exec_command(cmd, get_pty=True)
+        except Exception:
+            raise
+        else:
+            return output, error, rc
+
+    def kill_deamon(self, deamon):
+        try:
+            cmd = "sudo killall -e {}".format(deamon)
+            output, error, rc = self.exec_command(cmd, get_pty=True)
+        except Exception:
+            raise
+        else:
+            return output, error, rc
+
     def install_package(self, name, version):
         try:
             cmd = """
