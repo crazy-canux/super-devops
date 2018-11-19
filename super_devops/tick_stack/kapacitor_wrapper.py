@@ -76,19 +76,19 @@ class BaseKapacitor(object):
             ) as req:
                 res = req.post(url, data=payload)
                 logger.debug(
-                    "Config smtp for kapacitor res: {}".format(res.content)
+                    "Set smtp for kapacitor res: {}".format(res.content)
                 )
                 logger.debug(
-                    "Config smtp for kapacitor status_code: {}".format(res.status_code)
+                    "Set smtp for kapacitor status_code: {}".format(res.status_code)
                 )
             if res.status_code in [200, 204]:
-                logger.info(
-                    "Config smtp for kapacitor succeed."
+                logger.debug(
+                    "Set smtp for kapacitor succeed."
                 )
                 return True
             else:
-                logger.error(
-                    "Config smtp for kapacitor failed."
+                logger.debug(
+                    "Set smtp for kapacitor failed."
                 )
                 return False
         except Exception:
@@ -134,15 +134,15 @@ class BaseKapacitor(object):
                     "Get smtp for kapacitor status_code: {}".format(res.status_code)
                 )
             if res.status_code == 200:
-                logger.info(
-                    "Config smtp for kapacitor succeed."
+                logger.debug(
+                    "Get smtp for kapacitor succeed."
                 )
                 option = json.loads(res.content).get("options")
                 logger.debug("option: {}".format(option))
                 return option
             else:
-                logger.error(
-                    "Config smtp for kapacitor failed."
+                logger.debug(
+                    "Get smtp for kapacitor failed."
                 )
                 return False
         except Exception:

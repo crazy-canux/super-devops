@@ -187,7 +187,7 @@ class BaseParamiko(SSHClient):
         else:
             return output, error, rc
 
-    def stop_service(self, service, timeout=300, step):
+    def stop_service(self, service, timeout=300, step=1):
         try:
             shell = """
                 nohup service %s stop > /dev/null 2 >&1 &
