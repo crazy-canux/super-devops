@@ -118,6 +118,24 @@ class BaseParamiko(SSHClient):
             else:
                 return output_msg_list, error_msg_list, return_code
 
+    def exec_script(
+            self, script,
+            timeout=60,
+            get_pty=False,
+            sudo_pw=None,
+            bufsize=-1,
+            environment=None
+    ):
+        try:
+            cmd = 'sudo bash -c "%s"' % script
+            output, error, rc = self.exec_command(
+                cmd, timeout=timeout, get_pty=get_pty
+            )
+        except Exception:
+            raise
+        else:
+            return output, error, rc
+
     def start_deamon(self, service, daemon, timeout=300, step=1):
         try:
             shell = """
@@ -130,9 +148,8 @@ class BaseParamiko(SSHClient):
                 done
                 exit 127
                 """ % (service, step, timeout, daemon, step)
-            cmd = 'sudo bash -c "%s"' % shell
-            output, error, rc = self.exec_command(
-                cmd, get_pty=True, timeout=timeout
+            output, error, rc = self.exec_script(
+                shell, get_pty=True, timeout=timeout
             )
         except Exception as e:
             raise RuntimeError(
@@ -153,9 +170,8 @@ class BaseParamiko(SSHClient):
                 done
                 exit 127
                 """ % (service, step, timeout, daemon, step)
-            cmd = 'sudo bash -c "%s"' % shell
-            output, error, rc = self.exec_command(
-                cmd, get_pty=True, timeout=timeout
+            output, error, rc = self.exec_script(
+                shell, get_pty=True, timeout=timeout
             )
         except Exception as e:
             raise RuntimeError(
@@ -176,9 +192,8 @@ class BaseParamiko(SSHClient):
                 done
                 exit 127
                 """ % (service, step, timeout, service, step)
-            cmd = 'sudo bash -c "%s"' % shell
-            output, error, rc = self.exec_command(
-                cmd, get_pty=True, timeout=timeout
+            output, error, rc = self.exec_script(
+                shell, get_pty=True, timeout=timeout
             )
         except Exception as e:
             raise RuntimeError(
@@ -199,9 +214,8 @@ class BaseParamiko(SSHClient):
                 done
                 exit 127
                 """ % (service, step, timeout, service, step)
-            cmd = 'sudo bash -c "%s"' % shell
-            output, error, rc = self.exec_command(
-                cmd, get_pty=True, timeout=timeout
+            output, error, rc = self.exec_script(
+                shell, get_pty=True, timeout=timeout
             )
         except Exception as e:
             raise RuntimeError(

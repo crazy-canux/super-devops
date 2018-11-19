@@ -11,14 +11,14 @@ class ParamikoTestCase(unittest.TestCase):
                                                  'grep sandbox | wc -l')
         print output, error, rc
 
-    def test_start_service(self):
+    def test_start_deamon(self):
         with BaseParamiko('127.0.0.1', 'canux', 'canux') as ssh:
-            output, error, rc = ssh.start_service('influxdb', 'influxd')
+            output, error, rc = ssh.start_deamon('influxdb', 'influxd')
         print output, error, rc
 
     def test_stop_service(self):
         with BaseParamiko('127.0.0.1', 'canux', 'canux') as ssh:
-            output, error, rc = ssh.stop_service('influxdb', 'inlfuxd')
+            output, error, rc = ssh.stop_deamon('influxdb', 'inlfuxd')
         print output, error, rc
 
 
