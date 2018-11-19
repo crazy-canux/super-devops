@@ -154,6 +154,8 @@ class BaseKapacitor(object):
             if isinstance(option, dict):
                 option.pop("password")
                 option["enabled"] = False
+                if not option["to"]:
+                    option["to"] = []
                 return self.__set_smtp(option)
             else:
                 return False
