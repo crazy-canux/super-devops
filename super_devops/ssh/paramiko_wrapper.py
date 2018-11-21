@@ -180,7 +180,7 @@ class BaseParamiko(SSHClient):
         else:
             return output, error, rc
 
-    def start_service(self, service, timeout=300, step=1):
+    def start_service(self, service, keyword, timeout=300, step=1):
         try:
             shell = """
                 nohup service %s start > /dev/null 2>&1 &
@@ -191,7 +191,7 @@ class BaseParamiko(SSHClient):
                     sleep %s
                 done
                 exit 127
-                """ % (service, step, timeout, service, step)
+                """ % (service, step, timeout, keyword, step)
             output, error, rc = self.exec_script(
                 shell, get_pty=True, timeout=timeout
             )
@@ -202,7 +202,7 @@ class BaseParamiko(SSHClient):
         else:
             return output, error, rc
 
-    def stop_service(self, service, timeout=300, step=1):
+    def stop_service(self, service, keyword, timeout=300, step=1):
         try:
             shell = """
                 nohup service %s stop > /dev/null 2 >&1 &
@@ -213,7 +213,7 @@ class BaseParamiko(SSHClient):
                     sleep %s
                 done
                 exit 127
-                """ % (service, step, timeout, service, step)
+                """ % (service, step, timeout, keyword, step)
             output, error, rc = self.exec_script(
                 shell, get_pty=True, timeout=timeout
             )
