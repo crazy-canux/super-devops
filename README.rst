@@ -16,7 +16,7 @@ super-devops
 
 Tons of tools for devops project.
 
-new features in 1.0.0::
+new features in 1.0::
 
     database
     http
@@ -27,31 +27,26 @@ new features in 1.0.0::
     wmi
     winrm
 
-new features in 1.1.0::
+new features in 1.1::
 
     email
 
-new features in 1.2.0::
+new features in 1.2::
 
     logging
 
-new feature in 1.3.0::
+new feature in 1.3::
 
     tick stack
-
-new feature in 1.3.1::
-
     grafana
 
-====
-Todo
-====
+new feature in 1.4::
 
-*1.4    rabbitmq
-*1.5    ftp
-*1.6    rpc
-*1.7    snmp
-*1.8    office
+    redis
+
+new feature in 1.5::
+
+    rabbitmq
 
 ============
 Contribution
