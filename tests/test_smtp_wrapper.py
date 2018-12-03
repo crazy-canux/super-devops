@@ -27,21 +27,22 @@ class EmailTestCase(unittest.TestCase):
             )
 
     def test_plain(self):
-        with BaseEmail(host='mail.sonicwall.com', port=25) as email:
+        with BaseEmail(host='mail.company.com', port=25) as email:
             email.sendmail(
                 frm="super-devops@canux.com",
-                to=['wcheng@sonicwall.com'],
+                to=['wcheng@company.com'],
                 subject='test subject',
                 text='text body'
             )
 
     def test_html(self):
-        with BaseEmail(host='mail.sonicwall.com', port=25) as email:
+        with BaseEmail(host='mail.company.com', port=25) as email:
             email.sendmail(
                 frm="super-devops@canux.com",
-                to=['wcheng@sonicwall.com'],
+                to=['wcheng@company.com'],
                 subject='test subject',
-                text='<html><body><h1>text body</h1></body></html>'
+                text='<html><body><h1>text body</h1></body></html>',
+                subtype='html', charset='utf-8'
             )
 
 
