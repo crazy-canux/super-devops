@@ -118,6 +118,8 @@ class MIMEText::
 
     MIMEText(email.mime.nonmultipart.MIMENonMultipart)
 
+    MIMEText(_text=text, _subtype='plain'/'html', _charset='us-ascii'/'utf-8')
+
 class MIMEAudio::
 
     # Content-Type': 'audio/*'
