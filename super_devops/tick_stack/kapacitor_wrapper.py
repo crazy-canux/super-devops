@@ -208,8 +208,9 @@ class BaseKapacitor(object):
     def get_all_events(self, topic):
         try:
             url = self.base_url + "/alerts/topics/{}/events".format(topic)
+        except Exception:
+            raise
 
-    # TODO
     def get_event(self, topic, event):
         try:
             url = self.base_url + "/alerts/topics/{}/events/{}".format(topic,

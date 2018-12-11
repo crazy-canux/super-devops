@@ -42,7 +42,7 @@ class BaseEmail(object):
 
     def sendmail(
             self, frm, to, subject='', text='',
-            files=None, cc=None, date=None
+            files=None, cc=None, date=None, subtype='plain', charset='utf-8'
     ):
         try:
             if frm is None:
@@ -70,7 +70,7 @@ class BaseEmail(object):
                 to = to + cc
             msg['Date'] = date if date else formatdate()
 
-            text = MIMEText(text)
+            text = MIMEText(text, _subtype=subtype, _charset=charset)
             msg.attach(text)
 
             if files:

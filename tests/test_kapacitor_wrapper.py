@@ -16,8 +16,8 @@ class KapacitorTestCase(unittest.TestCase):
     @unittest.skip("ignore")
     def test_enable_smtp(self):
         kapacitor = BaseKapacitor(kapacitor_url="http://127.0.0.1:9092")
-        kapacitor.enable_smtp(frm="maf@company.com",
-                              to=["cheng@canux.com"])
+        kapacitor.enable_smtp(frm="maf@domain.com",
+                              to=["cheng@domain.com"])
 
 
 if __name__ == "__main__":
