@@ -11,7 +11,7 @@ class WMITestCase(unittest.TestCase):
             username='username', password='password'
         ) as wmi:
             result = wmi.query("select * from Win32_ComputerSystem")
-        print result
+        print(result)
 
 
 if __name__ == '__main__':

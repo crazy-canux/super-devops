@@ -17,9 +17,9 @@ class RequestsTestCase(unittest.TestCase):
                     },
                 }
             )
-        print res.status_code
-        print res.text
-        print res.headers
+        print(res.status_code)
+        print(res.text)
+        print(res.headers)
 
     @unittest.skip('passed')
     def test_post(self):
@@ -38,9 +38,6 @@ class RequestsTestCase(unittest.TestCase):
                     },
                 }
             )
-        print res.status_code
-        print res.text
-        print res.headers
 
     @unittest.skip("passed")
     def test_post_file(self):
@@ -54,9 +51,6 @@ class RequestsTestCase(unittest.TestCase):
                     }
                 }
             )
-        print res.status_code
-        print res.text
-        print res.headers
 
     @unittest.skip('passed')
     def test_post_files(self):
@@ -77,9 +71,6 @@ class RequestsTestCase(unittest.TestCase):
                     }
                 }
             )
-        print res.status_code
-        print res.text
-        print res.headers
 
     def test_updatethreadconfig(self):
         url = "http://127.0.0.1/JsonData.aspx"
@@ -94,9 +85,6 @@ class RequestsTestCase(unittest.TestCase):
                     'headers': {'content-type': 'application/json'},
                 }
             )
-        print res.status_code
-        print res.text
-        print res.headers
 
 
 if __name__ == "__main__":

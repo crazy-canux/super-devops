@@ -205,18 +205,18 @@ class BaseRF(object):
             partial_func = [BaseColor.MAGENTA, BaseColor.CYAN, BaseColor.GREEN]
 
             format_wf = ''.join(formatter)
-            print format_wf .format(*header)
-            print format_wf.format(
+            print(format_wf.format(*header))
+            print(format_wf.format(
                 *(
                     '=' * len(col)
                     for col in header
                 )
-            )
+            ))
             format_wf = ''
             for func, param in zip(partial_func, formatter):
                 format_wf += func(param)
 
-            print '\n'.join(
+            print('\n'.join(
                 format_wf.format(
                     index,
                     [str(tag) for tag in workflow.tags],
@@ -224,7 +224,7 @@ class BaseRF(object):
                 ) for index, workflow in enumerate(
                     self.suite.workflowdict.values(), 1
                 )
-            )
+            ))
         if self.args.detail:
             print('')
             for index in self.args.detail:
@@ -268,7 +268,7 @@ class BaseRF(object):
         logger.info("outputdir: {}".format(__outputdir), also_console=True)
 
         if self.args.pythonpath:
-            print "my pythonpath: ", self.args.pythonpath
+            print("my pythonpath: ", self.args.pythonpath)
             __options.setdefault('pythonpath', self.args.pythonpath)
 
         if not self.args.debug:

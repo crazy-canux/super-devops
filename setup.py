@@ -41,9 +41,9 @@ def read(readme):
 
 class InstInstall(install):
     def run(self):
-        print "PreInst for super-devops."
+        print("PreInst for super-devops.")
         install.run(self)
-        print "PostInst for super-devops."
+        print("PostInst for super-devops.")
 
 
 INSTALL_REQUIRES = []

@@ -22,21 +22,21 @@ class Role(str, Enum):
 
 class EnumTestCase(unittest.TestCase):
     def test_persona(self):
-        print Persona.CONSUMER
-        print Persona.CONSUMER.name
-        print Persona.CONSUMER.value
-        print 'Persona(0): ', Persona(0)
-        print '3 == Persona.CONSUMER: ', 3 == Persona.CONSUMER
-        print '3 in Persona.CONSUMER: ', 3 in [Persona.CONSUMER]
+        print(Persona.CONSUMER)
+        print(Persona.CONSUMER.name)
+        print(Persona.CONSUMER.value)
+        print('Persona(0): ', Persona(0))
+        print('3 == Persona.CONSUMER: ', 3 == Persona.CONSUMER)
+        print('3 in Persona.CONSUMER: ', 3 in [Persona.CONSUMER])
 
     def test_role(self):
-        print Role.CONSUMER
-        print Role.CONSUMER.name
-        print Role.CONSUMER.value
-        print 'Role(dataadmin): ', Role('dataadmin')
-        print 'consumer == Role.CONSUMER: ', 'consumer' == Role.CONSUMER
-        print 'consumer in [Role.CONSUMER]', 'consumer' in [Role.CONSUMER]
-        print 'Role.CONSUMER.lower()', Role.CONSUMER.lower()
+        print(Role.CONSUMER)
+        print(Role.CONSUMER.name)
+        print(Role.CONSUMER.value)
+        print('Role(dataadmin): ', Role('dataadmin'))
+        print('consumer == Role.CONSUMER: ', 'consumer' == Role.CONSUMER)
+        print('consumer in [Role.CONSUMER]', 'consumer' in [Role.CONSUMER])
+        print('Role.CONSUMER.lower()', Role.CONSUMER.lower())
 
 
 if __name__ == "__main__":

@@ -161,3 +161,59 @@ class BaseKapacitor(object):
                 return False
         except Exception:
             raise
+
+    # TODO
+    def get_all_tasks(self):
+        """Only enabled tasks can be listed"""
+        try:
+            url = self.base_url + "/tasks"
+        except Exception:
+            raise
+
+    def get_all_topics(self):
+        try:
+            url = self.base_url + "/alerts/topics"
+            with BaseRequests(
+                username=self.username, password=self.password,
+                domain=self.domain
+            ) as req:
+                res = req.get(url)
+                logger.debug(
+                    "Get topics for kapacitor res: {}".format(res.content)
+                )
+                logger.debug(
+                    "Get topics for kapacitor status_code: {}".format(
+                        res.status_code)
+                )
+            if res.status_code == 200:
+                logger.debug(
+                    "Get topics for kapacitor succeed."
+                )
+                topics_list = json.loads(res.content).get("topics")
+                topics = [
+                    str(topic.get("id"))
+                    for topic in topics_list
+                    if not str(topic.get("id")).startswith("main")
+                ]
+                logger.debug("topics: {}".format(topics))
+                return topics
+            else:
+                logger.debug(
+                    "Get topics for kapacitor failed."
+                )
+                return False
+        except Exception:
+            raise
+
+    def get_all_events(self, topic):
+        try:
+            url = self.base_url + "/alerts/topics/{}/events".format(topic)
+        except Exception:
+            raise
+
+    def get_event(self, topic, event):
+        try:
+            url = self.base_url + "/alerts/topics/{}/events/{}".format(topic,
+                                                                       event)
+        except Exception:
+            raise
