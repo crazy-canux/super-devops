@@ -284,7 +284,7 @@ class BaseRF(object):
             robot.run(
                 *self.suite.test_files,
                 outputdir=__outputdir,
-                timestampoutputs=True,
+                timestampoutputs=False,
                 test=workflows,
                 consolecolors='on',
                 consolewidth=79,
@@ -294,7 +294,7 @@ class BaseRF(object):
             )
 
         output_file = os.path.join(
-            __outputdir, "output-" + __timestamp + ".xml"
+            __outputdir, "output.xml"
         )
         result = ExecutionResult(output_file)
         result.configure(stat_config={
