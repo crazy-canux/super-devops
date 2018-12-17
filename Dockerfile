@@ -1,6 +1,6 @@
 FROM ubuntu:16.04
 
-RUN apt-get update && apt-get install -y python3.5 python3-pip libffi-dev && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y python3.5 python3-pip libffi-dev libssl-dev && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /opt/super-devops
 
