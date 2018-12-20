@@ -42,11 +42,11 @@ new feature in 1.3::
 
 new feature in 1.4::
 
-    redis
+    rabbitmq
 
 new feature in 1.5::
 
-    rabbitmq
+    redis
 
 ============
 Contribution
