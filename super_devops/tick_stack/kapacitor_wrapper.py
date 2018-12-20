@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 class BaseKapacitor(object):
     def __init__(
-            self, kapacitor_url="http://localhost:9092",
+            self, kapacitor_url="http://localhost:9092/",
             username=None, password=None, domain=None
     ):
         self.kapacitor_url = kapacitor_url

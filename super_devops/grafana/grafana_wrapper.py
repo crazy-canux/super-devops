@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 class BaseGrafana(object):
     def __init__(
-            self, grafana_url="http://localhost:3000",
+            self, grafana_url="http://localhost:3000/",
             username=None, password=None, domain=None
     ):
         self.grafana_url = grafana_url

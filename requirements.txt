@@ -10,6 +10,7 @@ idna==2.7
 ipaddress==1.0.22
 ntlm-auth==1.2.0
 paramiko==2.4.2
+pika==0.12.0
 pyasn1==0.4.4
 pycparser==2.19
 pymssql==2.1.4

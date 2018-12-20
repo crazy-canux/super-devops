@@ -30,11 +30,12 @@ class EmailTestCase(unittest.TestCase):
         with BaseEmail(host='mail.domain.com', port=25) as email:
             email.sendmail(
                 frm="super-devops@domain.com",
-                to=['wcheng@domain.com'],
+                to=['canuxcheng@gmail.com', 'canuxcheng@163.com'],
                 subject='test subject',
                 text='text body'
             )
 
+    @unittest.skip('ignore')
     def test_html(self):
         with BaseEmail(host='mail.domain.com', port=25) as email:
             email.sendmail(

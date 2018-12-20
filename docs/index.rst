@@ -19,21 +19,18 @@ User Guide
 
    robotframework
    selenium
-   nagios
-   ansible
-   jenkins
-   docker
    database
    yaml
+   toml
    office
-   ssh
    snmp
+   ssh
    ldap
    http
    ftp
    email
-   amqp
-   rpc
+   rabbitmq
+   redis
    winrm
    wmi
    misc
