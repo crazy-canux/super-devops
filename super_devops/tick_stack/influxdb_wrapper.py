@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 class BaseInfluxdb(object):
     def __init__(
-            self, influxdb_url="http://localhost:8086",
+            self, influxdb_url="http://localhost:8086/",
             username=None, password=None, domain=None
     ):
         self.influxdb_url = influxdb_url
