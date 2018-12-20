@@ -1,4 +1,0 @@
-.. _jenkins:
-
-jenkins
-=======
