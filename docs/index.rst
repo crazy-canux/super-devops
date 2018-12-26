@@ -22,7 +22,6 @@ User Guide
    database
    yaml
    toml
-   office
    snmp
    ssh
    ldap
@@ -33,6 +32,7 @@ User Guide
    redis
    winrm
    wmi
+   office
    misc
 
 
