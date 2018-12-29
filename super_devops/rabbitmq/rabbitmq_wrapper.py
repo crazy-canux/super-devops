@@ -40,5 +40,5 @@ class BaseRabbitmq(object):
 
 if __name__ == "__main__":
     rabbitmq = BaseRabbitmq(
-        "http://10.103.239.61:15672", "sandbox", "password")
+        "http://localhost:15672", "sandbox", "password")
     rabbitmq.purge_queue(name="vmray_cloud")

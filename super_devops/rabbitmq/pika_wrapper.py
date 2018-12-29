@@ -114,7 +114,7 @@ class BaseRabbitmq(object):
 
 if __name__ == "__main__":
     with BaseRabbitmq(
-            host="10.103.239.61", username="sandbox", password="password"
+            host="localhost", username="sandbox", password="password"
     ) as mq:
         mq.create_exchange(exchange="test", durable=True)
         mq.create_queue(
