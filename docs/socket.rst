@@ -6,7 +6,7 @@ SocketServer
 SocketServer
 python2叫SocketServer,python3改名为socketserver.
 
-一般的socket server的类, client可以通过socket来实现．
+sockeet的框架
 
 usage
 -----
@@ -19,10 +19,6 @@ class BaseRequestHandler::
 
     BaseRequestHandler(self, request, client_address, server)
 
-class BaseServer::
-
-    BaseServer(?)
-
 class StreamRequestHandler::
 
     StreamRequestHandler(BaseRequestHandler)
@@ -32,6 +28,21 @@ class StreamRequestHandler::
     handle(self) # 子类重写该方法
     finish(self)
     setup(self)
+    
+ class DatagramRequestHandler::
+
+    DatagramRequestHandler(BaseRequestHandler)
+    self.request
+    self.client_address
+    self.server
+    # methods:
+    handle(self) # 子类重写该方法
+    finish(self)
+    setup(self)
+    
+class BaseServer::
+
+    BaseServer(?)
 
 class TCPServer::
 
@@ -51,20 +62,10 @@ class TCPServer::
     timeout
     ...
 
-class DatagramRequestHandler::
-
-    DatagramRequestHandler(BaseRequestHandler)
-    self.request
-    self.client_address
-    self.server
-    # methods:
-    handle(self) # 子类重写该方法
-    finish(self)
-    setup(self)
-
 class UDPServer::
 
     UDPServer(TCPServer)
     UDPServer(server_address, RequestHandlerClass, bind_and_activate=True)
     # methods:
     serve_forever(self, poll_interval
+ 
