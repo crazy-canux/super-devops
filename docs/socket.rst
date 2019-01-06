@@ -3,10 +3,9 @@
 SocketServer
 ============
 
-SocketServer
-python2叫SocketServer,python3改名为socketserver.
+python3改名为socketserver.
 
-sockeet的框架
+sockeet 服务器开发的框架.
 
 usage
 -----
