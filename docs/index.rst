@@ -22,6 +22,7 @@ User Guide
    database
    yaml
    toml
+   socket
    snmp
    ssh
    ldap
@@ -30,6 +31,7 @@ User Guide
    email
    rabbitmq
    redis
+   mongo
    winrm
    wmi
    office
