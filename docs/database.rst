@@ -11,6 +11,11 @@ install
 install from pypi::
 
     $ pip install sqlalchemy
+    $ pip install PyMySQL
+    $ pip install pymssql
+    $ pip install psycopg2
+    $ pip install cx_Oracle
+
 
 usage
 -----
