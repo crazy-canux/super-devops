@@ -34,6 +34,7 @@ Class BlockingConnection::
         pika.URLParameters(
             "amqp://username:password@host:port/<virtual_host>[?query-string]"
             # eg: "amqp://guest:guest@localhost:5672/%2F"
+            # "amqp://user:passwd@host:port/vhost?connection_attempts=10&retry_delay=3"
         )
     )
 

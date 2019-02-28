@@ -19,6 +19,10 @@ import::
 
     import redis
 
+functions::
+
+    from_url(url, db=None, **kwargs)
+
 Class Redis::
 
     Redis(host=u'localhost', port=6379, db=0, password=None,
@@ -36,12 +40,24 @@ Class Redis::
     >>> connection
     ping()
     echo(self, value)
+    slaveof(self, host=None, port=None)
 
     >>> server
     save() # save data to disk, blocking untail save complete.
     dbsize()
     flushall(asynchronous=False) # delete all keys in all database on current host.
     flushdb(asynchronous=False) # delete all keys in the current database.
+
+    >>> sentinel
+    sentinel(self, *args)
+    sentinel_get_master_addr_by_name(self, service_name)
+    sentinel_master(self, service_name)
+    sentinel_masters(self)
+    sentinel_monitor(self, name, ip, port, quorum)
+    sentinel_remove(self, name)
+    sentinel_sentinels(self, service_name)
+    sentinel_set(self, name, option, value)
+    sentinel_slaves(self, service_name)
 
     >>> transaction
     exec()
@@ -118,7 +134,15 @@ Class Pipeline(Redis)::
     execute_command(*args, **kwargs)
     immediate_execute_command(*args, **options)
 
+Class Sentinel::
 
+    from redis.sentinel import Sentinel
+    sentinel = Sentinel([('localhost', 26379)], socket_timeout=0.1)
+    sentinel.discover_master('mymaster')
+    sentinel.discover_slaves('mymaster')
 
-
-
+    通过sentinel 操作master 或 slaves，master可以读写，slave只能读
+    master = sentinel.master_for('mymaster', socket_timeout=0.1)
+    slave = sentinel.slave_for('mymaster', socket_timeout=0.1)
+    master.set('foo', 'bar')
+    slave.get('foo')

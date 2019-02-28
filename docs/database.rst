@@ -16,7 +16,6 @@ install from pypi::
     $ pip install psycopg2
     $ pip install cx_Oracle
 
-
 usage
 -----
 
@@ -111,15 +110,17 @@ functions::
     label_length=None
     listeners
     logging_name
-    max_overflow=10
+    max_overflow=10 # default 5
     module=None
     paramstyle=None
     pool=None
     poolclass=None
     pool_logging_name
-    pool_size=5
+    pool_size=5 # keep open inside connection pool.
     pool_timeout=30
     pool_recycle=-1
     pool_reset_on_return='rollback'
     strategy='plain'
     executor=None
+
+

@@ -48,6 +48,10 @@ new feature in 1.5::
 
     redis
 
+new feature in 1.6::
+
+    libvirt(kvm/qemu/...)
+
 ============
 Contribution
 ============
