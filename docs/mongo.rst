@@ -1,6 +1,6 @@
-.. _redis:
+.. _mongo:
 
-redis
+mongo
 =====
 
 `<https://github.com/andymccurdy/redis-py>`_

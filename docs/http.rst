@@ -47,6 +47,18 @@ class BaseHTTPServer::
 class BaseHttpRequestHandler::
 
     BaseHTTPRequestHandler(SocketServer.StreamRequestHandler)
+    # methods:
+    handle()
+    send_response()
+    # data:
+    client_address
+    server
+    command
+    path
+    request_version
+    headers
+    rfile # read message from client
+    wfile  # write message to client
 
 class HTTPServer::
 
@@ -238,6 +250,37 @@ class Auth::
     HTTPProxyAuth(HTTPBasicAuth)
 
     from requests.auth import HTTPDigestAuth
+
+
+requests_toolbelt
+=================
+
+install
+-------
+
+install from pypi::
+
+    $ pip install requests-toolbelt
+
+usage
+-----
+
+import::
+
+    import requests
+
+class SourceAddressAdapter::
+
+    from requests_toolbelt.adapters.source import SourceAddressAdapter
+
+    # specify ip address for client.
+    s = requests.Session()
+    s.mount('http://', SourceAddressAdapter(ip))
+    s.mount('https://', SourceAddressAdapter(ip))
+    response = s.post(url, stream=True, ...)
+    # get client ip from response.
+    response.raw._fp.fp._sock.getpeername()
+    response.raw._fp.fp._sock.getsockname()
 
 -------------------------------------------------------------------------------
 
