@@ -26,5 +26,5 @@ robotframework==3.0.4
 selenium==3.14.1
 six==1.11.0
 SQLAlchemy==1.2.14
-urllib3==1.23
+urllib3==1.24.2
 xmltodict==0.11.0
