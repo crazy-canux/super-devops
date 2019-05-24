@@ -161,7 +161,7 @@ class BaseParamiko(SSHClient):
     def stop_deamon(self, service, daemon, timeout=300, step=1):
         try:
             shell = """
-                nohup service %s stop > /dev/null 2 >&1 &
+                nohup service %s stop > /dev/null 2>&1 &
                 sleep %s
                 for i in {1..%s}
                 do 
@@ -205,7 +205,7 @@ class BaseParamiko(SSHClient):
     def stop_service(self, service, keyword, timeout=300, step=1):
         try:
             shell = """
-                nohup service %s stop > /dev/null 2 >&1 &
+                nohup service %s stop > /dev/null 2>&1 &
                 sleep %s
                 for i in {1..%s}
                 do 
