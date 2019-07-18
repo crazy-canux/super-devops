@@ -52,6 +52,11 @@ new feature in 1.6::
 
     libvirt(kvm/qemu/...)
 
+new feature in 1.7::
+
+    docker
+    python3(WIP)
+
 ============
 Contribution
 ============

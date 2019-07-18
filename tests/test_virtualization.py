@@ -35,11 +35,11 @@ class VirtTestCase(unittest.TestCase):
     def test_init_libvirt(self):
         with BaseLibvirt(uri="qemu:///system") as vm:
             if vm.network_exist("default"):
-                vm.undefine_network("default")
                 vm.destroy_network("default")
+                vm.undefine_network("default")
             if vm.network_exist("kvmnet1"):
-                vm.undefine_network("kvmnet1")
                 vm.destroy_network("kvmnet1")
+                vm.undefine_network("kvmnet1")
             if not vm.network_exist("default"):
                 vm.define_network(default)
             if not vm.network_exist("kvmnet1"):

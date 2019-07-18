@@ -2,8 +2,8 @@ import libvirt
 import sys
 import logging
 
-logger = logging.getLogger("test")
-logger.setLevel(logging.DEBUG)
+logger = logging.getLogger(__name__)
+logging.getLogger('libvirt').setLevel(logging.WARNING)
 
 
 class BaseLibvirt(object):
@@ -63,7 +63,9 @@ class BaseLibvirt(object):
             logger.debug(network.isPersistent())
             return True
         except Exception as e:
-            logger.error("Failed to create virtual network: {}".format(e.message))
+            logger.error(
+                "Failed to create and start virtual network: {}".format(e.message)
+            )
 
     def undefine_network(self, name):
         try:
@@ -86,7 +88,7 @@ class BaseLibvirt(object):
             network.destroy()
             return True
         except Exception as e:
-            logger.error("Failed to remove network: {}".format(e.message))
+            logger.error("Failed to stop network: {}".format(e.message))
             return False
 
     def undefine_all_vms(self, name):
