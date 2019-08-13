@@ -16,46 +16,14 @@ super-devops
 
 Tons of tools for devops project.
 
-new features in 1.0::
+Install::
 
-    database
-    http
-    ssh
-    robotframework
-    selenium
-    yaml
-    wmi
-    winrm
+    $ pip install super-devops
+    $ pip3 install super-devops
 
-new features in 1.1::
+Usage::
 
-    email
-
-new features in 1.2::
-
-    logging
-
-new feature in 1.3::
-
-    tick stack
-    grafana
-
-new feature in 1.4::
-
-    rabbitmq
-
-new feature in 1.5::
-
-    redis
-
-new feature in 1.6::
-
-    libvirt(kvm/qemu/...)
-
-new feature in 1.7::
-
-    docker
-    python3(WIP)
+    from super-devops.<protocol>.<tool>_wrapper import <Class>
 
 ============
 Contribution
