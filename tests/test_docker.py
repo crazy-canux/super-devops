@@ -1,7 +1,7 @@
 import unittest
 import re
 
-from super_devops.docker.docker_wrapper import BaseSwarm, BaseNetwork, \
+from super_devops.docker.docker_wrapper import BaseSwarm, BaseNetworks, \
     BaseDocker, BaseImages, BaseContainers
 
 from super_devops.ssh.paramiko_wrapper import BaseParamiko
@@ -29,7 +29,7 @@ class DockerTestCase(unittest.TestCase):
         iprange = "172.18.0.0/24"
         gateway = "172.18.0.1"
         opt_name = "docker_gwbridge"
-        with BaseNetwork() as network:
+        with BaseNetworks() as network:
             result = network.delete([name], greedy=True)
             bridge = network.create_bridge_network(
                 name, subnet, iprange, gateway, opt_name,
@@ -74,7 +74,7 @@ class DockerTestCase(unittest.TestCase):
         iprange = "172.12.0.0/24"
         gateway = "172.12.0.1"
         opt_name = "ol0"
-        with BaseNetwork() as network:
+        with BaseNetworks() as network:
             result = network.create_overlay_network(
                 name=name, subnet=subnet, iprange=iprange, gateway=gateway,
                 opt_name=opt_name

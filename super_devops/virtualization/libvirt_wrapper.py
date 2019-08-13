@@ -20,7 +20,7 @@ class BaseLibvirt(object):
                 sys.exit(1)
             return self
         except Exception as e:
-            logger.error("Failed to connection to qemu: {}".format(e.message))
+            logger.error("Failed to connection to qemu: {}".format(e))
             raise
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -35,7 +35,7 @@ class BaseLibvirt(object):
                 logger.debug("network {} not exist.".format(name))
                 return False
         except Exception as e:
-            logger.error("Check network exist failed: {}".format(e.message))
+            logger.error("Check network exist failed: {}".format(e))
 
     def create_network(self, xmlDesc):
         try:
@@ -48,7 +48,7 @@ class BaseLibvirt(object):
             logger.debug(network.isPersistent())
             return True
         except Exception as e:
-            logger.error("Failed to create virtual network: {}".format(e.message))
+            logger.error("Failed to create virtual network: {}".format(e))
 
     def define_network(self, xmlDesc):
         try:
@@ -64,7 +64,7 @@ class BaseLibvirt(object):
             return True
         except Exception as e:
             logger.error(
-                "Failed to create and start virtual network: {}".format(e.message)
+                "Failed to create and start virtual network: {}".format(e)
             )
 
     def undefine_network(self, name):
@@ -76,7 +76,7 @@ class BaseLibvirt(object):
             network.undefine()
             return True
         except Exception as e:
-            logger.error("Failed to remove network: {}".format(e.message))
+            logger.error("Failed to remove network: {}".format(e))
             return False
 
     def destroy_network(self, name):
@@ -88,7 +88,7 @@ class BaseLibvirt(object):
             network.destroy()
             return True
         except Exception as e:
-            logger.error("Failed to stop network: {}".format(e.message))
+            logger.error("Failed to stop network: {}".format(e))
             return False
 
     def undefine_all_vms(self, name):

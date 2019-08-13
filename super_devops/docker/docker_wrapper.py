@@ -151,7 +151,7 @@ class BaseSwarm(object):
             return result
 
 
-class BaseNetwork(object):
+class BaseNetworks(object):
     def __init__(
             self, base_url='unix://var/run/docker.sock',
             version="auto", timeout=60, **kwargs
@@ -250,7 +250,7 @@ class BaseNetwork(object):
                     "com.docker.network.bridge.enable_ip_masquerade": opt_im,
                     "com.docker.network.bridge.name": opt_name
                 },
-                labels=None,
+                labels=None
             )
         except Exception as e:
             logger.error("Create bridge network failed: {}".format(e))
@@ -304,7 +304,7 @@ class BaseNetwork(object):
                         "Disconnect {} from {}".format(
                             container.name, net.name)
                     )
-                    net.disconnect(container, force=True)
+                    net.disconnect(container.name, force=True)
                 logger.debug(
                     "Remove docker network {}:{}".format(net.id, net.name)
                 )
@@ -314,6 +314,17 @@ class BaseNetwork(object):
             raise e
         else:
             return True
+
+    def list(self, names=None, ids=None, filters=None, greedy=False):
+        try:
+            nets = self.networks.list(
+                names=names, ids=ids, filters=filters, greedy=greedy
+            )
+        except Exception as e:
+            logger.error("Docker Network list failed: {}".format(e))
+            raise e
+        else:
+            return nets
 
 
 class BaseImages(object):
@@ -384,6 +395,14 @@ class BaseImages(object):
             self.images.remove(image, force, noprune)
         except Exception as e:
             logger.error("Docker Image remove failed: {}".format(e))
+            raise e
+
+    def delete_all(self):
+        try:
+            for image in self.list(if_all=True):
+                self.images.remove(image.id)
+        except Exception as e:
+            logger.error("Docker Image delete failed: {}".format(e))
             raise e
 
 
@@ -470,8 +489,31 @@ class BaseContainers(object):
             # return dict
             return containers
 
-    def list(self):
-        pass
+    def list(
+            self, all=False, since=None, before=None, limit=None,
+            filters=None, sparse=False, ignore_removed=False
+    ):
+        try:
+            containers = self.containers.list(
+                all, since, before, limit, filters, sparse, ignore_removed
+            )
+        except Exception as e:
+            logger.error("Docker Containers list failed: {}".format(e))
+            raise e
+        else:
+            return containers
+
+    def delete_all(self):
+        try:
+            for container in self.list(all=True):
+                logger.debug("delete container: {}".format(container.name))
+                container.stop()
+                container.remove()
+        except Exception as e:
+            logger.error(
+                "Docker Container delete(stop/remove) failed: {}".format(e)
+            )
+            raise e
 
 
 class BaseServices(object):

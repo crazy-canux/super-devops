@@ -2,11 +2,11 @@ import logging
 
 
 class BaseLogging(object):
-    def __init__(self, name=None, format=None):
-        if not format:
+    def __init__(self, name=None, formt=None):
+        if not formt:
             self.format = "%(asctime)s [%(name)s] %(levelname)s: %(message)s"
         else:
-            self.format = format
+            self.format = formt
         self.logger = logging.getLogger(name)
 
     def init_logger(
@@ -28,7 +28,7 @@ class BaseLogging(object):
             logger.addHandler(console)
         except Exception as e:
             raise RuntimeError(
-                "Init logger failed: {}".format(e.message)
+                "Init logger failed: {}".format(e)
             )
         else:
             return self.logger
@@ -59,7 +59,7 @@ class BaseLogging(object):
             logger_web.addHandler(web)
         except Exception as e:
             raise RuntimeError(
-                "Init debug&info logger failed: {}".format(e.message)
+                "Init debug&info logger failed: {}".format(e)
             )
         else:
             return self.logger
@@ -90,7 +90,7 @@ class BaseLogging(object):
             logger_web.addHandler(web)
         except Exception as e:
             raise RuntimeError(
-                "Init debug&warn logger failed: {}".format(e.message)
+                "Init debug&warn logger failed: {}".format(e)
             )
         else:
             return self.logger
