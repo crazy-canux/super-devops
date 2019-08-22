@@ -82,13 +82,13 @@ class BaseEmail(object):
                     msg.attach(one)
         except Exception as e:
             raise RuntimeError(
-                "Perpare to sendmail failed: {}".format(e.message)
+                "Perpare to sendmail failed: {}".format(e)
             )
         else:
             try:
                 self.smtp.sendmail(frm, to, msg.as_string())
             except Exception as e:
-                raise RuntimeError("sendmail failed: {}".format(e.message))
+                raise RuntimeError("sendmail failed: {}".format(e))
             else:
                 return True
 

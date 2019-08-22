@@ -80,7 +80,7 @@ class BaseUnitTest(unittest.TestCase):
                 #     result.addError(self, sys.exc_info())
                 except Exception as e:
                     logger.warn(
-                        'setUp failed in unittest: {}'.format(e.message)
+                        'setUp failed in unittest: {}'.format(e)
                     )
 
                 try:
@@ -130,7 +130,7 @@ class BaseUnitTest(unittest.TestCase):
             if self.__ignore_failure(debug_only=True):
                 return self._validate_output()
             else:
-                raise ExecutionFailed(e.message, continue_on_failure=True)
+                raise ExecutionFailed(e, continue_on_failure=True)
         except Exception:
             result.addError(self, sys.exc_info())
             raise
@@ -155,7 +155,7 @@ class BaseUnitTest(unittest.TestCase):
                 self.tearDown()
             except Exception as e:
                 logger.warn(
-                    'tearDown failed in unittest: {}'.format(e.message)
+                    'tearDown failed in unittest: {}'.format(e)
                 )
             # except KeyboardInterrupt:
             #     raise

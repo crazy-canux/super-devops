@@ -1,4 +1,7 @@
 import logging
+from logging.handlers import WatchedFileHandler, RotatingFileHandler
+import os
+import sys
 
 
 class BaseLogging(object):
@@ -94,4 +97,44 @@ class BaseLogging(object):
             )
         else:
             return self.logger
+
+    def init_logger_by_watched(
+            self, log_file=None, log_mode='a'
+    ):
+        try:
+            logger = logging.getLogger()
+            logger.setLevel(logging.DEBUG)
+            formatter = logging.Formatter(self.format)
+
+            file = WatchedFileHandler(log_file, log_mode)
+            file.setLevel(logging.DEBUG)
+            file.setFormatter(formatter)
+            logger.addHandler(file)
+
+            console = logging.StreamHandler(sys.stdout)
+            console.setLevel(logging.INFO)
+            console.setFormatter(formatter)
+            logger.addHandler(console)
+        except Exception:
+            raise
+
+    def init_logger_by_rotating(
+            self, log_file=None, log_mode='a'
+    ):
+        try:
+            logger = logging.getLogger()
+            logger.setLevel(logging.DEBUG)
+            formatter = logging.Formatter(self.format)
+
+            file = RotatingFileHandler(log_file, log_mode, maxBytes=20000)
+            file.setFormatter(formatter)
+            file.setLevel(logging.DEBUG)
+            logger.addHandler(file)
+
+            screen = logging.StreamHandler(sys.stdout)
+            screen.setFormatter(formatter)
+            screen.setLevel(logging.INFO)
+            logger.addHandler(screen)
+        except Exception:
+            raise
 

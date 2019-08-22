@@ -1,15 +1,15 @@
 import unittest
 import re
 
-from super_devops.docker.docker_wrapper import BaseSwarm, BaseNetworks, \
-    BaseDocker, BaseImages, BaseContainers
+from super_devops.container.docker_wrapper import BaseSwarm, BaseNetworks, \
+    BaseDocker, BaseImages, BaseContainers, BaseNodes
 
 from super_devops.ssh.paramiko_wrapper import BaseParamiko
 
 
 class DockerTestCase(unittest.TestCase):
 
-    # @unittest.skip("ignore")
+    @unittest.skip("ignore")
     def test_docker_client(self):
         with BaseDocker() as docker:
             print(docker.info())
@@ -104,6 +104,13 @@ class DockerTestCase(unittest.TestCase):
         ]
         versions.sort()
         print(versions[-1])
+
+    def test_docker_node(self):
+        with BaseNodes() as n:
+            nodes = n.list()
+        ip = nodes[0].attrs["Status"]["Addr"]
+        print(ip)
+        print(type(ip))
 
 
 if __name__ == '__main__':

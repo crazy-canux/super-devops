@@ -1,9 +1,15 @@
 import copy
 import os
 import logging
+import six
 
 import yaml
 
+
+try:
+    basestring
+except Exception:
+    basestring = str
 
 logger = logging.getLogger(__name__)
 logging.getLogger('yaml').setLevel(logging.WARNING)
@@ -22,7 +28,8 @@ def serializable(cls):
         def dump(self, path):
             try:
                 data = copy.deepcopy(self)
-                for key, value in vars(self).iteritems():
+                # for key, value in vars(self).iteritems():
+                for key, value in six.iteritems(vars(self)):
                     if hasattr(value, '__dict__') and (
                             not isinstance(value, yaml.YAMLObject)
                     ):
@@ -35,7 +42,7 @@ def serializable(cls):
             except yaml.YAMLError as e:
                 raise e
             except Exception as e:
-                raise RuntimeError(e.message)
+                raise RuntimeError(e)
 
         @staticmethod
         def load(path):
@@ -45,7 +52,7 @@ def serializable(cls):
                 with open(path, 'r') as stream:
                     model = yaml.load(stream)
             except IOError as e:
-                model = e.message
+                model = e
             except yaml.YAMLError:
                 model = yaml.YAMLObject
             except Exception as e:

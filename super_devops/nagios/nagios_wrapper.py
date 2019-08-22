@@ -91,7 +91,7 @@ class BaseNagios(object):
         try:
             self.args = self.parser.parse_args()
         except Exception as e:
-            self.unknown("Parser arguments error: {}".format(e.message))
+            self.unknown("Parser arguments error: {}".format(e))
 
     def output(self, substitute=None, long_output_limit=None):
         """Just for nagios output and tools based on nagios except check_mk.

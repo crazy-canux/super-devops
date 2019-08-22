@@ -85,6 +85,10 @@ class BaseSwarm(object):
 
         self.swarm = None
 
+    @property
+    def id(self):
+        return self.swarm.id
+
     def __enter__(self):
         try:
             self.client = docker.DockerClient(
@@ -556,6 +560,17 @@ class BaseServices(object):
         else:
             # return list
             return services
+
+    def delete_all(self):
+        try:
+            for service in self.list():
+                logger.debug("delete service: {}".format(service.name))
+                service.remove()
+        except Exception as e:
+            logger.error(
+                "Docker Service delete(stop/remove) failed: {}".format(e)
+            )
+            raise e
 
 
 class BaseNodes(object):

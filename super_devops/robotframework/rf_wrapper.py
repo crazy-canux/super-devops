@@ -260,7 +260,7 @@ class BaseRF(object):
             self.outputdir, 'outputdir_' + __timestamp
         )
         if not os.path.exists(__outputdir):
-            os.makedirs(__outputdir, 0755)
+            os.makedirs(__outputdir, 0o755)
         __summary_path = os.path.join(
             __outputdir, 'summary_' + __timestamp + '.txt'
         )

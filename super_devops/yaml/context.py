@@ -1,7 +1,12 @@
 import logging
-
+import six
 
 logger = logging.getLogger(__name__)
+
+try:
+    basestring
+except Exception:
+    basestring = str
 
 
 class Context(object):
@@ -27,8 +32,10 @@ class Context(object):
     def __iadd__(self, other):
         if getattr(other, '__dict__', None):
             other = vars(other)
-        if getattr(other, 'iteritems', None):
-            for key, value in other.iteritems():
+        # if getattr(other, 'iteritems', None):
+        if getattr(other, 'items', None):
+            # for key, value in other.iteritems():
+            for key, value in six.iteritems(other):
                 self.__update_node(self, key, value)
         else:
             raise ValueError(
@@ -37,7 +44,8 @@ class Context(object):
         return self
 
     def __iter__(self):
-        return vars(self).itertiems()
+        # return vars(self).itertiems()
+        return six.iteritems(vars(self))
 
     def __update_node(self, node, key, value):
         if not getattr(node, key, None) or isinstance(value, basestring):
@@ -48,8 +56,10 @@ class Context(object):
         else:
             if getattr(value, '__dict__', None):
                 value = vars(value)
-            if getattr(value, 'iteritems', None):
-                for _key, _value in value.iteritems():
+            # if getattr(value, 'iteritems', None):
+            if getattr(value, 'items', None):
+                # for _key, _value in value.iteritems():
+                for _key, _value in six.iteritems(value):
                     self.__update_node(
                         getattr(node, key), _key, _value
                     )

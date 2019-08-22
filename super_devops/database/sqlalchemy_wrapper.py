@@ -163,12 +163,12 @@ class BaseDB(object):
                 autocommit=autocommit
             ).execute(sql)
         except exc.DisconnectionError as e:
-            raise Exception('Database Disconnected: ' + e.message)
+            raise Exception('Database Disconnected: ' + e)
         except exc.ProgrammingError as e:
-            raise Exception('Execute sql failed: ' + e.message)
+            raise Exception('Execute sql failed: ' + e)
         except exc.DBAPIError as e:
             if e.connection_invalidated:
-                raise Exception('Connection invalidated: ' + e.message)
+                raise Exception('Connection invalidated: ' + e)
         except Exception as e:
             raise e
         else:
@@ -189,7 +189,7 @@ class BaseDB(object):
             else:
                 return result_proxy.rowcount
         except Exception as e:
-            logger.error("execute transaction error: {}".format(e.message))
+            logger.error("execute transaction error: {}".format(e))
             raise e
 
     def dml_query(self, sql, ignore_error=False, autocommit=True):
@@ -206,7 +206,7 @@ class BaseDB(object):
             else:
                 raise e
         except Exception as e:
-            logger.error("dml query error: {}".format(e.message))
+            logger.error("dml query error: {}".format(e))
             raise e
 
     def select_query(self, sql, autocommit=False):
@@ -223,5 +223,5 @@ class BaseDB(object):
                 results = result_proxy.fetchall()
                 return results, keys
         except Exception as e:
-            logger.error("select query failed: {}".format(e.message))
+            logger.error("select query failed: {}".format(e))
             raise e

@@ -1,7 +1,6 @@
 import subprocess
 import os
 import shutil
-import multiprocessing
 import time
 import logging
 
@@ -274,13 +273,13 @@ class BaseVbox(object):
                 logger.info("import ova {} succeed.".format(ova))
                 return True
 
-    def modify_vm(self, vm, hostonlyif):
+    def modify_vm(self, vm, hostonlyif, cpu, memory):
         try:
             logger.debug("modify base vm {}".format(vm))
             cmd = "su {} -c 'vboxmanage modifyvm {} --nic1 hostonly " \
                   "--hostonlyadapter1 {} " \
-                  "--memory 2048 --cpus 1 --hwvirtex on --ioapic on'".format(
-                self.username, vm, hostonlyif)
+                  "--cpus {} --memory {}'".format(
+                self.username, vm, hostonlyif, cpu, memory)
             logger.debug(cmd)
             process = subprocess.Popen(
                 cmd, shell=True,
@@ -504,5 +503,136 @@ class BaseVbox(object):
             else:
                 logger.info("active license {} succeed.".format(vm))
                 return True
+
+    def list_hdd(self):
+        try:
+            cmd = """
+            su {} -c "vboxmanage list hdds | grep 'Parent UUID:'"
+            """.format(self.username)
+            logger.debug(cmd)
+            process = subprocess.Popen(
+                cmd, shell=True,
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE
+            )
+            output, error = process.communicate()
+            output = output.decode("utf-8")
+            error = error.decode("utf-8")
+            logger.debug("output: {}".format(output))
+            logger.debug("error: {}".format(error))
+            rc = process.returncode
+            hdds = [
+                line.split(":")[1].strip()
+                for line in output.split("\n")
+                if "-" in line.strip()
+            ]
+        except Exception:
+            logger.error(
+                "list hdds for {} failed.".format(self.username)
+            )
+            raise
+        else:
+            if rc:
+                logger.error(
+                    "list hdds for {} failed with exit_code: {}".format(
+                        self.username, rc)
+                )
+                return False
+            else:
+                logger.info("list hdds for {} succeed.".format(self.username))
+                return hdds
+
+    def delete_hdd(self, hdd):
+        try:
+            logger.debug("delete hdd {}.".format(hdd))
+            cmd = "su {} -c 'vboxmanage closemedium disk {} --delete".format(
+                self.username, hdd)
+            logger.debug(cmd)
+            process = subprocess.Popen(
+                cmd, shell=True,
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE
+            )
+            output, error = process.communicate()
+            output = output.decode("utf-8")
+            error = error.decode("utf-8")
+            logger.debug("output: {}".format(output))
+            logger.debug("error: {}".format(error))
+            rc = process.returncode
+            time.sleep(10)
+        except Exception:
+            logger.error(
+                "delete hdd {} failed.".format(hdd)
+            )
+            raise
+        else:
+            if rc:
+                logger.error(
+                    "delete hdd {} failed with exit_code: {}".format(
+                        hdd, rc)
+                )
+                return False
+            else:
+                logger.info("delete hdd {} succeed.".format(hdd))
+                return True
+
+    def purge_vms(self, basefolder):
+        try:
+            logger.info("purge vms.")
+            logger.info("poweroff running vms")
+            running_vms = self.list_vm(running=True)
+            child = [
+                vm[1]
+                for vm in running_vms
+                if "_" in vm[0]
+            ]
+            parent = [
+                vm[1]
+                for vm in running_vms
+                if "_" not in vm[0]
+            ]
+            for uuid in child:
+                self.poweroff_vm(uuid)
+            for uuid in parent:
+                self.poweroff_vm(uuid)
+            logger.info("delete all vms.")
+            vms = self.list_vm()
+            child = [
+                vm[1]
+                for vm in vms
+                if "_" in vm[0]
+            ]
+            parent = [
+                vm[1]
+                for vm in vms
+                if "_" not in vm[0]
+            ]
+            for uuid in child:
+                self.delete_vm(uuid)
+            for uuid in parent:
+                self.delete_vm(uuid)
+            cache = "/home/{}/.config/VirtualBox".format(self.username)
+            if os.path.isdir(cache):
+                shutil.rmtree(cache, ignore_errors=True)
+            if os.path.isdir(basefolder):
+                shutil.rmtree(basefolder, ignore_errors=True)
+                time.sleep(5)
+        except Exception:
+            logger.error("purge vm failed.")
+            raise
+        else:
+            return True
+
+    def purge_hdds(self):
+        try:
+            hdds = self.list_hdd()
+            while hdds:
+                for hdd in hdds:
+                    self.delete_hdd(hdd)
+                time.sleep(5)
+                hdds = self.list_hdd()
+        except Exception:
+            logger.error("purge hdd failed.")
+            raise
+        else:
+            return True
 
 

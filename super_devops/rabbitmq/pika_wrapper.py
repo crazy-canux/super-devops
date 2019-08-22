@@ -56,7 +56,7 @@ class BaseRabbitmq(object):
             self.channel.queue_purge(queue=name)
         except Exception as e:
             logger.error(
-                "Purge queue {} failed: {}.".format(name, e.message)
+                "Purge queue {} failed: {}.".format(name, e)
             )
             raise
 

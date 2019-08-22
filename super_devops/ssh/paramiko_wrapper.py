@@ -97,10 +97,10 @@ class BaseParamiko(SSHClient):
                 stdin.flush()
                 logger.debug('Enter sudo password succeed.')
         except SSHException as e:
-            logger.error("exec_command failed: {}".format(e.message))
+            logger.error("exec_command failed: {}".format(e))
             raise e
         except Exception as e:
-            logger.error("Unknown error: {}".format(e.message))
+            logger.error("Unknown error: {}".format(e))
             raise e
         else:
             try:
@@ -153,7 +153,7 @@ class BaseParamiko(SSHClient):
             )
         except Exception as e:
             raise RuntimeError(
-                "Start {} failed: {}".format(service, e.message)
+                "Start {} failed: {}".format(service, e)
             )
         else:
             return output, error, rc
@@ -175,7 +175,7 @@ class BaseParamiko(SSHClient):
             )
         except Exception as e:
             raise RuntimeError(
-                "Stop {} failed: {}".format(service, e.message)
+                "Stop {} failed: {}".format(service, e)
             )
         else:
             return output, error, rc
@@ -197,7 +197,7 @@ class BaseParamiko(SSHClient):
             )
         except Exception as e:
             raise RuntimeError(
-                "Start {} failed: {}".format(service, e.message)
+                "Start {} failed: {}".format(service, e)
             )
         else:
             return output, error, rc
@@ -219,7 +219,7 @@ class BaseParamiko(SSHClient):
             )
         except Exception as e:
             raise RuntimeError(
-                "Stop {} failed: {}".format(service, e.message)
+                "Stop {} failed: {}".format(service, e)
             )
         else:
             return output, error, rc
@@ -254,7 +254,7 @@ class BaseParamiko(SSHClient):
             raise RuntimeError(
                 "Install package {}_{} failed: {}".format(name,
                                                           version,
-                                                          e.message)
+                                                          e)
             )
         else:
             return output, error, rc

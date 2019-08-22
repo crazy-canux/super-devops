@@ -8,6 +8,11 @@ from .serializable import serializable
 from .datamodel import DataModel
 
 
+try:
+    basestring
+except Exception:
+    basestring = str
+
 logger = logging.getLogger(__name__)
 logging.getLogger('yaml').setLevel(logging.WARNING)
 
@@ -60,7 +65,8 @@ class DataContext(Context):
             self[node_name] = kwargs
 
     def __setattr__(self, key, value):
-        if getattr(value, 'iteritems', None):
+        # if getattr(value, 'iteritems', None):
+        if getattr(value, 'items', None):
             value = DataModel(**value)
         if isinstance(value, DataModel):
             self.__dict__['current_node'] = key

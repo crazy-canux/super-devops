@@ -1,9 +1,15 @@
 import logging
+import six
 
 import yaml
 
 from .serializable import serializable
 
+
+try:
+    basestring
+except Exception:
+    basestring = str
 
 logger = logging.getLogger(__name__)
 logging.getLogger('yaml').setLevel(logging.WARNING)
@@ -12,7 +18,8 @@ logging.getLogger('yaml').setLevel(logging.WARNING)
 @serializable
 class DataModel(object):
     def __init__(self, **kwargs):
-        for key, value in kwargs.iteritems():
+        # for key, value in kwargs.iteritems():
+        for key, value in six.iteritems(kwargs):
             self[key] = value
 
     def __getitem__(self, item):
@@ -24,12 +31,14 @@ class DataModel(object):
             )
 
     def __setitem__(self, key, value):
-        if hasattr(value, 'iteritems'):
+        # if hasattr(value, 'iteritems'):
+        if hasattr(value, 'items'):
             value = DataModel(**value)
         elif hasattr(value, '__iter__'):
             node = []
             for item in value:
-                if hasattr(item, 'iteritems'):
+                # if hasattr(item, 'iteritems'):
+                if hasattr(item, 'items'):
                     child = DataModel(**item)
                 elif isinstance(item, yaml.YAMLObject):
                     child = item
@@ -39,7 +48,7 @@ class DataModel(object):
                             yaml.safe_dump(item)
                         )
                     except yaml.YAMLError as e:
-                        child = e.message
+                        child = e
                 node.append(child)
             value = node
         elif isinstance(value, yaml.YAMLObject):
@@ -48,17 +57,19 @@ class DataModel(object):
             try:
                 value = yaml.safe_load(yaml.safe_dump(value))
             except yaml.YAMLError as e:
-                value = e.message
+                value = e
         self.__dict__[key] = value
 
     def __iadd__(self, other):
-        if getattr(other, 'iteritems', None):
+        # if getattr(other, 'iteritems', None):
+        if getattr(other, 'items', None):
             other = DataModel(**other)
 
         if isinstance(other, type(self)):
-            for key, value in vars(other).iteritems():
+            # for key, value in vars(other).iteritems():
+            for key, value in six.iteritems(vars(other)):
                 if not getattr(self, key, None) or (
-                            isinstance(value, basestring) or (value is None)
+                        isinstance(value, basestring) or (value is None)
                 ):
                     self.__dict__[key] = value
                 else:
