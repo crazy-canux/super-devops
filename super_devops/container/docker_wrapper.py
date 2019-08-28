@@ -382,6 +382,25 @@ class BaseImages(object):
             # return list
             return images
 
+    def pull(self, repo=None, tag=None, auth_config=None, platform=None):
+        try:
+            images = self.images.pull(repo, tag, auth_config, platform)
+        except Exception as e:
+            logger.error("Docker Image pull failed: {}".format(e))
+            raise e
+        else:
+            return images
+
+    def push(self, repo, tag=None, stream=True, auth_config=None, decode=True):
+        try:
+            for line in self.images.push(
+                    repo, tag, stream, auth_config, decode
+            ):
+                logger.debug(line)
+        except Exception as e:
+            logger.error("Docker Image push failed: {}".format(e))
+            raise e
+
     def prune(self, filters=None):
         try:
             images = self.images.prune(filters)
@@ -613,6 +632,17 @@ class BaseNodes(object):
         else:
             # return list
             return nodes
+
+    @staticmethod
+    def node_ip(node):
+        try:
+            ip = node.attrs["Status"]["Addr"]
+        except Exception as e:
+            logger.error("Get node ip address failed: {}".format(e))
+            raise e
+        else:
+            # return string
+            return ip
 
 
 

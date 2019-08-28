@@ -1,7 +1,6 @@
 import sys
-import warnings
 import unittest
-from unittest.case import SkipTest, _ExpectedFailure, _UnexpectedSuccess
+from unittest.case import SkipTest, _Outcome
 import traceback
 import inspect
 
@@ -53,71 +52,55 @@ class BaseUnitTest(unittest.TestCase):
             try:
                 skip_why = (getattr(self.__class__, '__unittest_skip_why__', '')
                             or getattr(testMethod, '__unittest_skip_why__', ''))
-                self._addSkip(result, skip_why)
+                self._addSkip(result, self, skip_why)
             finally:
                 result.stopTest(self)
             return
 
-        try:
-            success = False
+        expecting_failure_method = getattr(testMethod,
+                                           "__unittest_expecting_failure__", False)
+        expecting_failure_class = getattr(self,
+                                          "__unittest_expecting_failure__", False)
+        expecting_failure = expecting_failure_class or expecting_failure_method
+        outcome = _Outcome(result)
 
+        try:
             # Customize for super-devops about validate input arguments.
             try:
                 self._validate_input()
             except SkipTest as e:
-                self._addSkip(result, str(e))
+                self._addSkip(result, testMethod, str(e))
             except Exception:
                 raise
             else:
-                # Customize for super-devops about validate input arguments.
+            # Customize for super-devops about validate input arguments.
 
-                try:
+                self._outcome = outcome
+
+                with outcome.testPartExecutor(self):
                     self.setUp()
-                # except SkipTest as e:
-                #     self._addSkip(result, str(e))
-                # except KeyboardInterrupt:
-                #     raise
-                # except:
-                #     result.addError(self, sys.exc_info())
-                except Exception as e:
-                    logger.warn(
-                        'setUp failed in unittest: {}'.format(e)
-                    )
+                if outcome.success:
+                    outcome.expecting_failure = expecting_failure
+                    with outcome.testPartExecutor(self, isTest=True):
+                        testMethod()
+                    outcome.expecting_failure = False
+                    with outcome.testPartExecutor(self):
+                        self.tearDown()
 
-                try:
-                    testMethod()
-                except KeyboardInterrupt:
-                    raise
-                # except self.failureException:
-                #     result.addFailure(self, sys.exc_info())
-                except _ExpectedFailure as e:
-                    addExpectedFailure = getattr(result, 'addExpectedFailure', None)
-                    if addExpectedFailure is not None:
-                        addExpectedFailure(self, e.exc_info)
+                self.doCleanups()
+                for test, reason in outcome.skipped:
+                    self._addSkip(result, test, reason)
+                self._feedErrorsToResult(result, outcome.errors)
+                if outcome.success:
+                    if expecting_failure:
+                        if outcome.expectedFailure:
+                            self._addExpectedFailure(result,
+                                                     outcome.expectedFailure)
+                        else:
+                            self._addUnexpectedSuccess(result)
                     else:
-                        warnings.warn("TestResult has no addExpectedFailure method, reporting as passes",
-                                      RuntimeWarning)
                         result.addSuccess(self)
-                except _UnexpectedSuccess:
-                    addUnexpectedSuccess = getattr(result, 'addUnexpectedSuccess', None)
-                    if addUnexpectedSuccess is not None:
-                        addUnexpectedSuccess(self)
-                    else:
-                        warnings.warn("TestResult has no addUnexpectedSuccess method, reporting as failures",
-                                      RuntimeWarning)
-                        result.addFailure(self, sys.exc_info())
-                except SkipTest as e:
-                    self._addSkip(result, str(e))
-                except:
-                    raise
-                    # result.addError(self, sys.exc_info())
-                else:
-                    success = True
-
-            cleanUpSuccess = self.doCleanups()
-            success = success and cleanUpSuccess
-            if success:
-                result.addSuccess(self)
+                return result
 
         # Customize for super-devops.
         except self.failureException as e:
@@ -170,6 +153,15 @@ class BaseUnitTest(unittest.TestCase):
                 stopTestRun = getattr(result, 'stopTestRun', None)
                 if stopTestRun is not None:
                     stopTestRun()
+
+            # explicitly break reference cycles:
+            # outcome.errors -> frame -> outcome -> outcome.errors
+            # outcome.expectedFailure -> frame -> outcome -> outcome.expectedFailure
+            outcome.errors.clear()
+            outcome.expectedFailure = None
+
+            # clear the outcome, no more needed
+            self._outcome = None
 
     @staticmethod
     def __ignore_failure(debug_only=False):
