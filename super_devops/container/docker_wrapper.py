@@ -57,8 +57,8 @@ class BaseDocker(object):
             return result
 
     def login(
-            self, username, password, email="canuxcheng@gmail.com",
-            registry='https://index.docker.io/v1/',
+            self, username, password, registry='https://index.docker.io/v1/',
+            email="canuxcheng@gmail.com",
             reauth=True, dockercfg_path="$HOME/.docker/config.json"
     ):
         try:
@@ -70,6 +70,7 @@ class BaseDocker(object):
             raise e
         else:
             # return dict
+            logger.debug(res)
             return res
 
 
