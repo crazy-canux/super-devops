@@ -6,6 +6,24 @@ Basic:
     float: 2.0
     string: hello
 
+Controller:
+    host:     &controller_server       [
+        10.103.64.171
+    ]
+    username: &controller_username     "username"
+    password: &controller_password     password
+    deamon:  &deamon                   sandboxav
+    process: &process                  /usr/local/sandboxav/sandbox/sandboxmain.py
+    version:  &version_file            /usr/local/sandboxav/version
+    logs:     &logs_dir                /opt/sandboxav/logs
+    rpc_port: &rpc_port                12351
+    apache_process: &apache_process    apache2
+    nfs_point: &nfs_point              /opt/sandboxav/storage
+    maf_process: &maf_process          /usr/bin/telegraf
+    autodeploy_path:                   /opt/cheetah/autodeploy
+    autodeploy_conf:                   /opt/autodeploy/etc
+    release_file:                      /usr/local/sandboxav/release
+
 List:
     first: [
         1, 2, 3, 2.0, hello

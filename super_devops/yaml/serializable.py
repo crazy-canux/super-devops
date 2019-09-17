@@ -50,7 +50,7 @@ def serializable(cls):
                 raise IOError('Invalid file path.')
             try:
                 with open(path, 'r') as stream:
-                    model = yaml.load(stream)
+                    model = yaml.load(stream, yaml.SafeLoader)
             except IOError as e:
                 model = e
             except yaml.YAMLError:

@@ -32,12 +32,16 @@ class DataModel(object):
 
     def __setitem__(self, key, value):
         # if hasattr(value, 'iteritems'):
+        # if hasattr(six.iteritems(value), 'iteritems'):
         if hasattr(value, 'items'):
             value = DataModel(**value)
-        elif hasattr(value, '__iter__'):
+        # string also have __iter__, should handle list only.
+        # elif hasattr(value, '__iter__'):
+        elif hasattr(value, '__iter__') and not isinstance(value, basestring):
             node = []
             for item in value:
                 # if hasattr(item, 'iteritems'):
+                # if hasattr(six.iteritems(item), 'iteritems'):
                 if hasattr(item, 'items'):
                     child = DataModel(**item)
                 elif isinstance(item, yaml.YAMLObject):
@@ -62,6 +66,7 @@ class DataModel(object):
 
     def __iadd__(self, other):
         # if getattr(other, 'iteritems', None):
+        # if getattr(six.iteritems(other), 'iteritems', None):
         if getattr(other, 'items', None):
             other = DataModel(**other)
 

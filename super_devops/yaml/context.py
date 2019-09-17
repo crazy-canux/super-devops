@@ -33,6 +33,7 @@ class Context(object):
         if getattr(other, '__dict__', None):
             other = vars(other)
         # if getattr(other, 'iteritems', None):
+        # if getattr(six.iteritems(other), 'iteritems', None):
         if getattr(other, 'items', None):
             # for key, value in other.iteritems():
             for key, value in six.iteritems(other):
@@ -57,6 +58,7 @@ class Context(object):
             if getattr(value, '__dict__', None):
                 value = vars(value)
             # if getattr(value, 'iteritems', None):
+            # if getattr(six.iteritems(value), 'iteritems', None):
             if getattr(value, 'items', None):
                 # for _key, _value in value.iteritems():
                 for _key, _value in six.iteritems(value):

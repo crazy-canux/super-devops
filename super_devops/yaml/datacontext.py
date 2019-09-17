@@ -43,7 +43,7 @@ class DataContext(Context):
                 os.path.splitext(os.path.split(file_path)[-1])[0]
             )
             with open(file_path) as stream:
-                self.update(node_name, **yaml.load(stream))
+                self.update(node_name, **yaml.safe_load(stream))
         except IOError as e:
             raise e
 
@@ -66,6 +66,7 @@ class DataContext(Context):
 
     def __setattr__(self, key, value):
         # if getattr(value, 'iteritems', None):
+        # if getattr(six.iteritems(value), 'iteritems', None):
         if getattr(value, 'items', None):
             value = DataModel(**value)
         if isinstance(value, DataModel):
