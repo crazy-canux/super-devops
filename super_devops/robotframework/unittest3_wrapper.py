@@ -100,7 +100,7 @@ class BaseUnitTest(unittest.TestCase):
                             self._addUnexpectedSuccess(result)
                     else:
                         result.addSuccess(self)
-                return result
+                # return result
 
         # Customize for super-devops.
         except self.failureException as e:

@@ -1,11 +1,9 @@
 import subprocess
 import os
 import shutil
-import time
 import logging
 
 logger = logging.getLogger(__name__)
-logging.getLogger('libvirt').setLevel(logging.WARNING)
 
 
 class BaseVbox(object):
@@ -14,6 +12,12 @@ class BaseVbox(object):
 
     def poweroff_vm(self, name):
         try:
+            names = [
+                vm[0]
+                for vm in self.list_vm(running=True)
+            ]
+            if name not in names:
+                return True
             logger.debug("poweroff vm {}.".format(name))
             cmd = "su {} -c 'vboxmanage controlvm {} poweroff'".format(
                 self.username, name)
@@ -28,10 +32,9 @@ class BaseVbox(object):
             logger.debug("output: {}".format(output))
             logger.debug("error: {}".format(error))
             rc = process.returncode
-            time.sleep(10)
-        except Exception:
+        except Exception as e:
             logger.error(
-                "poweroff vm {} failed.".format(name)
+                "poweroff vm {} error: {}.".format(name, e.args)
             )
             raise
         else:
@@ -61,10 +64,9 @@ class BaseVbox(object):
             logger.debug("output: {}".format(output))
             logger.debug("error: {}".format(error))
             rc = process.returncode
-            time.sleep(10)
-        except Exception:
+        except Exception as e:
             logger.error(
-                "delete vm {} failed.".format(name)
+                "delete vm {} error: {}.".format(name, e.args)
             )
             raise
         else:
@@ -94,10 +96,9 @@ class BaseVbox(object):
             logger.debug("output: {}".format(output))
             logger.debug("error: {}".format(error))
             rc = process.returncode
-            time.sleep(10)
-        except Exception:
+        except Exception as e:
             logger.error(
-                "clone vm {} failed.".format(name)
+                "clone vm {} error: {}.".format(name, e.args)
             )
             raise
         else:
@@ -134,20 +135,14 @@ class BaseVbox(object):
                 for line in output.split("\n")
                 if line.strip()
             ]
-        except Exception:
+        except Exception as e:
             logger.error(
-                "list vm for {} failed.".format(self.username)
+                "list vm for {} error: {}.".format(self.username, e.args)
             )
             raise
         else:
-            if rc:
-                logger.error(
-                    "list vm for {} failed with exit_code: {}".format(self.username, rc)
-                )
-                return False
-            else:
-                logger.info("list vm for {} succeed.".format(self.username))
-                return vms
+            # return: [(name, uuid), (name1, uuid1)]
+            return vms
 
     def delete_hostonlyif(self, name):
         try:
@@ -163,9 +158,10 @@ class BaseVbox(object):
             logger.debug("output: {}".format(output))
             logger.debug("error: {}".format(error))
             rc = process.returncode
-        except Exception:
+        except Exception as e:
             logger.error(
-                "delete virtualbox hostonlyif {} failed.".format(name)
+                "delete virtualbox hostonlyif {} error: {}.".format(name,
+                                                                    e.args)
             )
             raise
         else:
@@ -194,8 +190,8 @@ class BaseVbox(object):
             logger.debug("output: {}".format(output))
             logger.debug("error: {}".format(error))
             rc = process.returncode
-        except Exception:
-            logger.error("create hostonlyif failed.")
+        except Exception as e:
+            logger.error("create hostonlyif error: {}.".format(e.args))
             raise
         else:
             if rc:
@@ -223,8 +219,9 @@ class BaseVbox(object):
             logger.debug("output: {}".format(output))
             logger.debug("error: {}".format(error))
             rc = process.returncode
-        except Exception:
-            logger.error("modify hostonlyif {} failed.".format(name))
+        except Exception as e:
+            logger.error("modify hostonlyif {} error: {}.".format(name,
+                                                                  e.args))
             raise
         else:
             if rc:
@@ -244,7 +241,6 @@ class BaseVbox(object):
                 shutil.rmtree(
                     os.path.join(basefolder, name)
                 )
-                time.sleep(3)
             cmd = "su {} -c 'vboxmanage import {} --vsys 0 --vmname {} " \
                   "--basefolder {}'".format(self.username,
                                             ova, name, basefolder)
@@ -259,8 +255,8 @@ class BaseVbox(object):
             logger.debug("output: {}".format(output))
             logger.debug("error: {}".format(error))
             rc = process.returncode
-        except Exception:
-            logger.error("import ova {} failed.".format(ova))
+        except Exception as e:
+            logger.error("import ova {} error: {}.".format(ova, e.args))
             raise
         else:
             if rc:
@@ -291,8 +287,8 @@ class BaseVbox(object):
             logger.debug("output: {}".format(output))
             logger.debug("error: {}".format(error))
             rc = process.returncode
-        except Exception:
-            logger.error("modify vm {} failed.".format(vm))
+        except Exception as e:
+            logger.error("modify vm {} error: {}.".format(vm, e.args))
             raise
         else:
             if rc:
@@ -321,9 +317,8 @@ class BaseVbox(object):
             logger.debug("output: {}".format(output))
             logger.debug("error: {}".format(error))
             rc = process.returncode
-            time.sleep(30)
-        except Exception:
-            logger.error("take snapshot for {} failed.".format(vm))
+        except Exception as e:
+            logger.error("take snapshot for {} error: {}.".format(vm, e.args))
             raise
         else:
             if rc:
@@ -353,9 +348,8 @@ class BaseVbox(object):
             logger.debug("error: {}".format(error))
             rc = process.returncode
             # time.sleep(180)
-            time.sleep(90)
-        except Exception:
-            logger.error("start vm {} failed.".format(vm))
+        except Exception as e:
+            logger.error("start vm {} error: {}.".format(vm, e.args))
             raise
         else:
             if rc:
@@ -390,9 +384,8 @@ class BaseVbox(object):
             logger.debug("output: {}".format(output))
             logger.debug("error: {}".format(error))
             rc = process.returncode
-            time.sleep(60)
-        except Exception:
-            logger.error("setup ip {} failed.".format(vm))
+        except Exception as e:
+            logger.error("setup ip {} error: {}.".format(vm, e.args))
             raise
         else:
             if rc:
@@ -424,9 +417,8 @@ class BaseVbox(object):
             logger.debug("output: {}".format(output))
             logger.debug("error: {}".format(error))
             rc = process.returncode
-            time.sleep(60)
-        except Exception:
-            logger.error("setup dns {} failed.".format(vm))
+        except Exception as e:
+            logger.error("setup dns {} error: {}.".format(vm, e.args))
             raise
         else:
             if rc:
@@ -457,9 +449,8 @@ class BaseVbox(object):
             logger.debug("output: {}".format(output))
             logger.debug("error: {}".format(error))
             rc = process.returncode
-            time.sleep(60)
-        except Exception:
-            logger.error("install license {} failed.".format(vm))
+        except Exception as e:
+            logger.error("install license {} error: {}.".format(vm, e.args))
             raise
         else:
             if rc:
@@ -490,9 +481,8 @@ class BaseVbox(object):
             logger.debug("output: {}".format(output))
             logger.debug("error: {}".format(error))
             rc = process.returncode
-            time.sleep(60)
-        except Exception:
-            logger.error("active license {} failed.".format(vm))
+        except Exception as e:
+            logger.error("active license {} error: {}.".format(vm, e.args))
             raise
         else:
             if rc:
@@ -525,26 +515,18 @@ class BaseVbox(object):
                 for line in output.split("\n")
                 if "-" in line.strip()
             ]
-        except Exception:
+        except Exception as e:
             logger.error(
-                "list hdds for {} failed.".format(self.username)
+                "list hdds for {} error: {}.".format(self.username, e.args)
             )
             raise
         else:
-            if rc:
-                logger.error(
-                    "list hdds for {} failed with exit_code: {}".format(
-                        self.username, rc)
-                )
-                return False
-            else:
-                logger.info("list hdds for {} succeed.".format(self.username))
-                return hdds
+            return hdds
 
     def delete_hdd(self, hdd):
         try:
             logger.debug("delete hdd {}.".format(hdd))
-            cmd = "su {} -c 'vboxmanage closemedium disk {} --delete".format(
+            cmd = "su {} -c 'vboxmanage closemedium disk {} --delete'".format(
                 self.username, hdd)
             logger.debug(cmd)
             process = subprocess.Popen(
@@ -557,10 +539,9 @@ class BaseVbox(object):
             logger.debug("output: {}".format(output))
             logger.debug("error: {}".format(error))
             rc = process.returncode
-            time.sleep(10)
-        except Exception:
+        except Exception as e:
             logger.error(
-                "delete hdd {} failed.".format(hdd)
+                "delete hdd {} error: {}.".format(hdd, e.args)
             )
             raise
         else:
@@ -614,9 +595,8 @@ class BaseVbox(object):
                 shutil.rmtree(cache, ignore_errors=True)
             if os.path.isdir(basefolder):
                 shutil.rmtree(basefolder, ignore_errors=True)
-                time.sleep(5)
-        except Exception:
-            logger.error("purge vm failed.")
+        except Exception as e:
+            logger.error("purge vm error: {}.".format(e.args))
             raise
         else:
             return True
@@ -627,10 +607,9 @@ class BaseVbox(object):
             while hdds:
                 for hdd in hdds:
                     self.delete_hdd(hdd)
-                time.sleep(5)
                 hdds = self.list_hdd()
-        except Exception:
-            logger.error("purge hdd failed.")
+        except Exception as e:
+            logger.error("purge hdd error: {}.".format(e.args))
             raise
         else:
             return True

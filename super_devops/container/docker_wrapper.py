@@ -111,6 +111,7 @@ class BaseSwarm(object):
 
     def init(
             self, advertise_addr=None, force_new_cluster=True,
+            # default_addr_pool=["10.0.0.0/8"],
             default_addr_pool=["10.0.0.0/8"],
             subnet_size=None, listen_addr='0.0.0.0:2377',
             **kwargs
@@ -427,6 +428,14 @@ class BaseImages(object):
                 self.images.remove(image.id)
         except Exception as e:
             logger.error("Docker Image delete failed: {}".format(e))
+            raise e
+
+    @staticmethod
+    def create_time(image):
+        try:
+            return image.attrs["Created"]
+        except Exception as e:
+            logger.error("Get Image Create time failed: {}".format(e))
             raise e
 
 

@@ -1,4 +1,7 @@
-import urlparse
+try:
+    import urlparse
+except Exception:
+    import urllib.parse as urlparse
 import json
 import logging
 

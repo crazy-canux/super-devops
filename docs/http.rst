@@ -246,10 +246,8 @@ class Auth::
     from requests.auth import HTTPBasicAuth
     auth = HTTPBasicAuth(username, password)
 
-    from requests.auth import HTTPProxyAuth
-    HTTPProxyAuth(HTTPBasicAuth)
-
     from requests.auth import HTTPDigestAuth
+    auth = HTTPDigestAuth(username, password)
 
 
 requests_toolbelt
@@ -390,6 +388,8 @@ PSL for xml.
 
 usage
 -----
+
+    from xml.etree.ElementTree import ElementTree
 
 lxml
 ====
