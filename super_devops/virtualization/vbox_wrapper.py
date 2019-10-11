@@ -2,6 +2,7 @@ import subprocess
 import os
 import shutil
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
@@ -322,13 +323,13 @@ class BaseVbox(object):
             raise
         else:
             if rc:
-                logger.error(
+                logger.debug(
                     "take snapshot for {} failed with exit_code: {}".format(
                         vm, rc)
                 )
                 return False
             else:
-                logger.info("take snapshot for {} succeed.".format(vm))
+                logger.debug("take snapshot for {} succeed.".format(vm))
                 return True
 
     def start_vm(self, vm):
@@ -347,24 +348,23 @@ class BaseVbox(object):
             logger.debug("output: {}".format(output))
             logger.debug("error: {}".format(error))
             rc = process.returncode
-            # time.sleep(180)
         except Exception as e:
             logger.error("start vm {} error: {}.".format(vm, e.args))
             raise
         else:
             if rc:
-                logger.error(
+                logger.debug(
                     "start vm {} failed with exit_code: {}".format(
                         vm, rc)
                 )
                 return False
             else:
-                logger.info("start vm {} succeed.".format(vm))
+                logger.debug("start vm {} succeed.".format(vm))
                 return True
 
     def setup_ip(self, vm, address, netmask, gateway):
         try:
-            logger.info("setup ip address for {}".format(vm))
+            logger.debug("setup ip address for {}".format(vm))
             cmd = """
              su {} -c "vboxmanage guestcontrol {} --username 'Administrator' \
              run --exe 'C:\\Windows\\system32\\cmd.exe' -- \
@@ -389,17 +389,17 @@ class BaseVbox(object):
             raise
         else:
             if rc:
-                logger.error(
+                logger.debug(
                     "setup ip {} failed with exit_code: {}".format(vm, rc)
                 )
                 return False
             else:
-                logger.info("setup ip {} succeed.".format(vm))
+                logger.debug("setup ip {} succeed.".format(vm))
                 return True
 
     def setup_dns(self, vm, dns):
         try:
-            logger.info("setup dns for {}.".format(vm))
+            logger.debug("setup dns for {}.".format(vm))
             cmd = """
             su {} -c "vboxmanage guestcontrol {} --username 'Administrator' \
             run --exe 'C:\\Windows\\system32\\cmd.exe' -- \
@@ -427,12 +427,12 @@ class BaseVbox(object):
                 )
                 return False
             else:
-                logger.info("setup dns {} succeed.".format(vm))
+                logger.debug("setup dns {} succeed.".format(vm))
                 return True
 
     def install_license(self, vm, lic):
         try:
-            logger.info("install license for {}.".format(vm))
+            logger.debug("install license for {}.".format(vm))
             cmd = """
             su {} -c "vboxmanage guestcontrol {} --username 'Administrator' \
             run --exe 'C:\\Windows\\system32\\cmd.exe' -- \
@@ -459,12 +459,12 @@ class BaseVbox(object):
                 )
                 return False
             else:
-                logger.info("install license {} succeed.".format(vm))
+                logger.debug("install license {} succeed.".format(vm))
                 return True
 
     def activate_license(self, vm):
         try:
-            logger.info("active license for {}.".format(vm))
+            logger.debug("active license for {}.".format(vm))
             cmd = """
             su {} -c "vboxmanage guestcontrol {} --username 'Administrator' 
             run --exe 'C:\\Windows\\system32\\cmd.exe' -- \
@@ -491,7 +491,7 @@ class BaseVbox(object):
                 )
                 return False
             else:
-                logger.info("active license {} succeed.".format(vm))
+                logger.debug("active license {} succeed.".format(vm))
                 return True
 
     def list_hdd(self):
@@ -552,7 +552,7 @@ class BaseVbox(object):
                 )
                 return False
             else:
-                logger.info("delete hdd {} succeed.".format(hdd))
+                logger.debug("delete hdd {} succeed.".format(hdd))
                 return True
 
     def purge_vms(self, basefolder):
