@@ -59,7 +59,7 @@ class BaseDB(object):
 
     def __enter__(self):
         url = '{dialect}+{driver}://{username}:{password}@{host}:{port}/' \
-              '{database}?charset=utf8'.format(dialect=self.dialect,
+              '{database}?charset=UTF8MB4'.format(dialect=self.dialect,
                                                driver=self.driver,
                                                username=self.username,
                                                password=self.password,
