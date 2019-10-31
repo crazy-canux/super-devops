@@ -1,7 +1,7 @@
 import unittest
 import json
 
-from super_devops.http.requests_wrapper import BaseRequests
+from super_devops.super_http.requests_wrapper import BaseRequests
 
 
 class RequestsTestCase(unittest.TestCase):

@@ -5,7 +5,7 @@ except Exception:
 import logging
 import json
 
-from super_devops.http.requests_wrapper import BaseRequests
+from super_devops.super_http.requests_wrapper import BaseRequests
 
 logger = logging.getLogger(__name__)
 
@@ -140,7 +140,7 @@ class BaseKapacitor(object):
                 logger.debug(
                     "Get smtp for kapacitor succeed."
                 )
-                option = json.loads(res.content).get("options")
+                option = json.loads(str(res.content, "utf-8")).get("options")
                 logger.debug("option: {}".format(option))
                 return option
             else:
@@ -192,7 +192,8 @@ class BaseKapacitor(object):
                 logger.debug(
                     "Get topics for kapacitor succeed."
                 )
-                topics_list = json.loads(res.content).get("topics")
+                topics_list = json.loads(str(res.content, "utf-8")).get(
+                    "topics")
                 topics = [
                     str(topic.get("id"))
                     for topic in topics_list

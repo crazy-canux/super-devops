@@ -113,6 +113,41 @@ class BaseVbox(object):
                 logger.info("clone vm {} succeed.".format(name))
                 return True
 
+    def attach_storage(self, vm):
+        try:
+            logger.debug("attach storage for {}.".format(vm))
+            cmd = """
+            su {} -c "vboxmanage storageattach {} --storagectl IDE \
+            --port 0 --device 0 --type dvddrive \
+            --medium '/usr/share/virtualbox/VBoxGuestAdditions.iso'"
+            """.format(self.username, vm)
+            logger.debug(cmd)
+            process = subprocess.Popen(
+                cmd, shell=True,
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE
+            )
+            output, error = process.communicate()
+            output = output.decode("utf-8")
+            error = error.decode("utf-8")
+            logger.debug("output: {}".format(output))
+            logger.debug("error: {}".format(error))
+            rc = process.returncode
+        except Exception as e:
+            logger.error(
+                "attach storage for vm {} error: {}.".format(name, e.args)
+            )
+            raise
+        else:
+            if rc:
+                logger.error(
+                    "attach storage for vm {} failed with exit_code: {}".format(
+                        name, rc)
+                )
+                return False
+            else:
+                logger.info("attach storage for vm {} succeed.".format(name))
+                return True
+
     def list_vm(self, running=False):
         try:
             if running:
@@ -362,6 +397,46 @@ class BaseVbox(object):
                 logger.debug("start vm {} succeed.".format(vm))
                 return True
 
+    def remove_uninst(self, vm):
+        """
+        Linux remove uninst:
+        $ vboxmanage guestcontrol Linux64 run --username root --password pw
+         /bin/bash -- -l -c  '/bin/mount /dev/cdrom1 /media/cdrom'
+        $ vboxmanage guestcontrol Linux64 run --username user --password pw
+         /bin/bash -- -l -c  'cd /media/cdrom; sh VBoxLinuxAdditions.run uninstall'
+        """
+        try:
+            logger.debug("remove uninst for {}".format(vm))
+            cmd = """
+            su {} -c "vboxmanage guestcontrol {} --username 'Administrator' \
+            run --exe \
+            'C:\\Program Files\\Oracle\\VirtualBox Guest Additions\\uninst.exe' \
+             -- uninst.exe /S"
+            """.format(self.username, vm)
+            logger.debug(cmd)
+            process = subprocess.Popen(
+                cmd, shell=True,
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE
+            )
+            output, error = process.communicate()
+            output = output.decode("utf-8")
+            error = error.decode("utf-8")
+            logger.debug("output: {}".format(output))
+            logger.debug("error: {}".format(error))
+            rc = process.returncode
+        except Exception as e:
+            logger.error("remove uninst {} error: {}.".format(vm, e.args))
+            raise
+        else:
+            if rc:
+                logger.debug(
+                    "remove uninst {} failed with exit_code: {}".format(vm, rc)
+                )
+                return False
+            else:
+                logger.debug("remove uninst {} succeed.".format(vm))
+                return True
+
     def setup_ip(self, vm, address, netmask, gateway):
         try:
             logger.debug("setup ip address for {}".format(vm))
@@ -494,11 +569,83 @@ class BaseVbox(object):
                 logger.debug("active license {} succeed.".format(vm))
                 return True
 
-    def list_hdd(self):
+    def win_cmd(self, vm, cmd, user='Administrator'):
         try:
             cmd = """
-            su {} -c "vboxmanage list hdds | grep 'Parent UUID:'"
-            """.format(self.username)
+             su {} -c "vboxmanage guestcontrol {} --username {} \
+             run --exe 'C:\\Windows\\system32\\cmd.exe' -- \
+             cmd.exe /c {}
+             """.format(
+                self.username, vm, user, cmd
+            )
+            logger.debug(cmd)
+            process = subprocess.Popen(
+                cmd, shell=True,
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE
+            )
+            output, error = process.communicate()
+            output = output.decode("utf-8")
+            error = error.decode("utf-8")
+            logger.debug("output: {}".format(output))
+            logger.debug("error: {}".format(error))
+            rc = process.returncode
+        except Exception as e:
+            logger.error("run cmd on {} error: {}.".format(vm, e.args))
+            raise
+        else:
+            if rc:
+                logger.debug(
+                    "run cmd on {} failed with exit_code: {}".format(vm, rc)
+                )
+                return False
+            else:
+                logger.debug("run cmd on {} succeed.".format(vm))
+                return True
+
+    def linux_shell(self, vm, username, password, shell):
+        try:
+            logger.debug("shell: {}".format(shell))
+            cmd = """
+            su {} -c "vboxmanage guestcontrol {} --username {} \
+            --password {} run /bin/bash -- -l -c '{}'"
+            """.format(self.username, vm, username, password, shell)
+            logger.debug(cmd)
+            process = subprocess.Popen(
+                cmd, shell=True,
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE
+            )
+            output, error = process.communicate()
+            output = output.decode("utf-8")
+            error = error.decode("utf-8")
+            logger.debug("output: {}".format(output))
+            logger.debug("error: {}".format(error))
+            rc = process.returncode
+        except Exception as e:
+            logger.error(
+                "run linux command on {} error: {}.".format(vm, e.args)
+            )
+            raise
+        else:
+            if rc:
+                logger.debug(
+                    "run linux command on  {} failed with exit_code: {}".format(vm, rc)
+                )
+                return False
+            else:
+                logger.debug("run linux command on {} succeed.".format(vm))
+                return True
+
+    def list_hdd(self, parent=False):
+        try:
+            if parent:
+                cmd = """
+                su {} -c "vboxmanage list hdds | grep '^Parent UUID:'"
+                """.format(self.username)
+            else:
+                cmd = """
+                su {} -c "vboxmanage list hdds | grep '^UUID:'"
+                """.format(self.username)
+
             logger.debug(cmd)
             process = subprocess.Popen(
                 cmd, shell=True,
@@ -605,8 +752,10 @@ class BaseVbox(object):
         try:
             hdds = self.list_hdd()
             while hdds:
+                p_hdds = self.list_hdd(True)
                 for hdd in hdds:
-                    self.delete_hdd(hdd)
+                    if hdd not in p_hdds:
+                        self.delete_hdd(hdd)
                 hdds = self.list_hdd()
         except Exception as e:
             logger.error("purge hdd error: {}.".format(e.args))

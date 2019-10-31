@@ -1,6 +1,6 @@
 import unittest
 
-from super_devops.email.smtplib_wrapper import BaseEmail
+from super_devops.super_email.smtplib_wrapper import BaseEmail
 
 
 class EmailTestCase(unittest.TestCase):

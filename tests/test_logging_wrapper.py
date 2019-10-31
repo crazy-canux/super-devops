@@ -1,4 +1,4 @@
-from super_devops.logging.logging_wrapper import BaseLogging
+from super_devops.super_log.logging_wrapper import BaseLogging
 
 
 logger = BaseLogging(__name__).init_debug_and_info_logger(

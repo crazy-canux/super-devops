@@ -1,6 +1,6 @@
 import logging
 
-from super_devops.http.requests_wrapper import BaseRequests
+from super_devops.super_http.requests_wrapper import BaseRequests
 
 
 try:

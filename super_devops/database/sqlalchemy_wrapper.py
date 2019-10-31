@@ -59,14 +59,14 @@ class BaseDB(object):
 
     def __enter__(self):
         url = '{dialect}+{driver}://{username}:{password}@{host}:{port}/' \
-              '{database}?charset=UTF8MB4'.format(dialect=self.dialect,
-                                               driver=self.driver,
-                                               username=self.username,
-                                               password=self.password,
-                                               host=self.host,
-                                               port=self.port,
-                                               database=self.database
-                                               )
+              '{database}'.format(dialect=self.dialect,
+                                  driver=self.driver,
+                                  username=self.username,
+                                  password=self.password,
+                                  host=self.host,
+                                  port=self.port,
+                                  database=self.database
+                                  )
         self.engine = create_engine(
             url,
             **self.kwargs

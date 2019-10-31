@@ -5,7 +5,7 @@ except Exception:
 import json
 import logging
 
-from super_devops.http.requests_wrapper import BaseRequests
+from super_devops.super_http.requests_wrapper import BaseRequests
 from super_devops.utils import BaseUtils
 
 logger = logging.getLogger(__name__)
@@ -223,7 +223,7 @@ class BaseGrafana(object):
             url = urlparse.urljoin(self.grafana_url, "/api/admin/users")
             payload = json.dumps({
                 "name": name,
-                "email": email,
+                "super_email": email,
                 "login": login if login else name,
                 "password": password
             })
@@ -238,7 +238,7 @@ class BaseGrafana(object):
                 )
             if res.status_code == 200:
                 logger.info("Create new global user succeed.")
-                return json.loads(res.content).get("id")
+                return json.loads(str(res.content, "utf-8")).get("id")
             else:
                 logger.error("Create new global user failed.")
                 return False

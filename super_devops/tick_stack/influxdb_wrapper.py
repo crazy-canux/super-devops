@@ -5,7 +5,7 @@ except Exception:
     import urllib.parse as urlparse
 import json
 
-from super_devops.http.requests_wrapper import BaseRequests
+from super_devops.super_http.requests_wrapper import BaseRequests
 
 logger = logging.getLogger(__name__)
 
@@ -49,7 +49,7 @@ class BaseInfluxdb(object):
                 )
                 logger.debug("show database res: {}".format(res.content))
             if res.status_code == 200:
-                db_lst = json.loads(res.content).get(
+                db_lst = json.loads(str(res.content, "utf-8")).get(
                     "results")[0].get("series")[0].get("values")
                 logger.debug("db list: {}".format(db_lst))
                 if db_lst and ([database] in db_lst):

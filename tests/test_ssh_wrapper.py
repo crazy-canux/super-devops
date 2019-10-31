@@ -1,6 +1,6 @@
 import unittest
 
-from super_devops.ssh.paramiko_wrapper import BaseParamiko
+from super_devops.super_ssh.paramiko_wrapper import BaseParamiko
 
 
 class ParamikoTestCase(unittest.TestCase):

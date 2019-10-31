@@ -9,7 +9,7 @@ import os
 
 logger = logging.getLogger(__name__)
 logging.getLogger('smtplib').setLevel(logging.WARNING)
-logging.getLogger('email').setLevel(logging.WARNING)
+logging.getLogger('super_email').setLevel(logging.WARNING)
 
 
 class BaseEmail(object):
