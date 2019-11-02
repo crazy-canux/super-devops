@@ -134,18 +134,18 @@ class BaseVbox(object):
             rc = process.returncode
         except Exception as e:
             logger.error(
-                "attach storage for vm {} error: {}.".format(name, e.args)
+                "attach storage for vm {} error: {}.".format(vm, e.args)
             )
             raise
         else:
             if rc:
                 logger.error(
                     "attach storage for vm {} failed with exit_code: {}".format(
-                        name, rc)
+                        vm, rc)
                 )
                 return False
             else:
-                logger.info("attach storage for vm {} succeed.".format(name))
+                logger.info("attach storage for vm {} succeed.".format(vm))
                 return True
 
     def list_vm(self, running=False):
@@ -615,8 +615,8 @@ class BaseVbox(object):
                 stdout=subprocess.PIPE, stderr=subprocess.PIPE
             )
             output, error = process.communicate()
-            output = output.decode("utf-8")
-            error = error.decode("utf-8")
+            # output = output.decode("utf-8")
+            # error = error.decode("utf-8")
             logger.debug("output: {}".format(output))
             logger.debug("error: {}".format(error))
             rc = process.returncode

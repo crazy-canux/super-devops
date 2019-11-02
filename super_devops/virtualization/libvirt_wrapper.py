@@ -26,9 +26,22 @@ class BaseLibvirt(object):
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.connection.close()
 
+    def list_all_networks(self):
+        try:
+            networks = self.connection.listAllNetworks()
+            names = [
+                net.name()
+                for net in networks
+            ]
+        except Exception as e:
+            logger.error("List all networks failed.")
+        else:
+            logger.debug("all networks: {}".format(names))
+            return names
+
     def network_exist(self, name):
         try:
-            if name in self.connection.listNetworks():
+            if name in self.list_all_networks():
                 logger.debug("network {} exist.".format(name))
                 return True
             else:

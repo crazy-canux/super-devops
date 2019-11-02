@@ -41,10 +41,10 @@ class virConnect::
     // network
     listAllNetworks(self, flags=0)
     listDefinedNetworks(self)
-    listNetworks(self)
+    listNetworks(self) // inactive not show up.
     networkCreateXML(self, xmlDesc) # temporary
     networkDefineXML(self, xml) # persistent
-    networkLookupByName(self, name)
+    networkLookupByName(self, name) // not exist will raise exception.
 
     // interface
     listAllInterfaces(self, flags=0)
