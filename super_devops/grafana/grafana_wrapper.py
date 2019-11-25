@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 class BaseGrafana(object):
     def __init__(
-            self, grafana_url="http://localhost:3000/",
+            self, grafana_url="http://localhost:3000/", key=None,
             username=None, password=None, domain=None
     ):
         self.grafana_url = grafana_url
@@ -21,7 +21,10 @@ class BaseGrafana(object):
         self.password = password
         self.domain = domain
 
-        self.header = {'Content-Type': 'application/json'}
+        self.header = {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer {}'.format(key)
+        }
 
     def check_data_source_exist_by_name(self, name):
         try:

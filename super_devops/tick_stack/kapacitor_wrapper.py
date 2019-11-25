@@ -165,7 +165,35 @@ class BaseKapacitor(object):
         except Exception:
             raise
 
-    # TODO
+    def update_task(self, id, data):
+        try:
+            url = self.base_url + "/tasks/{}".format(id)
+            logger.debug("url: {}".format(url))
+            with BaseRequests(
+                username=self.username, password=self.password,
+                domain=self.domain
+            ) as req:
+                res = req.patch(url, data)
+                logger.debug(
+                    "update task res: {}".format(res.content)
+                )
+                logger.debug(
+                    "udpate task status_code: {}".format(
+                        res.status_code)
+                )
+            if res.status_code == 200:
+                logger.debug(
+                    "update task succeed."
+                )
+                return True
+            else:
+                logger.debug(
+                    "update task failed."
+                )
+                return False
+        except Exception:
+            raise
+
     def get_all_tasks(self):
         """Only enabled tasks can be listed"""
         try:

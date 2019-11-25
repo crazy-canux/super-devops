@@ -57,13 +57,16 @@ New Features:
 
     docker
     virtualbox
-    python3(WIP)
+    python3
 
 ## 1.8
+
+python3 support.
 
 New Features:
 
     gitlab
+    firewall
 
 ## 1.9
 

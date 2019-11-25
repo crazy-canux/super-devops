@@ -131,3 +131,60 @@ class BaseInfluxdb(object):
                 return False
         except Exception:
             raise
+
+    def show(self, ifql):
+        try:
+            payload = {
+                "q": ifql
+            }
+            with BaseRequests(
+                    username=self.username,
+                    password=self.password,
+                    domain=self.domain
+            ) as req:
+                res = req.get(
+                    self.query_url, params=payload,
+                    **{
+                        'headers': self.header,
+                        'timeout': 60,
+                        'verify': False
+                    }
+                )
+                logger.debug("show res: {}".format(res.content))
+            if res.status_code == 200:
+                return json.loads(str(res.content, "utf-8"))
+            else:
+                logger.error("show failed")
+                return None
+        except Exception:
+            raise
+
+    def query(self, db, ifql):
+        try:
+            url = urlparse.urljoin(
+                self.influxdb_url, "/query?db={}".format(db)
+            )
+            payload = {
+                "q": ifql
+            }
+            with BaseRequests(
+                    username=self.username,
+                    password=self.password,
+                    domain=self.domain
+            ) as req:
+                res = req.get(
+                    url, params=payload,
+                    **{
+                        'headers': self.header,
+                        'timeout': 60,
+                        'verify': False
+                    }
+                )
+                logger.debug("select res: {}".format(res.content))
+            if res.status_code == 200:
+                return json.loads(str(res.content, "utf-8"))
+            else:
+                logger.error("select failed.")
+                return None
+        except Exception:
+            raise
