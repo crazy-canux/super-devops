@@ -18,10 +18,10 @@ class EmailTestCase(unittest.TestCase):
     def test_sendattach(self):
         with BaseEmail() as email:
             email.sendmail(
-                frm="taf@gmail.com",
+                frm="user@domain.com",
                 to=["canuxcheng@gmail.com"],
                 cc=["canuxcheng@gmail.com"],
-                subject='taf test',
+                subject='test',
                 text='i am text',
                 files=['/home/canux/examples.desktop']
             )

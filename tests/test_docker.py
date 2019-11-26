@@ -44,7 +44,7 @@ class DockerTestCase(unittest.TestCase):
         node_id = None
         with BaseSwarm() as swarm:
             node_id = swarm.init(
-                advertise_addr="10.103.239.40", force_new_cluster=True
+                advertise_addr="127.0.0.1", force_new_cluster=True
             )
         print(node_id)
         self.assertIsNotNone(node_id, "swarm init failed")
@@ -52,8 +52,8 @@ class DockerTestCase(unittest.TestCase):
     @unittest.skip("ignore")
     def test_swarm_join(self):
         with BaseParamiko(
-                hostname="10.103.239.40", username="canux",
-                password="S0nicwall"
+                hostname="127.0.0.1", username="usernme",
+                password="password"
         ) as ssh:
             output, error, rc = ssh.exec_command(
                 "docker swarm join-token -q worker"
@@ -62,18 +62,18 @@ class DockerTestCase(unittest.TestCase):
         print(token)
         with BaseSwarm() as swarm:
            result = swarm.join(
-                remote_addrs=["10.103.239.40:2377"],
-                join_token=token, advertise_addr="10.103.239.40"
+                remote_addrs=["127.0.0.1:2377"],
+                join_token=token, advertise_addr="127.0.0.1"
             )
         self.assertTrue(result, "swarm join failed.")
 
     @unittest.skip("ignore")
     def test_overlay(self):
-        name = "ol0"
-        subnet = "172.12.0.0/16"
-        iprange = "172.12.0.0/24"
-        gateway = "172.12.0.1"
-        opt_name = "ol0"
+        name = "docker1"
+        subnet = "172.19.0.0/16"
+        iprange = "172.19.0.0/24"
+        gateway = "172.19.0.1"
+        opt_name = "docker1"
         with BaseNetworks() as network:
             result = network.create_overlay_network(
                 name=name, subnet=subnet, iprange=iprange, gateway=gateway,
@@ -84,9 +84,9 @@ class DockerTestCase(unittest.TestCase):
 
     @unittest.skip("ignore")
     def test_get_captureatp_version(self):
-        registry = "harbor.domain.com:4433"
-        project = "captureatp"
-        name = "sandboxav"
+        registry = "harbor.domain.com:443"
+        project = "app"
+        name = "test"
         repo = "{}/{}/{}".format(registry, project, name)
         with BaseImages() as image:
             images = image.list(repo, if_all=True)

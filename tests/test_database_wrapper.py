@@ -6,8 +6,8 @@ from super_devops.database.sqlalchemy_wrapper import BaseDB
 class DatabaseTestCase(unittest.TestCase):
     def test_select_query(self):
         with BaseDB(
-                host='10.103.239.70', username='sandbox',
-                password='P@ssword', database='sandbox', port=1433
+                host='127.0.0.1', username='username',
+                password='password', database='test', port=1433
         ) as db:
             results, keys = db.select_query("select @@version")
         self.assertIsInstance(results, list, msg='results failed')
@@ -45,10 +45,10 @@ class DatabaseTestCase(unittest.TestCase):
                 host='127.0.0.1', username='username',
                 password='password', database='test', port=1433
         ) as db:
-            result = db.dml_query("delete from jobs where sample_sha256 = "
-                                  "'4ed869e5c11e23218d808f91b341f4e5fc28f729c2477f71cee956cf50dd3b16'")
-            result1 = db.dml_query("update samples set status = 'bad' where "
-                                   "sha256 = '4ed869e5c11e23218d808f91b341f4e5fc28f729c2477f71cee956cf50dd3b16'")
+            result = db.dml_query("delete from table where key = "
+                                  "'value'")
+            result1 = db.dml_query("update table set key = 'value' where "
+                                   "key = 'value'")
 
 
 if __name__ == '__main__':
