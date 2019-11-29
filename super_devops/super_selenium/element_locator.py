@@ -106,7 +106,6 @@ class BaseElement(object):
         return _elements
 
     def _normalize_result(self, elements):
-        # if elements is not basestring or elements is not str:
         if elements is not str:
             return elements
         else:

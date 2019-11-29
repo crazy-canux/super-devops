@@ -28,12 +28,40 @@ class BaseIptables(object):
         except Exception:
             raise
 
+    def list_rules(self):
+        try:
+            for chain in self.table.chains:
+                logger.debug("chain: {}".format(chain.name))
+                for rule in chain.rules:
+                    logger.debug(iptc.easy.decode_iptc_rule(rule))
+        except Exception:
+            raise
+
+    def clean_user_define_chain(self):
+        try:
+            logger.debug("clean user define chain.")
+            self.table.autocommit = False
+            for chain in self.table.chains:
+                if not chain.is_builtin():
+                    for rule in chain.rules:
+                        chain.delete_rule(rule)
+            self.table.commit()
+            self.table.refresh()
+            self.table.autocommit = True
+        except Exception:
+            raise
+
     def clean_builtin_chain(self):
         try:
             logger.debug("delete all rules from builtin chain.")
+            self.table.autocommit = False
             for chain in self.table.chains:
                 if chain.is_builtin():
-                    chain.flush()
+                    for rule in chain.rules:
+                        chain.delete_rule(rule)
+            self.table.commit()
+            self.table.refresh()
+            self.table.autocommit = True
         except Exception:
             raise
 

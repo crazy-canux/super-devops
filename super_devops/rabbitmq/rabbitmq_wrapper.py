@@ -1,13 +1,9 @@
 import logging
+import urllib.parse as urlparse
 
 from super_devops.super_http.requests_wrapper import BaseRequests
 
 
-try:
-    import urlparse
-except Exception:
-    import urllib.parse as urlparse
-    
 logger = logging.getLogger(__name__)
 
 

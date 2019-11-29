@@ -61,21 +61,27 @@ New Features:
 
 ## 1.8
 
-python3 support.
+start python3 support.
 
 New Features:
 
-    gitlab
     firewall
 
 ## 1.9
 
+remove python2 compatible.
+
+support python3 only.
+
 New Features:
 
     mongo
+    ftp
 
 ## 2.0
 
 New Features:
 
     kubernetes
+    gitlab
+    jenkins

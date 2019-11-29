@@ -3,7 +3,6 @@ import sys
 from collections import OrderedDict
 
 from robot.parsing.model import TestData
-from robot.api import logger
 from robot.errors import ExecutionFailed
 
 

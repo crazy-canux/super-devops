@@ -1,5 +1,5 @@
 .. super-devops documentation master file, created by
-   sphinx-quickstart on Tue Nov 14 02:13:20 2017.
+   sphinx-quickstart on Fri Nov 29 02:57:23 2019.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
@@ -35,9 +35,10 @@ User Guide
    winrm
    wmi
    office
+   nagios
+   virtualization
+   rpc
    misc
-
-
 
 Indices and tables
 ==================

@@ -201,7 +201,7 @@ class BaseRF(object):
     def __parse_show(self):
         if self.args.all:
             header = ['ID', 'TAGS', 'TITLE']
-            formatter = ['{0:<5}', '{1:<30}', '{2}']
+            formatter = ['{0:<5}', '{1:<80}', '{2}']
             partial_func = [BaseColor.MAGENTA, BaseColor.CYAN, BaseColor.GREEN]
 
             format_wf = ''.join(formatter)
@@ -219,8 +219,8 @@ class BaseRF(object):
             print('\n'.join(
                 format_wf.format(
                     index,
-                    [str(tag) for tag in workflow.tags],
-                    workflow.name
+                    str([tag.value for tag in workflow.tags][0]),
+                    workflow.name[0]
                 ) for index, workflow in enumerate(
                     self.suite.workflowdict.values(), 1
                 )
@@ -261,14 +261,18 @@ class BaseRF(object):
         )
         if not os.path.exists(__outputdir):
             os.makedirs(__outputdir, 0o755)
+        logger.info("outputdir: {}".format(__outputdir), also_console=True)
+        output_file = os.path.join(
+            __outputdir, "output.xml"
+        )
+        logger.info("outputfile: {}".format(output_file), also_console=True)
         __summary_path = os.path.join(
             __outputdir, 'summary_' + __timestamp + '.txt'
         )
 
-        logger.info("outputdir: {}".format(__outputdir), also_console=True)
-
         if self.args.pythonpath:
-            print("my pythonpath: ", self.args.pythonpath)
+            logger.info("my pythonpath: ", self.args.pythonpath,
+                        also_console=True)
             __options.setdefault('pythonpath', self.args.pythonpath)
 
         if not self.args.debug:
@@ -284,6 +288,7 @@ class BaseRF(object):
             robot.run(
                 *self.suite.test_files,
                 outputdir=__outputdir,
+                output=output_file,
                 timestampoutputs=False,
                 test=workflows,
                 consolecolors='on',
@@ -293,9 +298,6 @@ class BaseRF(object):
                 **__options
             )
 
-        output_file = os.path.join(
-            __outputdir, "output.xml"
-        )
         result = ExecutionResult(output_file)
         result.configure(stat_config={
             "suite_stat_level": 2,

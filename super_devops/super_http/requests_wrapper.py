@@ -1,12 +1,23 @@
 import logging
 
 from requests.sessions import Session
-from requests.auth import HTTPBasicAuth
 from requests.packages import urllib3
+from requests.auth import AuthBase
 
 
 logger = logging.getLogger(__name__)
 logging.getLogger('requests').setLevel(logging.WARNING)
+
+
+class SessionAuth(AuthBase):
+    def __init__(self, session_id):
+        if not session_id:
+            session_id = ''
+        self.session_id = session_id
+
+    def __call__(self, r):
+        r.headers['Authorization'] = self.session_id
+        return r
 
 
 class BaseRequests(Session):
@@ -19,10 +30,12 @@ class BaseRequests(Session):
     res.text
     """
 
-    def __init__(self, username=None, password=None, domain=None):
+    def __init__(self, username=None, password=None,
+                 domain=None, session_id=None):
         super(BaseRequests, self).__init__()
 
-        self.auth = HTTPBasicAuth(username, password)
+        # self.auth = HTTPBasicAuth(username, password)
+        self.auth = SessionAuth(session_id)
         # disable ssl verification
         self.verify = False
 

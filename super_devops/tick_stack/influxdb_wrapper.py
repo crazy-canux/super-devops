@@ -1,8 +1,5 @@
 import logging
-try:
-    import urlparse
-except Exception:
-    import urllib.parse as urlparse
+import urllib.parse as urlparse
 import json
 
 from super_devops.super_http.requests_wrapper import BaseRequests

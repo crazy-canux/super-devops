@@ -8,8 +8,13 @@ class WebButton(BaseElement):
     def click(self):
             self.current.click()
 
+    def get_class_attribute(self):
+        return self.object.get_attribute('class')
+
     @property
     def enabled(self):
         if self.exists():
             return self.object.is_enabled()
         return False
+
+

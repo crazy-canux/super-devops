@@ -25,3 +25,7 @@ class WebCheckbox(BaseElement):
     def __set(self, on=True):
         if self.exists(5) and (self.state != on):
             self.toggle()
+
+    def get_class_attribute(self):
+        return self.object.get_attribute('class')
+
