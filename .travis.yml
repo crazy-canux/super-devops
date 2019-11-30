@@ -9,6 +9,8 @@ addons:
   apt:
     packages:
     - freetds-dev
+    - libvirt-dev
+  
 
 before_install:
   - pip install -U pip
