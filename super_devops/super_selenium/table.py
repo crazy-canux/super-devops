@@ -1,5 +1,6 @@
-from .element_locator import BaseElement
 from selenium.webdriver.remote.webelement import WebElement
+
+from .element_locator import BaseElement
 
 
 class WebTable(BaseElement):

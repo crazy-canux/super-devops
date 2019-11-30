@@ -7,8 +7,8 @@ import robot
 from robot.api import logger
 from robot.api import ExecutionResult
 
-from super_devops.misc.colorama_wrapper import BaseColor
-from super_devops.utils import BaseUtils
+from ..misc.colorama_wrapper import BaseColor
+from ..utils import BaseUtils
 from .utils import Suite, Output
 
 

@@ -3,7 +3,7 @@ import logging
 from selenium import webdriver
 
 from .wait import Wait
-from super_devops.robotframework.cache import Cache
+from ..super_rf.cache import Cache
 
 
 logger = logging.getLogger(__name__)
