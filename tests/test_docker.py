@@ -4,7 +4,7 @@ import re
 from super_devops.container.docker_wrapper import BaseSwarm, BaseNetworks, \
     BaseDocker, BaseImages, BaseContainers, BaseNodes
 
-from super_devops.ssh.paramiko_wrapper import BaseParamiko
+from super_devops.super_ssh.paramiko_wrapper import BaseParamiko
 
 
 class DockerTestCase(unittest.TestCase):

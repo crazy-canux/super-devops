@@ -8,7 +8,7 @@ class EmailTestCase(unittest.TestCase):
     def test_sendtext(self):
         with BaseEmail() as email:
             email.sendmail(
-                frm="taf@gmail.com",
+                frm="devops@gmail.com",
                 to=["canuxcheng@gmail.com"],
                 subject='taf test',
                 text='i am text'
