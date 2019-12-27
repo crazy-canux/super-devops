@@ -23,7 +23,7 @@ class BaseUtils(object):
     @staticmethod
     def file_2_sql(filename):
         """Remove go from sql file for sqlalchemy and pymssql."""
-        with open(filename, 'rb') as f:
+        with open(filename, 'r') as f:
             sql_list = f.readlines()
             sql_list = [
                 line

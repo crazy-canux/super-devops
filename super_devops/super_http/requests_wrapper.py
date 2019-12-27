@@ -34,8 +34,11 @@ class BaseRequests(Session):
                  domain=None, session_id=None):
         super(BaseRequests, self).__init__()
 
-        # self.auth = HTTPBasicAuth(username, password)
-        self.auth = SessionAuth(session_id)
+        if session_id:
+            self.auth = SessionAuth(session_id)
+        else:
+            self.auth = HTTPBasicAuth(username, password)
+
         # disable ssl verification
         self.verify = False
 
