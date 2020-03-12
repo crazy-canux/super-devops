@@ -367,6 +367,71 @@ class BaseVbox(object):
                 logger.debug("take snapshot for {} succeed.".format(vm))
                 return True
 
+    def restore_snapshot(self, vm, name):
+        try:
+            logger.debug("restore snapshot for {}".format(vm))
+            cmd = "su {} -c 'vboxmanage snapshot {} restore {}'".format(
+                self.username, vm, name
+            )
+            logger.debug(cmd)
+            process = subprocess.Popen(
+                cmd, shell=True,
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE
+            )
+            output, error = process.communicate()
+            output = output.decode("utf-8")
+            error = error.decode("utf-8")
+            logger.debug("output: {}".format(output))
+            logger.debug("error: {}".format(error))
+            rc = process.returncode
+        except Exception as e:
+            logger.error(
+                "restore snapshot for {} error: {}.".format(vm, e.args)
+            )
+            raise
+        else:
+            if rc:
+                logger.debug(
+                    "restore snapshot for {} failed with exit_code: {}".format(
+                        vm, rc)
+                )
+                return False
+            else:
+                logger.debug("restore snapshot for {} succeed.".format(vm))
+                return True
+
+    def delete_snapshot(self, vm, name):
+        try:
+            logger.debug("delete snapshot for {}".format(vm))
+            cmd = "su {} -c 'vboxmanage snapshot {} delete {}'".format(
+                self.username, vm, name)
+            logger.debug(cmd)
+            process = subprocess.Popen(
+                cmd, shell=True,
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE
+            )
+            output, error = process.communicate()
+            output = output.decode("utf-8")
+            error = error.decode("utf-8")
+            logger.debug("output: {}".format(output))
+            logger.debug("error: {}".format(error))
+            rc = process.returncode
+        except Exception as e:
+            logger.error(
+                "delete snapshot for {} error: {}.".format(vm, e.args)
+            )
+            raise
+        else:
+            if rc:
+                logger.debug(
+                    "delete snapshot for {} failed with exit_code: {}".format(
+                        vm, rc)
+                )
+                return False
+            else:
+                logger.debug("delete snapshot for {} succeed.".format(vm))
+                return True
+
     def start_vm(self, vm):
         try:
             logger.debug("start vm {}".format(vm))
@@ -401,9 +466,9 @@ class BaseVbox(object):
         """
         Linux remove uninst:
         $ vboxmanage guestcontrol Linux64 run --username root --password pw
-         /bin/bash -- -l -c  '/bin/mount /dev/cdrom1 /media/cdrom'
+         --exe /bin/bash -- -l -c  '/bin/mount /dev/cdrom1 /media/cdrom'
         $ vboxmanage guestcontrol Linux64 run --username user --password pw
-         /bin/bash -- -l -c  'cd /media/cdrom; sh VBoxLinuxAdditions.run uninstall'
+         --exe /bin/bash -- -l -c  'cd /media/cdrom; sh VBoxLinuxAdditions.run uninstall'
         """
         try:
             logger.debug("remove uninst for {}".format(vm))
@@ -607,7 +672,7 @@ class BaseVbox(object):
             logger.debug("shell: {}".format(shell))
             cmd = """
             su {} -c "vboxmanage guestcontrol {} --username {} \
-            --password {} run /bin/bash -- -l -c '{}'"
+            --password {} run --exe /bin/bash -- -l -c '{}'"
             """.format(self.username, vm, username, password, shell)
             logger.debug(cmd)
             process = subprocess.Popen(
