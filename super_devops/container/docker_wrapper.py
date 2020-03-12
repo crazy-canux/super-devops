@@ -374,7 +374,7 @@ class BaseImages(object):
             # return list of Images
             return images
 
-    def list(self, name=None, if_all=False, filters=None):
+    def list(self, name=None, all=False, filters=None):
         try:
             images = self.images.list(name, if_all, filters)
         except Exception as e:
@@ -403,9 +403,16 @@ class BaseImages(object):
             logger.error("Docker Image push failed: {}".format(e))
             raise e
 
-    def prune(self, filters=None):
+    def prune(self, dangling=True):
+        """
+        prune images.
+        :param dangling: bool
+        :return: dict
+        True means only delete untagged images.
+        False means delete all unused images.
+        """
         try:
-            images = self.images.prune(filters)
+            images = self.images.prune({"dangling": dangling})
         except Exception as e:
             logger.error("Docker Image prune failed: {}".format(e))
             raise e
@@ -424,7 +431,7 @@ class BaseImages(object):
 
     def delete_all(self):
         try:
-            for image in self.list(if_all=True):
+            for image in self.list(all=True):
                 self.images.remove(image.id)
         except Exception as e:
             logger.error("Docker Image delete failed: {}".format(e))

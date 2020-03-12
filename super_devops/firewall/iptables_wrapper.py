@@ -1,9 +1,10 @@
 import sys
 import logging
 
+import iptc
+
 logger = logging.getLogger(__name__)
 
-import iptc
 
 class BaseIptables(object):
     def __init__(self, table='filter'):
