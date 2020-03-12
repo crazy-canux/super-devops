@@ -403,7 +403,7 @@ class BaseVbox(object):
     def delete_snapshot(self, vm, name):
         try:
             logger.debug("delete snapshot for {}".format(vm))
-            cmd = "su {} -c 'vboxmanage snapshot {} delete {}'".format(
+            cmd = "su {} -c 'vboxmanage snapshot {} delete {}".format(
                 self.username, vm, name)
             logger.debug(cmd)
             process = subprocess.Popen(
@@ -466,9 +466,9 @@ class BaseVbox(object):
         """
         Linux remove uninst:
         $ vboxmanage guestcontrol Linux64 run --username root --password pw
-         --exe /bin/bash -- -l -c  '/bin/mount /dev/cdrom1 /media/cdrom'
+         /bin/bash -- -l -c  '/bin/mount /dev/cdrom1 /media/cdrom'
         $ vboxmanage guestcontrol Linux64 run --username user --password pw
-         --exe /bin/bash -- -l -c  'cd /media/cdrom; sh VBoxLinuxAdditions.run uninstall'
+         /bin/bash -- -l -c  'cd /media/cdrom; sh VBoxLinuxAdditions.run uninstall'
         """
         try:
             logger.debug("remove uninst for {}".format(vm))

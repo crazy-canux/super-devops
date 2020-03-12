@@ -36,7 +36,7 @@ class BaseRequests(Session):
 
         if session_id:
             self.auth = SessionAuth(session_id)
-        else:
+        elif username and password:
             self.auth = HTTPBasicAuth(username, password)
 
         # disable ssl verification
