@@ -15,7 +15,7 @@ class DatabaseTestCase(unittest.TestCase):
 
     def test_mysql(self):
         with BaseDB(
-            host='127.0.0.1', username='sandbox',
+            host='127.0.0.1', username='username',
             password='password', database='sandbox', port=3306
         ) as db:
             results, keys = db.select_query("select version();")

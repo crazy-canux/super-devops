@@ -608,6 +608,15 @@ class BaseServices(object):
             )
             raise e
 
+    def force_update_all(self):
+        try:
+            for service in self.list():
+                logger.debug("force update service: {}".format(service.name))
+                service.force_update()
+        except Exception as e:
+            logger.error("Docker service force update failed: {}".format(e))
+            raise e
+
 
 class BaseNodes(object):
     def __init__(

@@ -19,7 +19,6 @@ New Features:
 
     email
 
-
 ## 1.2
 
 New Features:
@@ -66,22 +65,39 @@ start python3 support.
 New Features:
 
     firewall
+    
+***
 
-## 1.9
+## 1.9.1
 
 remove python2 compatible.
 
 support python3 only.
+    
+## 1.9.2 (WIP)
 
 New Features:
 
+    gitlab
     mongo
-    ftp
+    
+## 1.9.4 (TBD)
 
-## 2.0
+New Features:
+
+    ftp
+    office
+    
+## 1.9.6 (TBD)
+    
+New Features:
+    
+    snmp
+    nfs
+    
+## 1.9.8 (TBD)
 
 New Features:
 
     kubernetes
-    gitlab
     jenkins
