@@ -1,6 +1,10 @@
-import sys
 import logging
 
+import os
+for xtdir in ["/lib/xtables", "/usr/lib/xtables", "/usr/local/lib/xtables"]:
+    if os.path.isdir(xtdir):
+        os.environ['XTABLES_LIBDIR'] = xtdir
+        break
 import iptc
 
 logger = logging.getLogger(__name__)
@@ -120,22 +124,4 @@ class BaseIptables(object):
             chain.insert_rule(iptc.easy.encode_iptc_rule(rule_dict))
         except Exception:
             raise
-
-
-if __name__ == "__main__":
-    rule_dict = {
-        'src': '172.20.0.0/16',
-        'dst': '!172.20.0.0/16',
-        'target': 'MASQUERADE'
-    }
-    it = BaseIptables('nat')
-    if it.check_rule_exist_on_chain('POSTROUTING', rule_dict):
-        it.delete_rule_from_chain('postrouting', rule_dict)
-
-
-    it = BaseIptables('filter')
-    it.delete_user_define_chain()
-    it.clean_builtin_chain()
-    it.set_policy_for_builtin_chain()
-
 

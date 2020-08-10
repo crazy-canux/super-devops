@@ -14,6 +14,10 @@ import::
 
     import SocketServer
 
+class ThreadingMixIn::
+
+    ...
+
 class BaseRequestHandler::
 
     BaseRequestHandler(self, request, client_address, server)

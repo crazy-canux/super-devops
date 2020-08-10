@@ -78,8 +78,10 @@ support python3 only.
 
 New Features:
 
+    network
     gitlab
     mongo
+    vault
     
 ## 1.9.4 (TBD)
 

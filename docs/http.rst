@@ -13,12 +13,17 @@ BaseHTTPServer/CGIHTTPServer/SimpleHTTPServer/cookielib/Cookie
 
 python2 PSL for http server.
 
+python3 PSL http.server
+
 usage
 -----
 
 import::
 
+    # python2:
     import BaseHTTPServer
+    # python3:
+    import http.server
 
 class HTTPConnection::
 
@@ -60,12 +65,22 @@ class BaseHttpRequestHandler::
     rfile # read message from client
     wfile  # write message to client
 
+    // class RpcServerHandle(BaseHttpRequestHandler):
+    //    ...
+
 class HTTPServer::
 
     HTTPServer(SocketServer.TCPServer)
-    HTTPServer(server_address, RequestHandlerClass, bind_and_activate=True)
+    server = HTTPServer(server_address, RequestHandlerClass, bind_and_activate=True)
+    // server = HTTPServer(server_address, RpcServerHandle)
+
+    // class ThreadingHTTPServer(socketserver.ThreadingMixIn, HTTPServer):
+    //     ...
+    // server = ThreadingHTTPServer(socketserver.ThreadingMixIn, HTTPServer)
+
     # methods:
     serve_forever(self, poll_interval=0.5)
+    // server.serve_forever()
 
 http
 ====
