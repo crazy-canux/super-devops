@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 SUMMARY __init__.py
 
@@ -15,5 +14,5 @@ LICENSE GNU General Public License v3.0.
 DESCRIPTION:
 """
 
-__version__ = "1.9.1"
+__version__ = "1.9.2"
 __author__ = "Canux CHENG"

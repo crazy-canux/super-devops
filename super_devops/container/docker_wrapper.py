@@ -260,9 +260,9 @@ class BaseNetworks(object):
             )
         except Exception as e:
             logger.error("Create bridge network failed: {}".format(e))
-            raise e
+            return False
         else:
-            return bridge
+            return True
 
     def create_overlay_network(
             self, name, subnet, iprange, gateway, opt_name
@@ -285,9 +285,9 @@ class BaseNetworks(object):
             )
         except Exception as e:
             logger.error("Create bridge network failed: {}".format(e))
-            raise e
+            return False
         else:
-            return overlay
+            return True
 
     def prune(self, filters=None):
         try:
@@ -317,6 +317,27 @@ class BaseNetworks(object):
                 net.remove()
         except Exception as e:
             logger.error("Docker Network delete failed: {}".format(e))
+            return False
+        else:
+            return True
+
+    def delete_gwbridge(self):
+        """
+        for docker swarm.
+
+        ingress network attached to docker_gwbridge cause docker_gwbridge not easy to be removed.
+        :return:
+        """
+        try:
+            nets = self.networks.list(["docker_gwbridge"])
+            if len(nets) == 1:
+                net = nets[0]
+                net.disconnect("gateway_ingress-sbox", force=True)
+                net.remove()
+            else:
+                logger.debug("docker_gwbridge not exist.")
+        except Exception as e:
+            logger.error("Delete docker_gwbridge failed: {}".format(e))
             raise e
         else:
             return True
@@ -376,7 +397,7 @@ class BaseImages(object):
 
     def list(self, name=None, all=False, filters=None):
         try:
-            images = self.images.list(name, if_all, filters)
+            images = self.images.list(name, all, filters)
         except Exception as e:
             logger.error("Docker Image list failed: {}".format(e))
             raise e
@@ -519,20 +540,20 @@ class BaseContainers(object):
         if self.client:
             self.client.close()
 
-    def prune(self):
-        try:
-            containers = self.containers.prune(filters=None)
-        except Exception as e:
-            logger.error("Docker Containers prune failed: {}".format(e))
-            raise e
-        else:
-            # return dict
-            return containers
-
     def list(
             self, all=False, since=None, before=None, limit=None,
             filters=None, sparse=False, ignore_removed=False
     ):
+        """
+        :param all: False to show running containers.
+        :param since:
+        :param before:
+        :param limit:
+        :param filters:
+        :param sparse: True to not inspect containers.
+        :param ignore_removed: False to not ignore removed containers.
+        :return:
+        """
         try:
             containers = self.containers.list(
                 all, since, before, limit, filters, sparse, ignore_removed
@@ -541,6 +562,21 @@ class BaseContainers(object):
             logger.error("Docker Containers list failed: {}".format(e))
             raise e
         else:
+            names = [
+                (one.id, one.name, one.image)
+                for one in containers
+            ]
+            logger.debug("containers: {}".format(names))
+            return containers
+
+    def prune(self):
+        try:
+            containers = self.containers.prune(filters=None)
+        except Exception as e:
+            logger.error("Docker Containers prune failed: {}".format(e))
+            raise e
+        else:
+            # return dict
             return containers
 
     def delete_all(self):
@@ -595,6 +631,11 @@ class BaseServices(object):
             raise e
         else:
             # return list
+            names = [
+                one.name
+                for one in services
+            ]
+            logger.debug("services: {}".format(names))
             return services
 
     def delete_all(self):
@@ -606,6 +647,15 @@ class BaseServices(object):
             logger.error(
                 "Docker Service delete(stop/remove) failed: {}".format(e)
             )
+            raise e
+
+    def force_update_all(self):
+        try:
+            for service in self.list():
+                logger.debug("force update service: {}".format(service.name))
+                service.force_update()
+        except Exception as e:
+            logger.error("Docker service force update failed: {}".format(e))
             raise e
 
 
@@ -661,6 +711,150 @@ class BaseNodes(object):
             # return string
             return ip
 
+
+class BasePlugin(object):
+    def __init__(
+            self, base_url='unix://var/run/docker.sock',
+            version="auto", timeout=60, **kwargs
+    ):
+        self.base_url = base_url
+        self.version = version
+        self.timeout = timeout
+        self.kwargs = kwargs
+
+        self.plugins = None
+
+    def __enter__(self):
+        try:
+            self.client = docker.DockerClient(
+                self.base_url, version=self.version, timeout=self.timeout,
+                **self.kwargs
+            )
+            if self.client is None:
+                logger.error("No connection object returned.")
+                raise Exception("Connection failed.")
+            self.plugins = self.client.plugins
+            return self
+        except Exception as e:
+            logger.error("Failed to connection to dockerd: {}".format(e))
+            raise e
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if self.client:
+            self.client.close()
+
+    def list(self):
+        try:
+            plugins = self.plugins.list()
+        except Exception as e:
+            logger.error("Failed to list all plugins {}".format(e))
+            raise e
+        else:
+            logger.debug("plugins: {}".format(plugins))
+            return plugins
+
+    def install(self, remote, local=None, enable=True):
+        try:
+            remote = remote if len(remote.split(":")) == 2 else remote + ":latest"
+            if not local:
+                local = remote
+            else:
+                local = local if len(local.split(":")) == 2 else local + ":latest"
+            for p in self.list():
+                if p.name == local:
+                    logger.debug("plugin already installed.")
+                    plugin = p
+                    break
+            else:
+                plugin = self.plugins.install(remote, local)
+            if not plugin.enabled:
+                logger.debug("plugin disabled.")
+                if enable:
+                    plugin.enable()
+            else:
+                logger.debug("plugin enabled.")
+                if not enable:
+                    plugin.disable()
+        except Exception as e:
+            logger.error("Install plugin {} failed: {}".format(remote, e))
+            return False
+        else:
+            return True
+
+    def remote(self, name, force=False):
+        try:
+            for plugin in self.list():
+                if plugin.name == name:
+                    plugin.remove(force=force)
+        except Exception as e:
+            logger.error("Remove plugin {} failed: {}".format(name, e))
+            return False
+        else:
+            return True
+
+
+class BaseConfigs(object):
+    def __init__(
+            self, base_url='unix://var/run/docker.sock',
+            version="auto", timeout=60, **kwargs
+    ):
+        self.base_url = base_url
+        self.version = version
+        self.timeout = timeout
+        self.kwargs = kwargs
+
+        self.configs = None
+
+    def __enter__(self):
+        try:
+            self.client = docker.DockerClient(
+                self.base_url, version=self.version, timeout=self.timeout,
+                **self.kwargs
+            )
+            if self.client is None:
+                logger.error("No connection object returned.")
+                raise Exception("Connection failed.")
+            self.configs = self.client.configs
+            return self
+        except Exception as e:
+            logger.error("Failed to connection to dockerd: {}".format(e))
+            raise e
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if self.client:
+            self.client.close()
+
+
+class BaseSecrets(object):
+    def __init__(
+            self, base_url='unix://var/run/docker.sock',
+            version="auto", timeout=60, **kwargs
+    ):
+        self.base_url = base_url
+        self.version = version
+        self.timeout = timeout
+        self.kwargs = kwargs
+
+        self.secrets = None
+
+    def __enter__(self):
+        try:
+            self.client = docker.DockerClient(
+                self.base_url, version=self.version, timeout=self.timeout,
+                **self.kwargs
+            )
+            if self.client is None:
+                logger.error("No connection object returned.")
+                raise Exception("Connection failed.")
+            self.secrets = self.client.secrets
+            return self
+        except Exception as e:
+            logger.error("Failed to connection to dockerd: {}".format(e))
+            raise e
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if self.client:
+            self.client.close()
 
 
 

@@ -1,6 +1,6 @@
 import unittest
 
-from super_devops.grafana.grafana_wrapper import BaseGrafana
+from super_devops.grafana_stack.grafana_wrapper import BaseGrafana
 
 
 class GrafanaTestCase(unittest.TestCase):

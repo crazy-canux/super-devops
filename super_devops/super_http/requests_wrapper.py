@@ -2,7 +2,7 @@ import logging
 
 from requests.sessions import Session
 from requests.packages import urllib3
-from requests.auth import AuthBase
+from requests.auth import AuthBase, HTTPBasicAuth
 
 
 logger = logging.getLogger(__name__)
@@ -46,10 +46,10 @@ class BaseRequests(Session):
 
         urllib3.disable_warnings()
 
-    def get(self, url, **kwargs):
+    def get(self, url, params=None, **kwargs):
         kwargs.setdefault('timeout', 60)
         kwargs.setdefault('allow_redirects', True)
-        return self.request('GET', url, **kwargs)
+        return self.request('GET', url, params, **kwargs)
 
     def post(self, url, data=None, json=None, **kwargs):
         """POST method.
