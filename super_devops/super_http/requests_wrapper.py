@@ -1,5 +1,7 @@
 import logging
+import hashlib
 
+from tqdm import tqdm
 from requests.sessions import Session
 from requests.packages import urllib3
 from requests.auth import AuthBase, HTTPBasicAuth
@@ -39,9 +41,6 @@ class BaseRequests(Session):
         elif username and password:
             self.auth = HTTPBasicAuth(username, password)
 
-        # disable ssl verification
-        self.verify = False
-
         self.domain = domain
 
         urllib3.disable_warnings()
@@ -60,6 +59,7 @@ class BaseRequests(Session):
         :type json: string.
         """
         kwargs.setdefault('timeout', 60)
+        kwargs.setdefault('allow_redirects', True)
         return self.request('POST', url, data=data, json=json, **kwargs)
 
     def put(self, url, data=None, **kwargs):
@@ -69,6 +69,7 @@ class BaseRequests(Session):
         :type data: dict.
         """
         kwargs.setdefault('timeout', 60)
+        kwargs.setdefault('allow_redirects', True)
         return self.request('PUT', url, data=data, **kwargs)
 
     def patch(self, url, data=None, **kwargs):
@@ -78,10 +79,12 @@ class BaseRequests(Session):
         :type data: dict.
         """
         kwargs.setdefault('timeout', 60)
+        kwargs.setdefault('allow_redirects', True)
         return self.request('PATCH', url, data=data, **kwargs)
 
     def delete(self, url, **kwargs):
         kwargs.setdefault('timeout', 60)
+        kwargs.setdefault('allow_redirects', True)
         return self.request('DELETE', url, **kwargs)
 
     def options(self, url, **kwargs):
@@ -93,3 +96,21 @@ class BaseRequests(Session):
         kwargs.setdefault('timeout', 60)
         kwargs.setdefault('allow_redirects', False)
         return self.request('HEAD', url, **kwargs)
+
+    def download(self, url, filename, chunk_size=4096, params=None, **kwargs):
+        try:
+            kwargs.setdefault('timeout', None)
+            kwargs.setdefault('allow_redirects', True)
+            kwargs.setdefault('verify', False)
+            kwargs.setdefault('stream', True)
+            md5_obj = hashlib.md5()
+            with open(filename, 'wb') as f:
+                for block in tqdm(self.request('GET', url, params, **kwargs).iter_content(chunk_size)):
+                    if block:
+                        f.write(block)
+                f.flush()
+                md5_obj.update(f.read())
+            return md5_obj.hexdigest()
+        except Exception:
+            raise
+

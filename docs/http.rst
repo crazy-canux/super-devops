@@ -210,7 +210,7 @@ function request::
 
     # bool
     allow_redirects=True # 是否重定向
-    stream=True
+    stream=False # 放到内存中，iter_content/iter_lines 获取返回值才开始下载。
     # bool or string
     verify=True # 是否验证SSL
 

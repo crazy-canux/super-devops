@@ -72,6 +72,7 @@ class RequestsTestCase(unittest.TestCase):
                 }
             )
 
+    @unittest.skip('passed')
     def test_updatethreadconfig(self):
         url = "http://127.0.0.1/JsonData.aspx"
         with BaseRequests() as req:
@@ -85,6 +86,12 @@ class RequestsTestCase(unittest.TestCase):
                     'headers': {'content-type': 'application/json'},
                 }
             )
+
+    def test_download(self):
+        url = 'http://10.103.238.16/appliance/smash/ova_5/Linux.ova'
+        with BaseRequests() as req:
+            md5 = req.download(url, "Linux.ova", chunk_size=4294967296)
+        print(md5)
 
 
 if __name__ == "__main__":
