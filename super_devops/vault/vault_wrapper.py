@@ -2,25 +2,50 @@ import logging
 import json
 from urllib.parse import urljoin
 
-from requests_wrapper import BaseRequests
+from .requests_wrapper import BaseRequests
 
 logger = logging.getLogger()
 
 
 class BaseVault(object):
-    def __init__(self, server="http://127.0.0.0:8200/", version="v1"):
+    def __init__(self, server="https://127.0.0.1:8200/", version="v1"):
         super(BaseVault, self).__init__()
         self.base = urljoin(server, version) + "/"
 
-    def health(self):
+    def health(self, kind="init"):
         try:
             url = urljoin(self.base, "sys/health")
             with BaseRequests() as req:
                 resp = req.get(url)
             if resp.status_code == 200:
+                logger.debug("initialized, unsealed and active.")
                 return True
+            elif resp.status_code == 503:
+                logger.debug("initialized but sealed.")
+                if kind.lower() == "init":
+                    return True
+                else:
+                    return False
+            elif resp.status_code == 501:
+                logger.debug("not initialized.")
+                return False
             else:
                 return False
+        except Exception:
+            raise
+
+    def seal_status(self):
+        try:
+            url = urljoin(self.base, "sys/seal-status")
+            with BaseRequests() as req:
+                resp = req.get(url)
+            if resp.status_code == 200:
+                if resp.json()["sealed"]:
+                    return True
+                else:
+                    return False
+            else:
+                raise Exception("get seal status failed.")
         except Exception:
             raise
 
@@ -34,8 +59,6 @@ class BaseVault(object):
             with BaseRequests() as req:
                 resp = req.put(url, data=json.dumps(payload))
             if resp.status_code == 200:
-                with open("secret.txt", 'w') as f:
-                    f.write(resp.text)
                 return resp.json()
             else:
                 raise Exception("vault init failed")
@@ -52,7 +75,6 @@ class BaseVault(object):
             }
             with BaseRequests() as req:
                 resp = req.put(url, json.dumps(payload))
-            print(resp.text)
             if resp.status_code == 200:
                 if resp.json()["sealed"]:
                     return False
@@ -85,7 +107,6 @@ class BaseVault(object):
             }
             with BaseRequests() as req:
                 resp = req.post(url, data=json.dumps(payload), **{"headers": headers})
-            print(resp.text)
             if resp.status_code == 204:
                 return True
             else:
@@ -104,7 +125,6 @@ class BaseVault(object):
             }
             with BaseRequests() as req:
                 resp = req.put(url, data=json.dumps(payload), **{"headers": headers})
-            print(resp.text)
             if resp.status_code == 204:
                 return True
             else:
@@ -126,3 +146,52 @@ class BaseVault(object):
                 return False
         except Exception:
             raise
+
+    def get(self, token, engine, path):
+        try:
+            url = urljoin(self.base, "{}/data/{}".format(engine, path))
+            headers = {
+                "X-Vault-Token": token
+            }
+            with BaseRequests() as req:
+                resp = req.get(url, **{"headers": headers})
+            if resp.status_code == 200:
+                return resp.json()["data"]["data"]
+            else:
+                return None
+        except Exception:
+            raise
+
+    def put(self, token, engine, path, data):
+        try:
+            url = urljoin(self.base, "{}/data/{}".format(engine, path))
+            payload = {
+                "data": data
+            }
+            headers = {
+                "X-Vault-Token": token
+            }
+            with BaseRequests() as req:
+                resp = req.post(url, data=json.dumps(payload), **{"headers": headers})
+            if resp.status_code == 200:
+                return True
+            else:
+                return False
+        except Exception:
+            raise
+
+    def delete(self, token, engine, path):
+        try:
+            url = urljoin(self.base, "{}/data/{}".format(engine, path))
+            headers = {
+                "X-Vault-Token": token
+            }
+            with BaseRequests() as req:
+                resp = req.delete(url, **{"headers": headers})
+            if resp.status_code == 200:
+                return resp.json()["data"]["data"]
+            else:
+                return None
+        except Exception:
+            raise
+
