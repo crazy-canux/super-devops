@@ -88,9 +88,9 @@ class RequestsTestCase(unittest.TestCase):
             )
 
     def test_download(self):
-        url = 'http://10.103.238.16/appliance/release/firmware_csa1000_1.1.1.scx'
+        url = 'http://127.0.0.1/path/file.zip'
         with BaseRequests() as req:
-            md5 = req.download(url, "scx", chunk_size=512*1024)
+            md5 = req.download(url, "file", chunk_size=512*1024)
         print(md5)
 
 
