@@ -1,7 +1,7 @@
 import logging
 import urllib.parse as urlparse
 
-from super_devops.super_http.requests_wrapper import BaseRequests
+from base.requests_wrapper import BaseRequests
 
 logger = logging.getLogger(__name__)
 
@@ -54,7 +54,7 @@ class BaseRegistry(object):
         try:
             url = urlparse.urljoin(self.url, "{}/manifests/{}".format(name, reference))
             with BaseRequests(self.username, self.password, self.domain) as req:
-                resp = req.get(url, **{"headers": self.headers, 'verify': False})
+                resp = req.get(url, **{"headers": self.headers, 'verify': False, 'stream': True})
             if resp.status_code == 200:
                 return resp
             else:
@@ -82,7 +82,7 @@ class BaseRegistry(object):
         try:
             url = urlparse.urljoin(self.url, "{}/blobs/{}".format(name, digest))
             with BaseRequests(self.username, self.password, self.domain) as req:
-                resp = req.get(url, **{"headers": self.headers, 'verify': False})
+                resp = req.get(url, **{"headers": self.headers, 'verify': False, 'stream': True})
             if resp.status_code == 200:
                 return resp
             else:

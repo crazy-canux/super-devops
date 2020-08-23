@@ -88,9 +88,9 @@ class RequestsTestCase(unittest.TestCase):
             )
 
     def test_download(self):
-        url = 'http://10.103.238.16/appliance/smash/ova_5/Linux.ova'
+        url = 'http://10.103.238.16/appliance/release/firmware_csa1000_1.1.1.scx'
         with BaseRequests() as req:
-            md5 = req.download(url, "Linux.ova", chunk_size=4294967296)
+            md5 = req.download(url, "scx", chunk_size=512*1024)
         print(md5)
 
 

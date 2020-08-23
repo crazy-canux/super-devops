@@ -196,7 +196,7 @@ function request::
     headers={}
     cookies={}
     files={}
-    proxies=None
+    proxies=None # 设置代理，默认用系统代理
 
     # json
     json='{}' # 用于post的body中

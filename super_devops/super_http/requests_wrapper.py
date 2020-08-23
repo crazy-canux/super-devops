@@ -99,17 +99,20 @@ class BaseRequests(Session):
 
     def download(self, url, filename, chunk_size=4096, params=None, **kwargs):
         try:
+            proxies = {
+                'http': None,
+                'https': None
+            }
             kwargs.setdefault('timeout', None)
             kwargs.setdefault('allow_redirects', True)
             kwargs.setdefault('verify', False)
             kwargs.setdefault('stream', True)
+            kwargs.setdefault('proxies', proxies)
             md5_obj = hashlib.md5()
             with open(filename, 'wb') as f:
-                for block in tqdm(self.request('GET', url, params, **kwargs).iter_content(chunk_size)):
-                    if block:
-                        f.write(block)
-                f.flush()
-                md5_obj.update(f.read())
+                for block in self.request('GET', url, params, **kwargs).iter_content(chunk_size):
+                    f.write(block)
+                    md5_obj.update(block)
             return md5_obj.hexdigest()
         except Exception:
             raise
