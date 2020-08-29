@@ -4,7 +4,8 @@ from urllib.parse import urljoin
 
 from .requests_wrapper import BaseRequests
 
-logger = logging.getLogger()
+
+logger = logging.getLogger(__name__)
 
 
 class BaseVault(object):

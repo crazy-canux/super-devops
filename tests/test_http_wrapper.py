@@ -89,7 +89,7 @@ class RequestsTestCase(unittest.TestCase):
 
     def test_download(self):
         url = 'http://127.0.0.1/path/file.zip'
-        with BaseRequests() as req:
+        with BaseRequests(stream=True, verify=False) as req:
             md5 = req.download(url, "file", chunk_size=512*1024)
         print(md5)
 

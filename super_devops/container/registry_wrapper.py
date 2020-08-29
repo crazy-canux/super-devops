@@ -3,6 +3,7 @@ import urllib.parse as urlparse
 
 from base.requests_wrapper import BaseRequests
 
+
 logger = logging.getLogger(__name__)
 
 
@@ -17,8 +18,8 @@ class BaseRegistry(object):
 
     def ping(self):
         try:
-            with BaseRequests(self.username, self.password, self.domain) as req:
-                resp = req.get(self.url, **{"headers": self.headers, 'verify': False})
+            with BaseRequests(self.username, self.password) as req:
+                resp = req.get(self.url, **{"headers": self.headers})
             if resp.status_code == 200:
                 return True
             else:
@@ -29,8 +30,8 @@ class BaseRegistry(object):
     def list_repo(self):
         try:
             url = urlparse.urljoin(self.url, "_catalog")
-            with BaseRequests(self.username, self.password, self.domain) as req:
-                resp = req.get(url, **{"headers": self.headers, 'verify': False})
+            with BaseRequests(self.username, self.password) as req:
+                resp = req.get(url, **{"headers": self.headers})
             if resp.status_code == 200:
                 return resp.json()
             else:
@@ -41,8 +42,8 @@ class BaseRegistry(object):
     def list_tags(self, name):
         try:
             url = urlparse.urljoin(self.url, "{}/tags/list".format(name))
-            with BaseRequests(self.username, self.password, self.domain) as req:
-                resp = req.get(url, **{"headers": self.headers, 'verify': False})
+            with BaseRequests(self.username, self.password) as req:
+                resp = req.get(url, **{"headers": self.headers})
             if resp.status_code == 200:
                 return resp.json()
             else:
@@ -53,8 +54,8 @@ class BaseRegistry(object):
     def get_manifests(self, name, reference):
         try:
             url = urlparse.urljoin(self.url, "{}/manifests/{}".format(name, reference))
-            with BaseRequests(self.username, self.password, self.domain) as req:
-                resp = req.get(url, **{"headers": self.headers, 'verify': False, 'stream': True})
+            with BaseRequests(username=self.username, password=self.password, stream=True) as req:
+                resp = req.get(url, **{"headers": self.headers})
             if resp.status_code == 200:
                 return resp
             else:
@@ -65,7 +66,7 @@ class BaseRegistry(object):
     def put_manifests(self, name, reference):
         try:
             url = urlparse.urljoin(self.url, "{}/manifests/{}".format(name, reference))
-            with BaseRequests(self.username, self.password, self.domain) as req:
+            with BaseRequests(self.username, self.password) as req:
                 resp = req.put(url)
         except Exception as e:
             logger.error("put manifests for {}/{} failed: {}".format(name, reference, e.args))
@@ -81,8 +82,8 @@ class BaseRegistry(object):
     def get_blobs(self, name, digest):
         try:
             url = urlparse.urljoin(self.url, "{}/blobs/{}".format(name, digest))
-            with BaseRequests(self.username, self.password, self.domain) as req:
-                resp = req.get(url, **{"headers": self.headers, 'verify': False, 'stream': True})
+            with BaseRequests(username=self.username, password=self.password, stream=True) as req:
+                resp = req.get(url, **{"headers": self.headers})
             if resp.status_code == 200:
                 return resp
             else:
@@ -93,7 +94,7 @@ class BaseRegistry(object):
     def post_blobs(self, name, digest):
         try:
             url = urlparse.urljoin(self.url, "{}/blobs/{}".format(name, digest))
-            with BaseRequests(self.username, self.password, self.domain) as req:
+            with BaseRequests(self.username, self.password) as req:
                 resp = req.post(url)
         except Exception as e:
             logger.error("post blobs for {}/{} failed: {}".format(name, digest, e.args))

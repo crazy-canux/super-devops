@@ -2,6 +2,7 @@ import logging
 
 import docker
 
+
 logger = logging.getLogger(__name__)
 logging.getLogger('docker').setLevel(logging.WARNING)
 
@@ -332,7 +333,10 @@ class BaseNetworks(object):
             nets = self.networks.list(["docker_gwbridge"])
             if len(nets) == 1:
                 net = nets[0]
-                net.disconnect("gateway_ingress-sbox", force=True)
+                try:
+                    net.disconnect("gateway_ingress-sbox", force=True)
+                except Exception:
+                    logger.error("disconnect gateway_ingress-sbox from docker_gwbridge failed, skip...")
                 net.remove()
             else:
                 logger.debug("docker_gwbridge not exist.")

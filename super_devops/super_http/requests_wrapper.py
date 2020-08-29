@@ -32,8 +32,10 @@ class BaseRequests(Session):
     res.text
     """
 
-    def __init__(self, username=None, password=None,
-                 domain=None, session_id=None):
+    def __init__(
+            self, username=None, password=None, session_id=None,
+            verify=False, cert=None, stream=False, trust_env=True, max_redirects=30
+    ):
         super(BaseRequests, self).__init__()
 
         if session_id:
@@ -41,7 +43,11 @@ class BaseRequests(Session):
         elif username and password:
             self.auth = HTTPBasicAuth(username, password)
 
-        self.domain = domain
+        self.verify = verify
+        self.cert = cert
+        self.stream = stream
+        self.trust_env = trust_env
+        self.max_redirects = max_redirects
 
         urllib3.disable_warnings()
 
@@ -97,7 +103,7 @@ class BaseRequests(Session):
         kwargs.setdefault('allow_redirects', False)
         return self.request('HEAD', url, **kwargs)
 
-    def download(self, url, filename, chunk_size=4096, params=None, **kwargs):
+    def download(self, url, filename, chunk_size=4*1024, params=None, **kwargs):
         try:
             proxies = {
                 'http': None,
@@ -105,8 +111,6 @@ class BaseRequests(Session):
             }
             kwargs.setdefault('timeout', None)
             kwargs.setdefault('allow_redirects', True)
-            kwargs.setdefault('verify', False)
-            kwargs.setdefault('stream', True)
             kwargs.setdefault('proxies', proxies)
             md5_obj = hashlib.md5()
             with open(filename, 'wb') as f:

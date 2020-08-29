@@ -3,6 +3,7 @@ import os
 import shutil
 import logging
 
+
 logger = logging.getLogger(__name__)
 
 
@@ -19,7 +20,7 @@ class BaseVbox(object):
             if name not in names:
                 return True
             logger.debug("poweroff vm {}.".format(name))
-            cmd = "su {} -c 'vboxmanage controlvm {} poweroff'".format(
+            cmd = "su {} -c '/usr/bin/vboxmanage controlvm {} poweroff'".format(
                 self.username, name)
             logger.debug(cmd)
             process = subprocess.Popen(
@@ -51,7 +52,7 @@ class BaseVbox(object):
     def delete_vm(self, name):
         try:
             logger.debug("delete vm {}.".format(name))
-            cmd = "su {} -c 'vboxmanage unregistervm {} --delete'".format(
+            cmd = "su {} -c '/usr/bin/vboxmanage unregistervm {} --delete'".format(
                 self.username, name)
             logger.debug(cmd)
             process = subprocess.Popen(
@@ -82,7 +83,7 @@ class BaseVbox(object):
 
     def clone_vm(self, vm, name, basefolder):
         try:
-            cmd = "su {} -c 'vboxmanage clonevm {} --snapshot Clean " \
+            cmd = "su {} -c '/usr/bin/vboxmanage clonevm {} --snapshot Clean " \
                   "--options link --name {} --basefolder {} --register'".format(
                 self.username, vm, name, basefolder)
             logger.debug(cmd)
@@ -116,7 +117,7 @@ class BaseVbox(object):
         try:
             logger.debug("attach storage for {}.".format(vm))
             cmd = """
-            su {} -c "vboxmanage storageattach {} --storagectl IDE \
+            su {} -c "/usr/bin/vboxmanage storageattach {} --storagectl IDE \
             --port 0 --device 0 --type dvddrive \
             --medium '/usr/share/virtualbox/VBoxGuestAdditions.iso'"
             """.format(self.username, vm)
@@ -150,9 +151,9 @@ class BaseVbox(object):
     def list_vm(self, running=False):
         try:
             if running:
-                cmd = "su {} -c 'vboxmanage list runningvms'".format(self.username)
+                cmd = "su {} -c '/usr/bin/vboxmanage list runningvms'".format(self.username)
             else:
-                cmd = "su {} -c 'vboxmanage list vms'".format(self.username)
+                cmd = "su {} -c '/usr/bin/vboxmanage list vms'".format(self.username)
             logger.debug(cmd)
             process = subprocess.Popen(
                 cmd, shell=True,
@@ -181,7 +182,7 @@ class BaseVbox(object):
 
     def delete_hostonlyif(self, name):
         try:
-            cmd = "su {} -c 'vboxmanage hostonlyif remove {}'".format(self.username, name)
+            cmd = "su {} -c '/usr/bin/vboxmanage hostonlyif remove {}'".format(self.username, name)
             logger.debug(cmd)
             process = subprocess.Popen(
                 cmd, shell=True,
@@ -213,7 +214,7 @@ class BaseVbox(object):
     def create_hostonlyif(self):
         try:
             logger.info("create networks.")
-            cmd = "su {} -c 'vboxmanage hostonlyif create'".format(self.username)
+            cmd = "su {} -c '/usr/bin/vboxmanage hostonlyif create'".format(self.username)
             logger.debug(cmd)
             process = subprocess.Popen(
                 cmd, shell=True,
@@ -241,7 +242,7 @@ class BaseVbox(object):
     def modify_hostonlyif(self, name, gateway, netmask):
         try:
             logger.info("modify networks.")
-            cmd = "su {} -c 'vboxmanage hostonlyif ipconfig {} --ip {} " \
+            cmd = "su {} -c '/usr/bin/vboxmanage hostonlyif ipconfig {} --ip {} " \
                   "--netmask {}'".format(self.username, name, gateway, netmask)
             logger.debug(cmd)
             process = subprocess.Popen(
@@ -276,7 +277,7 @@ class BaseVbox(object):
                 shutil.rmtree(
                     os.path.join(basefolder, name)
                 )
-            cmd = "su {} -c 'vboxmanage import {} --vsys 0 --vmname {} " \
+            cmd = "su {} -c '/usr/bin/vboxmanage import {} --vsys 0 --vmname {} " \
                   "--basefolder {}'".format(self.username,
                                             ova, name, basefolder)
             logger.debug(cmd)
@@ -307,7 +308,7 @@ class BaseVbox(object):
     def modify_vm(self, vm, hostonlyif, cpu, memory):
         try:
             logger.debug("modify base vm {}".format(vm))
-            cmd = "su {} -c 'vboxmanage modifyvm {} --nic1 hostonly " \
+            cmd = "su {} -c '/usr/bin/vboxmanage modifyvm {} --nic1 hostonly " \
                   "--hostonlyadapter1 {} " \
                   "--cpus {} --memory {}'".format(
                 self.username, vm, hostonlyif, cpu, memory)
@@ -339,7 +340,7 @@ class BaseVbox(object):
     def take_snapshot(self, vm, name):
         try:
             logger.debug("take snapshot for {}".format(vm))
-            cmd = "su {} -c 'vboxmanage snapshot {} take {} --live " \
+            cmd = "su {} -c '/usr/bin/vboxmanage snapshot {} take {} --live " \
                   "--pause'".format(self.username, vm, name)
             logger.debug(cmd)
             process = subprocess.Popen(
@@ -369,7 +370,7 @@ class BaseVbox(object):
     def restore_snapshot(self, vm, name):
         try:
             logger.debug("restore snapshot for {}".format(vm))
-            cmd = "su {} -c 'vboxmanage snapshot {} restore {}'".format(
+            cmd = "su {} -c '/usr/bin/vboxmanage snapshot {} restore {}'".format(
                 self.username, vm, name
             )
             logger.debug(cmd)
@@ -402,7 +403,7 @@ class BaseVbox(object):
     def delete_snapshot(self, vm, name):
         try:
             logger.debug("delete snapshot for {}".format(vm))
-            cmd = "su {} -c 'vboxmanage snapshot {} delete {}'".format(
+            cmd = "su {} -c '/usr/bin/vboxmanage snapshot {} delete {}'".format(
                 self.username, vm, name)
             logger.debug(cmd)
             process = subprocess.Popen(
@@ -434,7 +435,7 @@ class BaseVbox(object):
     def start_vm(self, vm):
         try:
             logger.debug("start vm {}".format(vm))
-            cmd = "su {} -c 'vboxmanage startvm {} --type headless'".format(
+            cmd = "su {} -c '/usr/bin/vboxmanage startvm {} --type headless'".format(
                 self.username, vm)
             logger.debug(cmd)
             process = subprocess.Popen(
@@ -464,15 +465,15 @@ class BaseVbox(object):
     def remove_uninst(self, vm):
         """
         Linux remove uninst:
-        $ vboxmanage guestcontrol Linux64 run --username root --password pw
+        $ /usr/bin/vboxmanage guestcontrol Linux64 run --username root --password pw
          --exe /bin/bash -- -l -c  '/bin/mount /dev/cdrom1 /media/cdrom'
-        $ vboxmanage guestcontrol Linux64 run --username user --password pw
+        $ /usr/bin/vboxmanage guestcontrol Linux64 run --username user --password pw
          --exe /bin/bash -- -l -c  'cd /media/cdrom; sh VBoxLinuxAdditions.run uninstall'
         """
         try:
             logger.debug("remove uninst for {}".format(vm))
             cmd = """
-            su {} -c "vboxmanage guestcontrol {} --username 'Administrator' \
+            su {} -c "/usr/bin/vboxmanage guestcontrol {} --username 'Administrator' \
             run --exe \
             'C:\\Program Files\\Oracle\\VirtualBox Guest Additions\\uninst.exe' \
              -- uninst.exe /S"
@@ -505,7 +506,7 @@ class BaseVbox(object):
         try:
             logger.debug("setup ip address for {}".format(vm))
             cmd = """
-             su {} -c "vboxmanage guestcontrol {} --username 'Administrator' \
+             su {} -c "/usr/bin/vboxmanage guestcontrol {} --username 'Administrator' \
              run --exe 'C:\\Windows\\system32\\cmd.exe' -- \
              cmd.exe /c netsh interface ip set address \
              name='Local Area Connection' static {} {} {} 1"
@@ -540,7 +541,7 @@ class BaseVbox(object):
         try:
             logger.debug("setup dns for {}.".format(vm))
             cmd = """
-            su {} -c "vboxmanage guestcontrol {} --username 'Administrator' \
+            su {} -c "/usr/bin/vboxmanage guestcontrol {} --username 'Administrator' \
             run --exe 'C:\\Windows\\system32\\cmd.exe' -- \
             cmd.exe /c netsh interface ip set dns \
             name='Local Area Connection' static {}"
@@ -573,7 +574,7 @@ class BaseVbox(object):
         try:
             logger.debug("install license for {}.".format(vm))
             cmd = """
-            su {} -c "vboxmanage guestcontrol {} --username 'Administrator' \
+            su {} -c "/usr/bin/vboxmanage guestcontrol {} --username 'Administrator' \
             run --exe 'C:\\Windows\\system32\\cmd.exe' -- \
             cmd.exe /c cscript slmgr.vbs -ipk {}"
             """.format(self.username, vm, lic)
@@ -605,7 +606,7 @@ class BaseVbox(object):
         try:
             logger.debug("active license for {}.".format(vm))
             cmd = """
-            su {} -c "vboxmanage guestcontrol {} --username 'Administrator' \
+            su {} -c "/usr/bin/vboxmanage guestcontrol {} --username 'Administrator' \
             run --exe 'C:\\Windows\\system32\\cmd.exe' -- \
             cmd.exe /c cscript slmgr.vbs -ato"
             """.format(self.username, vm)
@@ -646,7 +647,7 @@ class BaseVbox(object):
         try:
             logger.debug("check license for {}.".format(vm))
             cmd = """
-            su {} -c "vboxmanage guestcontrol {} --username 'Administrator' \
+            su {} -c "/usr/bin/vboxmanage guestcontrol {} --username 'Administrator' \
             run --exe 'C:\\Windows\\system32\\cmd.exe' -- \
             cmd.exe /c cscript slmgr.vbs -dli"
             """.format(self.username, vm)
@@ -679,7 +680,7 @@ class BaseVbox(object):
     def win_cmd(self, vm, cmd, user='Administrator'):
         try:
             cmd = """
-             su {} -c "vboxmanage guestcontrol {} --username {} \
+             su {} -c "/usr/bin/vboxmanage guestcontrol {} --username {} \
              run --exe 'C:\\Windows\\system32\\cmd.exe' -- \
              cmd.exe /c {}
              """.format(
@@ -713,7 +714,7 @@ class BaseVbox(object):
         try:
             logger.debug("shell: {}".format(shell))
             cmd = """
-            su {} -c "vboxmanage guestcontrol {} --username {} \
+            su {} -c "/usr/bin/vboxmanage guestcontrol {} --username {} \
             --password {} run --exe /bin/bash -- -l -c '{}'"
             """.format(self.username, vm, username, password, shell)
             logger.debug(cmd)
@@ -746,11 +747,11 @@ class BaseVbox(object):
         try:
             if parent:
                 cmd = """
-                su {} -c "vboxmanage list hdds | grep '^Parent UUID:'"
+                su {} -c "/usr/bin/vboxmanage list hdds | grep '^Parent UUID:'"
                 """.format(self.username)
             else:
                 cmd = """
-                su {} -c "vboxmanage list hdds | grep '^UUID:'"
+                su {} -c "/usr/bin/vboxmanage list hdds | grep '^UUID:'"
                 """.format(self.username)
 
             logger.debug(cmd)
@@ -780,7 +781,7 @@ class BaseVbox(object):
     def delete_hdd(self, hdd):
         try:
             logger.debug("delete hdd {}.".format(hdd))
-            cmd = "su {} -c 'vboxmanage closemedium disk {} --delete'".format(
+            cmd = "su {} -c '/usr/bin/vboxmanage closemedium disk {} --delete'".format(
                 self.username, hdd)
             logger.debug(cmd)
             process = subprocess.Popen(

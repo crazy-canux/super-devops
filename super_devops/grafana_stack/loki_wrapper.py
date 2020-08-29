@@ -51,19 +51,17 @@ class BaseLoki(object):
             }
             with BaseRequests(
                     username=self.username,
-                    password=self.password,
-                    domain=self.domain
+                    password=self.password
             ) as req:
                 res = req.get(
                     url, params=payload,
                     **{
                         'headers': self.header,
-                        'timeout': 60,
-                        'verify': False
+                        'timeout': 60
                     }
                 )
                 logger.debug("resp: {}".format(res.content))
-                logger.debug("status_code: {}".format(res.status_code))
+                # logger.debug("status_code: {}".format(res.status_code))
             if res.status_code == 200:
                 return res.content
             else:
@@ -94,15 +92,13 @@ class BaseLoki(object):
             # "time": ts if ts else time.time(),
             with BaseRequests(
                     username=self.username,
-                    password=self.password,
-                    domain=self.domain
+                    password=self.password
             ) as req:
                 res = req.get(
                     url, params=payload,
                     **{
                         'headers': self.header,
-                        'timeout': 60,
-                        'verify': False
+                        'timeout': 60
                     }
                 )
                 logger.debug("resp: {}".format(res.content))
@@ -138,15 +134,13 @@ class BaseLoki(object):
             # "time": ts if ts else time.time(),
             with BaseRequests(
                     username=self.username,
-                    password=self.password,
-                    domain=self.domain
+                    password=self.password
             ) as req:
                 res = req.get(
                     url, params=payload,
                     **{
                         'headers': self.header,
-                        'timeout': 60,
-                        'verify': False
+                        'timeout': 60
                     }
                 )
                 logger.debug("resp: {}".format(res.content))
@@ -179,20 +173,18 @@ class BaseLoki(object):
             payload = json.dumps(streams)
             with BaseRequests(
                     username=self.username,
-                    password=self.password,
-                    domain=self.domain
+                    password=self.password
             ) as req:
                 res = req.post(
                     url, data=payload, json=None,
                     **{
                         'headers': self.header,
-                        'timeout': 60,
-                        'verify': False
+                        'timeout': 60
                     }
                 )
-                logger.debug("resp: {}".format(res.content))
-                logger.debug("status_code: {}".format(res.status_code))
-            print(res.content, res.status_code)
+                # logger.debug("resp: {}".format(res.content))
+                # logger.debug("status_code: {}".format(res.status_code))
+                logger.debug("Log to push: ".format(message))
             if res.status_code == 204:
                 return True
             else:

@@ -1,11 +1,12 @@
 import logging
-
 import os
+
 for xtdir in ["/lib/xtables", "/usr/lib/xtables", "/usr/local/lib/xtables"]:
     if os.path.isdir(xtdir):
         os.environ['XTABLES_LIBDIR'] = xtdir
         break
 import iptc
+
 
 logger = logging.getLogger(__name__)
 
