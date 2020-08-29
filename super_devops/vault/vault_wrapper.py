@@ -2,7 +2,7 @@ import logging
 import json
 from urllib.parse import urljoin
 
-from .requests_wrapper import BaseRequests
+from super_devops.super_http.requests_wrapper import BaseRequests
 
 
 logger = logging.getLogger(__name__)

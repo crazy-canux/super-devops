@@ -1,18 +1,17 @@
 import logging
 import urllib.parse as urlparse
 
-from base.requests_wrapper import BaseRequests
+from super_devops.super_http.requests_wrapper import BaseRequests
 
 
 logger = logging.getLogger(__name__)
 
 
 class BaseRegistry(object):
-    def __init__(self, url, username=None, password=None, domain=None, version="v2"):
+    def __init__(self, url, username=None, password=None, version="v2"):
         self.url = urlparse.urljoin(url, version+"/")
         self.username = username
         self.password = password
-        self.domain = domain
         self.headers = {}
         # "Content-Type": "application/json"
 
@@ -74,7 +73,7 @@ class BaseRegistry(object):
     def delete_manifests(self, name, reference):
         try:
             url = urlparse.urljoin(self.url, "{}/manifests/{}".format(name, reference))
-            with BaseRequests(self.username, self.password, self.domain) as req:
+            with BaseRequests(self.username, self.password) as req:
                 resp = req.delete(url)
         except Exception as e:
             logger.error("delete manifests for {}/{} failed: {}".format(name, reference, e.args))
@@ -102,7 +101,7 @@ class BaseRegistry(object):
     def delete_blobs(self, name, digest):
         try:
             url = urlparse.urljoin(self.url, "{}/blobs/{}".format(name, digest))
-            with BaseRequests(self.username, self.password, self.domain) as req:
+            with BaseRequests(self.username, self.password) as req:
                 resp = req.delete(url)
         except Exception as e:
             logger.error("delete blobs for {}/{} failed: {}".format(name, digest, e.args))

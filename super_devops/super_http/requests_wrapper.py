@@ -1,7 +1,6 @@
 import logging
 import hashlib
 
-from tqdm import tqdm
 from requests.sessions import Session
 from requests.packages import urllib3
 from requests.auth import AuthBase, HTTPBasicAuth

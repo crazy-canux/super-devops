@@ -13,7 +13,6 @@ class VaultTestCase(unittest.TestCase):
             vault.unseal(key)
         vault.enable_kv2(token=token, path="test")
         vault.create_policy(token=token, name="test", path="test")
-        config_capture(server, token)
         vault.seal(token=token)
     else:
         print("already initialized.")
