@@ -10,12 +10,11 @@ logger = logging.getLogger(__name__)
 class BaseRabbitmq(object):
     def __init__(
             self, url="http://localhost:15672/",
-            username=None, password=None, domain=None
+            username=None, password=None
     ):
         self.base_url = url
         self.username = username
         self.password = password
-        self.domain = domain
 
     def purge_queue(self, name, vhost="%2F"):
         try:
@@ -24,7 +23,7 @@ class BaseRabbitmq(object):
                 "/api/queues/{}/{}/contents".format(vhost, name)
             )
             with BaseRequests(
-                self.username, self.password, self.domain
+                self.username, self.password
             ) as req:
                 res = req.delete(url)
                 logger.debug("purge queue res: {}".format(res.content))

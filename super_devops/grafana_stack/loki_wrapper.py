@@ -15,12 +15,11 @@ class BaseLoki(object):
     """
     def __init__(
             self, loki_url="http://localhost:3100/",
-            username=None, password=None, domain=None
+            username=None, password=None
     ):
         self.loki_url = loki_url
         self.username = username
         self.password = password
-        self.domain = domain
 
         self.header = {
             'Content-Type': 'application/json'

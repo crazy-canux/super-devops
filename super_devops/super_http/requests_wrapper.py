@@ -25,7 +25,7 @@ class BaseRequests(Session):
 
     """Customize requests for super-devops.
 
-    with BaseRequests(username, password, domain) as req:
+    with BaseRequests(username, password) as req:
         res = req.get(url, **kwargs)
     res.status_code
     res.text

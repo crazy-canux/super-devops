@@ -11,12 +11,11 @@ logger = logging.getLogger(__name__)
 class BaseGrafana(object):
     def __init__(
             self, grafana_url="http://localhost:3000/", key=None,
-            username=None, password=None, domain=None
+            username=None, password=None
     ):
         self.grafana_url = grafana_url
         self.username = username
         self.password = password
-        self.domain = domain
 
         self.header = {
             'Content-Type': 'application/json',
@@ -31,8 +30,7 @@ class BaseGrafana(object):
             )
             with BaseRequests(
                     username=self.username,
-                    password=self.password,
-                    domain=self.domain
+                    password=self.password
             ) as req:
                 res = req.get(
                     url,
@@ -77,8 +75,7 @@ class BaseGrafana(object):
             })
             with BaseRequests(
                     username=self.username,
-                    password=self.password,
-                    domain=self.domain
+                    password=self.password
             ) as req:
                 res = req.post(
                     url, data=payload, json=None,
@@ -115,8 +112,7 @@ class BaseGrafana(object):
             )
             with BaseRequests(
                     username=self.username,
-                    password=self.password,
-                    domain=self.domain
+                    password=self.password
             ) as req:
                 res = req.delete(
                     url,
@@ -159,8 +155,7 @@ class BaseGrafana(object):
             })
             with BaseRequests(
                     username=self.username,
-                    password=self.password,
-                    domain=self.domain
+                    password=self.password
             ) as req:
                 res = req.post(
                     url, data=payload, json=None,
@@ -201,8 +196,7 @@ class BaseGrafana(object):
             })
             with BaseRequests(
                 username=self.username,
-                password=self.password,
-                domain=self.domain
+                password=self.password
             ) as req:
                 res = req.put(url, data=payload)
                 logger.debug(
@@ -229,8 +223,7 @@ class BaseGrafana(object):
             })
             with BaseRequests(
                 username=self.username,
-                password=self.password,
-                domain=self.domain
+                password=self.password
             ) as req:
                 res = req.post(url, data=payload)
                 logger.debug(

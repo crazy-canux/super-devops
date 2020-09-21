@@ -10,12 +10,11 @@ logger = logging.getLogger(__name__)
 class BaseInfluxdb(object):
     def __init__(
             self, influxdb_url="http://localhost:8086/",
-            username=None, password=None, domain=None
+            username=None, password=None
     ):
         self.influxdb_url = influxdb_url
         self.username = username
         self.password = password
-        self.domain = domain
 
         self.header = {'Content-Type': 'application/json'}
 
@@ -33,8 +32,7 @@ class BaseInfluxdb(object):
             }
             with BaseRequests(
                     username=self.username,
-                    password=self.password,
-                    domain=self.domain
+                    password=self.password
             ) as req:
                 res = req.get(
                     self.query_url, params=payload,
@@ -72,8 +70,7 @@ class BaseInfluxdb(object):
             }
             with BaseRequests(
                     username=self.username,
-                    password=self.password,
-                    domain=self.domain
+                    password=self.password
             ) as req:
                 res = req.post(self.query_url, data=payload)
                 logger.debug("Create database res: {}".format(res.content))
@@ -109,8 +106,7 @@ class BaseInfluxdb(object):
                 }
             with BaseRequests(
                     username=self.username,
-                    password=self.password,
-                    domain=self.domain
+                    password=self.password
             ) as req:
                 res = req.post(self.query_url, data=payload)
                 logger.debug(
@@ -136,8 +132,7 @@ class BaseInfluxdb(object):
             }
             with BaseRequests(
                     username=self.username,
-                    password=self.password,
-                    domain=self.domain
+                    password=self.password
             ) as req:
                 res = req.get(
                     self.query_url, params=payload,
@@ -166,8 +161,7 @@ class BaseInfluxdb(object):
             }
             with BaseRequests(
                     username=self.username,
-                    password=self.password,
-                    domain=self.domain
+                    password=self.password
             ) as req:
                 res = req.get(
                     url, params=payload,

@@ -10,12 +10,11 @@ logger = logging.getLogger(__name__)
 class BaseKapacitor(object):
     def __init__(
             self, kapacitor_url="http://localhost:9092/",
-            username=None, password=None, domain=None
+            username=None, password=None
     ):
         self.kapacitor_url = kapacitor_url
         self.username = username
         self.password = password
-        self.domain = domain
 
         self.base_url = urlparse.urljoin(
             self.kapacitor_url, "/kapacitor/v1"
@@ -40,8 +39,7 @@ class BaseKapacitor(object):
             })
             logger.debug("payload: {}".format(payload))
             with BaseRequests(
-                    username=self.username, password=self.password,
-                    domain=self.domain
+                    username=self.username, password=self.password
             ) as req:
                 res = req.post(url, data=payload)
                 logger.debug(
@@ -71,8 +69,7 @@ class BaseKapacitor(object):
                 "set": option
             })
             with BaseRequests(
-                    username=self.username, password=self.password,
-                    domain=self.domain
+                    username=self.username, password=self.password
             ) as req:
                 res = req.post(url, data=payload)
                 logger.debug(
@@ -123,8 +120,7 @@ class BaseKapacitor(object):
             url = self.base_url + "/config/smtp/"
             logger.debug("url: {}".format(url))
             with BaseRequests(
-                username=self.username, password=self.password,
-                domain=self.domain
+                username=self.username, password=self.password
             ) as req:
                 res = req.get(url)
                 logger.debug(
@@ -162,13 +158,12 @@ class BaseKapacitor(object):
         except Exception:
             raise
 
-    def update_task(self, id, data):
+    def update_task(self, name, data):
         try:
-            url = self.base_url + "/tasks/{}".format(id)
+            url = self.base_url + "/tasks/{}".format(name)
             logger.debug("url: {}".format(url))
             with BaseRequests(
-                username=self.username, password=self.password,
-                domain=self.domain
+                username=self.username, password=self.password
             ) as req:
                 res = req.patch(url, data)
                 logger.debug(
@@ -202,8 +197,7 @@ class BaseKapacitor(object):
         try:
             url = self.base_url + "/alerts/topics"
             with BaseRequests(
-                username=self.username, password=self.password,
-                domain=self.domain
+                username=self.username, password=self.password
             ) as req:
                 res = req.get(url)
                 logger.debug(
