@@ -570,6 +570,37 @@ class BaseVbox(object):
                 logger.debug("setup dns {} succeed.".format(vm))
                 return True
 
+    def register_vm(self, path, name):
+        """ register will register vbox to vboxmanage."""
+        try:
+            logger.info("register vm {}.".format(name))
+            cmd = """
+            su {} -c "/usr/bin/vboxmanage registervm {}/{}/{}.vbox
+            """.format(self.username, path, name, name)
+            logger.debug(cmd)
+            process = subprocess.Popen(
+                cmd, shell=True,
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE
+            )
+            output, error = process.communicate()
+            output = output.decode("utf-8")
+            error = error.decode("utf-8")
+            logger.debug("output: {}".format(output))
+            logger.debug("error: {}".format(error))
+            rc = process.returncode
+        except Exception as e:
+            logger.debug("register vm {} error: {}.".format(name, e.args))
+            raise
+        else:
+            if rc:
+                logger.debug(
+                    "register vm {} failed with exit_code: {}".format(name, rc)
+                )
+                return False
+            else:
+                logger.debug("register vm {} succeed.".format(name))
+                return True
+
     def install_license(self, vm, lic):
         try:
             logger.debug("install license for {}.".format(vm))

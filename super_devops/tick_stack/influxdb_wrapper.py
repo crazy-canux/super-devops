@@ -157,7 +157,8 @@ class BaseInfluxdb(object):
                 self.influxdb_url, "/query?db={}".format(db)
             )
             payload = {
-                "q": ifql
+                "q": ifql,
+                "epoch": "ms"
             }
             with BaseRequests(
                     username=self.username,
