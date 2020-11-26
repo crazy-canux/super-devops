@@ -26,6 +26,7 @@ class BaseIptables(object):
         else:
             raise ValueError("table not support!")
         self.table = iptc.Table(self.table_name)
+        self.table.refresh()
 
     def delete_user_define_chain(self):
         try:
