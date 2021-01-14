@@ -17,7 +17,7 @@ class LdapTestCase(unittest.TestCase):
 
     def test_search(self):
         with BaseLdap3(
-                "ldaps://ldap-gs.euhpc2.arm.com", port=636, use_ssl=True, allowed_referral_hosts=[("*", True)],
+                new, port=636, use_ssl=True, allowed_referral_hosts=[("*", True)],
                 get_info=ldap3.NONE, auto_bind=False
         ) as ldap:
             filters = '(&(objectClass=inetOrgPerson)(username=canux))'
