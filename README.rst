@@ -16,6 +16,16 @@ super-devops
 
 Tons of tools for devops project.
 
+Dependency:
+
+pymssql:
+
+    $ sudo apt-get install freetds-dev
+
+libvirt-python:
+
+    $ sudo apt-get install libvirt-dev
+
 Install::
 
     $ pip install super-devops

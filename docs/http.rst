@@ -167,6 +167,9 @@ install from pypi::
 
     $ pip install requests
 
+    // 安装pyOpenSSL,cryptography来支持ssl/tls/sni等
+    $ pip3 install requests[security]
+
 usage
 -----
 
