@@ -65,7 +65,7 @@ start python3 support.
 New Features:
 
     firewall
-    
+
 ***
 
 ## 1.9.1
@@ -73,8 +73,8 @@ New Features:
 remove python2 compatible.
 
 support python3 only.
-    
-## 1.9.2 (WIP)
+
+## 1.9.3 (WIP)
 
 New Features:
 
@@ -82,22 +82,17 @@ New Features:
     gitlab
     mongo
     vault
-    
-## 1.9.4 (TBD)
+
+## 1.9.5 (TBD)
 
 New Features:
 
     ftp
     office
-    
-## 1.9.6 (TBD)
-    
-New Features:
-    
     snmp
     nfs
-    
-## 1.9.8 (TBD)
+
+## 1.9.7 (TBD)
 
 New Features:
 
