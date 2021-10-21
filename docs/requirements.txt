@@ -4,7 +4,7 @@ packaging==20.8
 pytz==2020.5
 pyparsing==2.4.7
 alabaster==0.7.12
-Babel==2.9.0
+Babel==2.9.1
 imagesize==1.2.0
 Jinja2==2.11.2
 snowballstemmer==2.1.0
